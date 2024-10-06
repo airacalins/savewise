@@ -4,7 +4,7 @@ import React from "react";
 interface PageContainerProps extends React.PropsWithChildren {
   title: string;
   subtitle: string;
-  actions: React.ReactNode;
+  actions?: React.ReactNode;
 }
 
 export const PageContainer: React.FC<PageContainerProps> = ({

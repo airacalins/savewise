@@ -85,31 +85,10 @@ export const theme = createTheme({
         },
       },
     },
-    MuiPaper: {
-      styleOverrides: {
-        elevation: 0,
-        root: {
-          backgroundColor: colors.primary,
-          borderColor: `${colors.borderColor} !important`,
-          borderRight: styles.boxShadowOutset,
-          borderWidth: "12px",
-        },
-      },
-    },
-    MuiTableCell: {
+    MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          color: colors.dark,
-        },
-      },
-    },
-    MuiTableContainer: {
-      styleOverrides: {
-        root: {
-          borderColor: colors.borderColor,
-          boxShadow: styles.boxShadowOutset,
-          borderRadius: ".55rem",
-          padding: "16px",
+          backgorundColor: "red",
         },
       },
     },
@@ -137,14 +116,42 @@ export const theme = createTheme({
         },
       },
     },
-    MuiTypography: {
+    MuiPaper: {
+      styleOverrides: {
+        elevation: 0,
+        root: {
+          backgroundColor: colors.primary,
+          borderColor: `${colors.borderColor} !important`,
+          borderRight: styles.boxShadowOutset,
+          borderWidth: "12px",
+        },
+      },
+    },
+    MuiSvgIcon: {
       styleOverrides: {
         root: {
           color: colors.dark,
         },
       },
     },
-    MuiSvgIcon: {
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          color: colors.dark,
+        },
+      },
+    },
+    MuiTableContainer: {
+      styleOverrides: {
+        root: {
+          borderColor: colors.borderColor,
+          boxShadow: styles.boxShadowOutset,
+          borderRadius: ".55rem",
+          padding: "16px",
+        },
+      },
+    },
+    MuiTypography: {
       styleOverrides: {
         root: {
           color: colors.dark,

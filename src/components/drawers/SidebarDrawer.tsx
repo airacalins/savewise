@@ -11,9 +11,8 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import { useNavigate } from "react-router-dom";
+import { Home, MoneyOff, Savings } from "@mui/icons-material";
 
 const drawerWidth = 240;
 
@@ -76,6 +75,7 @@ interface SideNavProps {
   key: string;
   name: string;
   link: string;
+  icon: React.ReactNode;
 }
 
 const sideNavs = [
@@ -83,11 +83,19 @@ const sideNavs = [
     key: "home",
     name: "Home",
     link: "/",
+    icon: <Home />,
   },
   {
-    key: "accounts",
-    name: "Accounts",
-    link: "/accounts",
+    key: "funds",
+    name: "Funds",
+    link: "/funds",
+    icon: <Savings />,
+  },
+  {
+    key: "expenses",
+    name: "Expenses",
+    link: "/expenses",
+    icon: <MoneyOff />,
   },
 ];
 
@@ -104,11 +112,11 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
 }) => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const [selectedNav, setSelectedNav] = React.useState(sideNavs[0]);
+  const [selectedNavKey, setSelectedNavKey] = React.useState(sideNavs[0].key);
 
   //   Functions
   const handleNavigate = (sideNav: SideNavProps) => {
-    setSelectedNav(sideNav);
+    setSelectedNavKey(sideNav.key);
     navigate(sideNav.link);
   };
 
@@ -131,10 +139,10 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
       </DrawerHeader>
       <Divider />
       <List>
-        {sideNavs.map((sideNav, index) => (
+        {sideNavs.map((sideNav) => (
           <ListItem key={sideNav.key} disablePadding sx={{ display: "block" }}>
             <ListItemButton
-              selected={selectedNav.key === sideNav.key}
+              selected={selectedNavKey === sideNav.key}
               onClick={() => handleNavigate(sideNav)}
               sx={[
                 { minHeight: 48, px: 2.5 },
@@ -148,7 +156,7 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
                   { mr: isOpen ? 3 : "auto" },
                 ]}
               >
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                {sideNav.icon}
               </ListItemIcon>
               <ListItemText
                 primary={sideNav.name}
