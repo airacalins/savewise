@@ -134,6 +134,21 @@ export const theme = createTheme({
         },
       },
     },
+    MuiTable: {
+      styleOverrides: {
+        root: {
+          ">tbody>tr.MuiTableRow-root:hover": {
+            borderColor: colors.borderColor,
+            borderRadius: ".55rem",
+            boxShadow: styles.boxShadowOutset,
+            ":hover": {
+              boxShadow: styles.boxShadowInset,
+              cursor: "pointer",
+            },
+          },
+        },
+      },
+    },
     MuiTableCell: {
       styleOverrides: {
         root: {
@@ -151,6 +166,7 @@ export const theme = createTheme({
         },
       },
     },
+
     MuiTypography: {
       styleOverrides: {
         root: {

@@ -3,6 +3,7 @@ import { OutletPage } from "../components/containers/OutletPage";
 import { HomePage } from "../pages/home/HomePage";
 import { ExpensesPage } from "../pages/expenses/ExpensesPage";
 import { FundsPage } from "../pages/funds/FundsPage";
+import { ExpenseDetailsPage } from "../pages/expenses/ExpenseDetailsPage";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ export const router = createBrowserRouter([
       {
         path: "/expenses",
         element: <ExpensesPage />,
+      },
+      {
+        path: "/expenses/:id",
+        element: <ExpenseDetailsPage />,
       },
     ],
   },

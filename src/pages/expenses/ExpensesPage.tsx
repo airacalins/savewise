@@ -10,6 +10,7 @@ import {
 import { PageContainer } from "../../components/containers/PageContainer";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { AddExpenseModal } from "./components/AddExpenseModal";
+import { useNavigate } from "react-router-dom";
 
 function createData(name: string, amount: number) {
   return { name, amount };
@@ -23,6 +24,7 @@ const rows = [
 ];
 
 export const ExpensesPage = () => {
+  const navigate = useNavigate();
   const addExpenseModal = useVisibilityState();
 
   const handleSaveExpense = () => {
@@ -48,6 +50,7 @@ export const ExpensesPage = () => {
               <TableRow
                 key={row.name}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                onClick={() => navigate(`/expenses/${row.name}`)}
               >
                 <TableCell component="th" scope="row">
                   {row.name}
