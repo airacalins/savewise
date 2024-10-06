@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { OutletPage } from "../components/containers/OutletPage";
 import { HomePage } from "../pages/home/HomePage";
 import { ExpensesPage } from "../pages/expenses/ExpensesPage";
-import { FundsPage } from "../pages/savings/SavingsPage";
+import { FundsPage } from "../pages/funds/FundsPage";
 
 export const router = createBrowserRouter([
   {
