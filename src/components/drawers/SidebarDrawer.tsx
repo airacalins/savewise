@@ -1,9 +1,7 @@
 import * as React from "react";
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
-import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
-import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -15,7 +13,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import { colors } from "../../theme/colors";
 
 const drawerWidth = 240;
 
@@ -74,102 +71,102 @@ const Drawer = styled(MuiDrawer, {
   ],
 }));
 
-export const SidebarDrawer = () => {
+const sideNavs = [
+  {
+    key: "home",
+    name: "Home",
+    link: "/",
+  },
+  {
+    key: "accounts",
+    name: "Accounts",
+    link: "/accounts",
+  },
+];
+
+interface SidebarDrawerProps {
+  isOpen: boolean;
+  onDrawerOpen: () => void;
+  onDrawerClose: () => void;
+}
+
+export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
+  isOpen,
+  onDrawerOpen,
+  onDrawerClose,
+}) => {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          {open ? (
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === "rtl" ? (
-                <ChevronRightIcon />
-              ) : (
-                <ChevronLeftIcon />
-              )}
-            </IconButton>
-          ) : (
-            <IconButton aria-label="open drawer" onClick={handleDrawerOpen}>
-              <MenuIcon />
-            </IconButton>
-          )}
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {["Home", "Accounts"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
+    <Drawer variant="permanent" open={isOpen}>
+      <DrawerHeader>
+        {isOpen ? (
+          <IconButton onClick={onDrawerClose}>
+            {theme.direction === "rtl" ? (
+              <ChevronRightIcon />
+            ) : (
+              <ChevronLeftIcon />
+            )}
+          </IconButton>
+        ) : (
+          <IconButton aria-label="open drawer" onClick={onDrawerOpen}>
+            <MenuIcon />
+          </IconButton>
+        )}
+      </DrawerHeader>
+      <Divider />
+      <List>
+        {sideNavs.map((sideNav, index) => (
+          <ListItem key={sideNav.key} disablePadding sx={{ display: "block" }}>
+            <ListItemButton
+              onClick={() => (window.location.href = sideNav.link)}
+              sx={[
+                {
+                  minHeight: 48,
+                  px: 2.5,
+                },
+                isOpen
+                  ? {
+                      justifyContent: "initial",
+                    }
+                  : {
+                      justifyContent: "center",
+                    },
+              ]}
+            >
+              <ListItemIcon
                 sx={[
                   {
-                    minHeight: 48,
-                    px: 2.5,
+                    minWidth: 0,
+                    justifyContent: "center",
                   },
-                  open
+                  isOpen
                     ? {
-                        justifyContent: "initial",
+                        mr: 3,
                       }
                     : {
-                        justifyContent: "center",
+                        mr: "auto",
                       },
                 ]}
               >
-                <ListItemIcon
-                  sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: "center",
-                    },
-                    open
-                      ? {
-                          mr: 3,
-                        }
-                      : {
-                          mr: "auto",
-                        },
-                  ]}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText
-                  primary={text}
-                  sx={[
-                    open
-                      ? {
-                          opacity: 1,
-                        }
-                      : {
-                          opacity: 0,
-                        },
-                  ]}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-      <Box
-        component="main"
-        sx={{
-          backgroundColor: colors.primary,
-          display: "flex",
-          flexGrow: 1,
-          height: "100vh",
-          p: 3,
-        }}
-      >
-        <h1>Home</h1>
-      </Box>
-    </Box>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText
+                primary={sideNav.name}
+                sx={[
+                  isOpen
+                    ? {
+                        opacity: 1,
+                      }
+                    : {
+                        opacity: 0,
+                      },
+                ]}
+              />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Drawer>
   );
 };
