@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import { OutletPage } from "../components/containers/OutletPage";
+import { HomePage } from "../pages/home/HomePage";
 
 export const router = createBrowserRouter([
   {
@@ -8,7 +9,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <div>Hello world!</div>,
+        element: <HomePage />,
       },
       {
         path: "accounts",

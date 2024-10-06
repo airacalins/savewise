@@ -58,6 +58,13 @@ export const theme = createTheme({
       defaultProps: {
         disableRipple: true,
       },
+      styleOverrides: {
+        root: {
+          "&.Mui-selected": {
+            boxShadow: styles.boxShadowInset,
+          },
+        },
+      },
     },
     MuiDivider: {
       styleOverrides: {
@@ -80,11 +87,29 @@ export const theme = createTheme({
     },
     MuiPaper: {
       styleOverrides: {
+        elevation: 0,
         root: {
           backgroundColor: colors.primary,
           borderColor: `${colors.borderColor} !important`,
           borderRight: styles.boxShadowOutset,
           borderWidth: "12px",
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          color: colors.dark,
+        },
+      },
+    },
+    MuiTableContainer: {
+      styleOverrides: {
+        root: {
+          borderColor: colors.borderColor,
+          boxShadow: styles.boxShadowOutset,
+          borderRadius: ".55rem",
+          padding: "16px",
         },
       },
     },
@@ -103,6 +128,9 @@ export const theme = createTheme({
           borderColor: colors.borderColor,
           borderRadius: ".55rem",
           fontWeight: 400,
+          "& >.MuiSelected": {
+            boxShadow: styles.boxShadowInset,
+          },
           ":hover": {
             boxShadow: styles.boxShadowInset,
           },

@@ -13,6 +13,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -71,6 +72,12 @@ const Drawer = styled(MuiDrawer, {
   ],
 }));
 
+interface SideNavProps {
+  key: string;
+  name: string;
+  link: string;
+}
+
 const sideNavs = [
   {
     key: "home",
@@ -96,6 +103,14 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
   onDrawerClose,
 }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
+  const [selectedNav, setSelectedNav] = React.useState(sideNavs[0]);
+
+  //   Functions
+  const handleNavigate = (sideNav: SideNavProps) => {
+    setSelectedNav(sideNav);
+    navigate(sideNav.link);
+  };
 
   return (
     <Drawer variant="permanent" open={isOpen}>
@@ -119,49 +134,25 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
         {sideNavs.map((sideNav, index) => (
           <ListItem key={sideNav.key} disablePadding sx={{ display: "block" }}>
             <ListItemButton
-              onClick={() => (window.location.href = sideNav.link)}
+              selected={selectedNav.key === sideNav.key}
+              onClick={() => handleNavigate(sideNav)}
               sx={[
-                {
-                  minHeight: 48,
-                  px: 2.5,
-                },
-                isOpen
-                  ? {
-                      justifyContent: "initial",
-                    }
-                  : {
-                      justifyContent: "center",
-                    },
+                { minHeight: 48, px: 2.5 },
+                { justifyContent: isOpen ? "initial" : "center" },
               ]}
             >
               <ListItemIcon
+                onClick={() => handleNavigate(sideNav)}
                 sx={[
-                  {
-                    minWidth: 0,
-                    justifyContent: "center",
-                  },
-                  isOpen
-                    ? {
-                        mr: 3,
-                      }
-                    : {
-                        mr: "auto",
-                      },
+                  { minWidth: 0, justifyContent: "center" },
+                  { mr: isOpen ? 3 : "auto" },
                 ]}
               >
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
               </ListItemIcon>
               <ListItemText
                 primary={sideNav.name}
-                sx={[
-                  isOpen
-                    ? {
-                        opacity: 1,
-                      }
-                    : {
-                        opacity: 0,
-                      },
-                ]}
+                sx={{ opacity: isOpen ? 1 : 0 }}
               />
             </ListItemButton>
           </ListItem>
