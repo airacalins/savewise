@@ -66,6 +66,17 @@ export const theme = createTheme({
         },
       },
     },
+    MuiCard: {
+      defaultProps: {
+        elevation: 0, // Set default elevation to 0
+      },
+      styleOverrides: {
+        root: {
+          boxShadow: styles.boxShadowOutset,
+        },
+      },
+      // Set default props for MuiCard here
+    },
     MuiDivider: {
       styleOverrides: {
         root: {

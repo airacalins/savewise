@@ -12,7 +12,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { useNavigate } from "react-router-dom";
-import { Home, MoneyOff, Savings } from "@mui/icons-material";
+import { Article, Home, MoneyOff, Savings } from "@mui/icons-material";
 
 const drawerWidth = 240;
 
@@ -96,6 +96,12 @@ const sideNavs = [
     name: "Expenses",
     link: "/expenses",
     icon: <MoneyOff />,
+  },
+  {
+    key: "summaries",
+    name: "Summaries",
+    link: "/summaries",
+    icon: <Article />,
   },
 ];
 
