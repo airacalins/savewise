@@ -15,9 +15,9 @@ import {
 } from "@mui/material";
 import { PageContainer } from "../../components/containers/PageContainer";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
-import { AddExpenseModal } from "./components/AddExpenseModal";
 import { useNavigate } from "react-router-dom";
 import { CalendarMonth } from "@mui/icons-material";
+import { CreateExpenseCategoryModal } from "./components/CreateExpenseCategoryModal";
 
 function createData(name: string, amount: number) {
   return { name, amount };
@@ -42,7 +42,9 @@ export const ExpensesPage = () => {
     <PageContainer
       title="Expenses"
       subtitle="View, create and manage expenses."
-      actions={<Button onClick={addExpenseModal.show}>Add Expense</Button>}
+      actions={
+        <Button onClick={addExpenseModal.show}>Create expense category</Button>
+      }
     >
       <Stack direction="row" spacing={4}>
         <Box flex={2}>
@@ -112,7 +114,7 @@ export const ExpensesPage = () => {
           </Card>
         </Box>
       </Stack>
-      <AddExpenseModal
+      <CreateExpenseCategoryModal
         isVisible={addExpenseModal.isVisible}
         onClose={addExpenseModal.hide}
         onCancel={addExpenseModal.hide}

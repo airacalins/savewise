@@ -10,19 +10,20 @@ import { colors } from "../../theme/colors";
 import { styles } from "../../theme/styles";
 import { Close } from "@mui/icons-material";
 
-interface ModalProps extends React.PropsWithChildren {
+interface ConfirmActionModalProps {
   isVisible: boolean;
   title: string;
   description?: string;
   onClose: () => void;
+  actions: React.ReactNode;
 }
 
-export const Modal: React.FC<ModalProps> = ({
+export const ConfirmActionModal: React.FC<ConfirmActionModalProps> = ({
   isVisible,
   title,
   description,
-  children,
   onClose,
+  actions,
 }) => {
   return (
     <MuiModal
@@ -59,8 +60,10 @@ export const Modal: React.FC<ModalProps> = ({
         <Typography id="modal-modal-title" variant="body1">
           {description}
         </Typography>
-        <Box height="24px" />
-        {children}
+        <Box height="16px" />
+        <Stack direction="row" spacing={2} justifyContent="flex-end">
+          {actions}
+        </Stack>
       </Box>
     </MuiModal>
   );

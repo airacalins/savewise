@@ -2,28 +2,27 @@ import React from "react";
 import { Modal } from "../../../components/modals/Modal";
 import { Box, Button, Stack, TextField } from "@mui/material";
 
-interface AddExpenseModalProps {
+interface CreateExpenseCategoryModalProps {
   isVisible: boolean;
   onClose: () => void;
   onCancel: () => void;
   onSubmit: () => void;
 }
 
-export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
-  isVisible,
-  onClose,
-  onCancel,
-  onSubmit,
-}) => {
+export const CreateExpenseCategoryModal: React.FC<
+  CreateExpenseCategoryModalProps
+> = ({ isVisible, onClose, onCancel, onSubmit }) => {
   return (
-    <Modal isVisible={isVisible} title="Create expense" onClose={onClose}>
+    <Modal
+      isVisible={isVisible}
+      title="Create expense category"
+      onClose={onClose}
+    >
       <TextField
         fullWidth
-        label="Description"
-        placeholder="Transaction or item description"
+        label="Name"
+        placeholder="Groceries, Electricity, etc."
       />
-      <Box height="16px" />
-      <TextField fullWidth label="Amount" placeholder="100" />
       <Box height="16px" />
       <Stack direction="row" spacing={2} justifyContent="flex-end">
         <Button onClick={onCancel}>Cancel</Button>

@@ -104,7 +104,7 @@ export const FundsPage = () => {
             <Box height="16px" />
             <Divider />
             <Box height="16px" />
-            <Typography variant="caption">Overall Total</Typography>
+            <Typography variant="caption">Overall total</Typography>
             <Box height="8px" />
             <Typography variant="body1">Php 10,000</Typography>
           </Card>
