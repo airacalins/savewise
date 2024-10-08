@@ -4,7 +4,6 @@ import { HomePage } from "../pages/home/HomePage";
 import { ExpensesPage } from "../pages/expenses/ExpensesPage";
 import { FundsPage } from "../pages/funds/FundsPage";
 import { ExpenseDetailsPage } from "../pages/expenses/ExpenseDetailsPage";
-import { SummariesPage } from "../pages/summar/SummariesPage";
 
 export const router = createBrowserRouter([
   {
@@ -30,10 +29,6 @@ export const router = createBrowserRouter([
       {
         path: "/expenses/:id",
         element: <ExpenseDetailsPage />,
-      },
-      {
-        path: "/summaries",
-        element: <SummariesPage />,
       },
     ],
   },

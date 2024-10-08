@@ -71,18 +71,6 @@ export const FundsPage = () => {
         </Box>
         <Box flex={1}>
           <Card style={{ padding: "24px" }}>
-            <Typography variant="caption">Total funds</Typography>
-            <Box height="8px" />
-            <Typography variant="body1">Php 10,000</Typography>
-            <Box height="16px" />
-            <Divider />
-            <Box height="16px" />
-            <Typography variant="caption">Year-to-Date total </Typography>
-            <Box height="8px" />
-            <Typography variant="body1">Php 10,000</Typography>
-            <Box height="16px" />
-            <Divider />
-            <Box height="16px" />
             <Typography variant="caption">Current month total</Typography>
             <Box height="8px" />
             <Typography variant="body1">Php 10,000</Typography>
@@ -107,6 +95,18 @@ export const FundsPage = () => {
                 </IconButton>
               </Box>
             </Stack>
+            <Box height="16px" />
+            <Divider />
+            <Box height="16px" />
+            <Typography variant="caption">Year-to-Date total </Typography>
+            <Box height="8px" />
+            <Typography variant="body1">Php 10,000</Typography>
+            <Box height="16px" />
+            <Divider />
+            <Box height="16px" />
+            <Typography variant="caption">Overall Total</Typography>
+            <Box height="8px" />
+            <Typography variant="body1">Php 10,000</Typography>
           </Card>
         </Box>
       </Stack>
