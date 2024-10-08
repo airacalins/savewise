@@ -48,7 +48,8 @@ export const FundsPage = () => {
               <TableHead>
                 <TableRow>
                   <TableCell>Name</TableCell>
-                  <TableCell align="right">Amount</TableCell>
+                  <TableCell>Current Month Savings</TableCell>
+                  <TableCell>Year-to-Date Total</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -60,7 +61,8 @@ export const FundsPage = () => {
                     <TableCell component="th" scope="row">
                       {row.name}
                     </TableCell>
-                    <TableCell align="right">{row.amount}</TableCell>
+                    <TableCell>{row.amount}</TableCell>
+                    <TableCell>{row.amount}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -69,7 +71,19 @@ export const FundsPage = () => {
         </Box>
         <Box flex={1}>
           <Card style={{ padding: "24px" }}>
-            <Typography variant="caption">Total Funds</Typography>
+            <Typography variant="caption">Total funds</Typography>
+            <Box height="8px" />
+            <Typography variant="body1">Php 10,000</Typography>
+            <Box height="16px" />
+            <Divider />
+            <Box height="16px" />
+            <Typography variant="caption">Year-to-Date total </Typography>
+            <Box height="8px" />
+            <Typography variant="body1">Php 10,000</Typography>
+            <Box height="16px" />
+            <Divider />
+            <Box height="16px" />
+            <Typography variant="caption">Current month total</Typography>
             <Box height="8px" />
             <Typography variant="body1">Php 10,000</Typography>
             <Box height="16px" />
@@ -81,7 +95,9 @@ export const FundsPage = () => {
               justifyContent="space-between"
             >
               <Box>
-                <Typography variant="caption">October Funds</Typography>
+                <Typography variant="caption">
+                  Previous month total - Sep 2024
+                </Typography>
                 <Box height="8px" />
                 <Typography variant="body1">Php 10,000</Typography>
               </Box>
