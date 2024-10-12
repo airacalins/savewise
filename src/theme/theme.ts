@@ -39,6 +39,16 @@ export const theme = createTheme({
     ].join(","),
   },
   components: {
+    MuiInputAdornment: {
+      styleOverrides: {
+        root: {
+          ">.MuiButtonBase-root": {
+            marginRight: "-6px",
+            boxShadow: "none !important",
+          },
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
@@ -66,16 +76,16 @@ export const theme = createTheme({
         },
       },
     },
+
     MuiCard: {
       defaultProps: {
-        elevation: 0, // Set default elevation to 0
+        elevation: 0,
       },
       styleOverrides: {
         root: {
           boxShadow: styles.boxShadowOutset,
         },
       },
-      // Set default props for MuiCard here
     },
     MuiDivider: {
       styleOverrides: {
@@ -135,6 +145,17 @@ export const theme = createTheme({
           borderColor: `${colors.borderColor} !important`,
           borderRight: styles.boxShadowOutset,
           borderWidth: "12px",
+          ">.MuiPickersLayout-root>.MuiPickersLayout-contentWrapper>.MuiDateCalendar-root>.MuiPickersCalendarHeader-root":
+            {
+              ">.MuiPickersCalendarHeader-labelContainer": {
+                padding: "8px",
+                paddingLeft: 0,
+              },
+              ">.MuiPickersArrowSwitcher-root": {
+                padding: "8px",
+                gap: "4px",
+              },
+            },
         },
       },
     },

@@ -1,8 +1,10 @@
 import React from "react";
 import { Modal } from "../../../components/modals/Modal";
-import { Box, Button, Stack, TextField } from "@mui/material";
-import { DeleteOutline, Save, Today } from "@mui/icons-material";
+import { Box, Button, Stack } from "@mui/material";
+import { DeleteOutline, Save } from "@mui/icons-material";
 import { colors } from "../../../theme/colors";
+import { CalendarIcon, DatePicker } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
 import { TextInput } from "../../../components/inputs/TextInput";
 
 interface EditExpenseModalProps {
@@ -21,9 +23,18 @@ export const EditExpenseModal: React.FC<EditExpenseModalProps> = ({
   return (
     <Modal isVisible={isVisible} title="Update Expense" onClose={onClose}>
       <Stack spacing={3}>
-        <TextInput label="Date" EndIconComponent={<Today />} />
-        <TextField fullWidth label="Description" />
-        <TextField fullWidth label="Amount" />
+        <DatePicker label="Date" value={dayjs("2022-04-17")} />
+        <TextInput
+          fullWidth
+          label="Description"
+          endAdornment={<DeleteOutline />}
+          EndIconComponent={undefined}
+        />
+        <TextInput
+          fullWidth
+          label="Amount"
+          EndIconComponent={<CalendarIcon />}
+        />
       </Stack>
       <Box height="32px" />
       <Stack direction="row" spacing={2} justifyContent="flex-end">

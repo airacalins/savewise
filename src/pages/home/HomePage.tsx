@@ -11,8 +11,6 @@ export const HomePage = () => {
       <FundSummary />
       <Box height={24} />
       <FundSummary />
-      {/* <Box height={24} />
-      <FundSummary /> */}
     </PageContainer>
   );
 };

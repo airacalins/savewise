@@ -9,7 +9,7 @@ import React from "react";
 
 interface TextInputProps extends MuiOutlinedInputProps {
   label: string;
-  EndIconComponent: React.ReactNode;
+  EndIconComponent?: React.ReactNode;
 }
 
 export const TextInput: React.FC<TextInputProps> = ({
