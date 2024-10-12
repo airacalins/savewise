@@ -12,6 +12,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { TextInput } from "../../../components/inputs/TextInput";
 import { DeleteOutline } from "@mui/icons-material";
+import { mockFundCollection } from "../../../api/funds/mockFundCollection";
 
 interface AddExpenseModalProps {
   isVisible: boolean;
@@ -26,10 +27,12 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
   onCancel,
   onSubmit,
 }) => {
+  const fundsCollectionData = mockFundCollection;
+
   return (
     <ConfirmActionModal
       isVisible={isVisible}
-      title="Create expense"
+      title="Add Expense"
       onClose={onClose}
       actions={
         <>
@@ -41,7 +44,7 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
       }
     >
       <Stack spacing={3}>
-        <DatePicker label="Date" value={dayjs("2022-04-17")} />
+        <DatePicker label="Date" value={dayjs(new Date())} />
         <TextInput
           fullWidth
           label="Description"
@@ -52,9 +55,11 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
         <FormControl fullWidth>
           <InputLabel id="source-select-label">Source</InputLabel>
           <Select labelId="source-select-label" label="Source">
-            <MenuItem value="source1">Source 1</MenuItem>
-            <MenuItem value="source2">Source 2</MenuItem>
-            <MenuItem value="source3">Source 3</MenuItem>
+            {fundsCollectionData.map((fund) => (
+              <MenuItem key={fund.id} value={fund.id}>
+                {fund.name}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </Stack>

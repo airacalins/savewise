@@ -6,9 +6,11 @@ import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { TextInput } from "../../../components/inputs/TextInput";
 import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
+import { mockExpenses } from "../../../api/expense/mockExpenses";
 
 interface EditExpenseModalProps {
   isVisible: boolean;
+  expenseId: string;
   onClose: () => void;
   onDelete: () => void;
   onUpdate: () => void;
@@ -16,10 +18,15 @@ interface EditExpenseModalProps {
 
 export const EditExpenseModal: React.FC<EditExpenseModalProps> = ({
   isVisible,
+  expenseId,
   onClose,
   onDelete,
   onUpdate,
 }) => {
+  const expenseData = mockExpenses.find((expense) => expense.id === expenseId);
+
+  console.log(expenseData);
+
   return (
     <ConfirmActionModal
       isVisible={isVisible}
@@ -45,14 +52,19 @@ export const EditExpenseModal: React.FC<EditExpenseModalProps> = ({
       }
     >
       <Stack spacing={3}>
-        <DatePicker label="Date" value={dayjs("2022-04-17")} />
+        <DatePicker label="Date" value={dayjs(expenseData?.date)} />
         <TextInput
           fullWidth
           label="Description"
           endAdornment={<DeleteOutline />}
+          defaultValue={expenseData?.description}
           EndIconComponent={undefined}
         />
-        <TextInput fullWidth label="Amount" />
+        <TextInput
+          fullWidth
+          label="Amount"
+          defaultValue={expenseData?.amount}
+        />
       </Stack>
     </ConfirmActionModal>
   );

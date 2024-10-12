@@ -13,7 +13,7 @@ import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { EditExpenseModal } from "./components/EditExpenseModal";
 import { ConfirmActionModal } from "../../components/modals/ConfirmActionModal";
 import { AddExpenseModal } from "./components/AddExpenseModal";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { mockExpensesCollectionData } from "../../api/expense/mockExpenseCollection";
 import { mockExpenses } from "../../api/expense/mockExpenses";
 import dayjs from "dayjs";
@@ -23,6 +23,7 @@ export const Expenses = () => {
   const addExpenseModal = useVisibilityState();
   const editExpenseModal = useVisibilityState();
   const deleteConfirmationExpenseModal = useVisibilityState();
+  const [selectedExpenseId, setSelectedExpenseId] = useState<null | string>();
 
   // API
   const expenseCollectionData = mockExpensesCollectionData.find(
@@ -73,7 +74,10 @@ export const Expenses = () => {
               <TableRow
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                onClick={editExpenseModal.show}
+                onClick={() => {
+                  editExpenseModal.show();
+                  setSelectedExpenseId(expense.id);
+                }}
               >
                 <TableCell>{expense.description}</TableCell>
                 <TableCell>
@@ -93,6 +97,7 @@ export const Expenses = () => {
       />
       <EditExpenseModal
         isVisible={editExpenseModal.isVisible}
+        expenseId={selectedExpenseId ?? ""}
         onClose={editExpenseModal.hide}
         onDelete={handleShowConfirmDeleteModal}
         onUpdate={editExpenseModal.hide}
