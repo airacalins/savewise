@@ -10,13 +10,15 @@ export const styles = {
     secondary: `3px 3px 8px ${colors.boxShadow.secondary[0]}, -3px -3px 8px ${colors.boxShadow.secondary[1]}`,
   },
   boxInset: {
-    borderColor: colors.borderColor,
+    border: `.0625rem solid ${colors.borderColor}`,
     borderRadius: ".55rem",
     boxShadow: `inset 2px 2px 5px ${colors.boxShadow.primary[0]},inset -3px -3px 7px ${colors.boxShadow.primary[1]}`,
   },
   boxOutset: {
-    borderColor: colors.borderColor,
+    border: `.0625rem solid ${colors.borderColor}`,
     borderRadius: ".55rem",
     boxShadow: `3px 3px 6px ${colors.boxShadow.primary[0]}, -3px -3px 6px ${colors.boxShadow.primary[1]}`,
   },
+  border: `.0625rem solid ${colors.borderColor}`,
+  borderRadius: ".55rem",
 };

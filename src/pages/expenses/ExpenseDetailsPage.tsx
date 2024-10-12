@@ -14,6 +14,7 @@ import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { EditExpenseModal } from "./components/EditExpenseModal";
 import { ConfirmActionModal } from "../../components/modals/ConfirmActionModal";
 import { AddExpenseModal } from "./components/AddExpenseModal";
+import { useMemo } from "react";
 
 function createData(date: string, description: string, amount: number) {
   return { date, description, amount };
@@ -50,10 +51,26 @@ export const ExpenseDetailsPage = () => {
     deleteConfirmationExpenseModal.show();
   };
 
+  const breadcrumbs = useMemo(() => {
+    return [
+      {
+        key: "expenses",
+        name: "Expenses",
+        link: "/expenses",
+      },
+      {
+        key: id ?? "",
+        name: id ?? "",
+        link: `/expenses/${id ?? ""}`,
+      },
+    ];
+  }, [id]);
+
   return (
     <PageContainer
       title={id ?? ""}
       subtitle="View, create and manage expenses."
+      breadcrumbs={breadcrumbs}
       actions={<Button onClick={addExpenseModal.show}>Add Expense</Button>}
     >
       <TableContainer>

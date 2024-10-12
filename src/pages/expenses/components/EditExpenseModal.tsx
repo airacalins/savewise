@@ -1,11 +1,11 @@
 import React from "react";
-import { Modal } from "../../../components/modals/Modal";
-import { Box, Button, Stack } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import { DeleteOutline, Save } from "@mui/icons-material";
 import { colors } from "../../../theme/colors";
-import { CalendarIcon, DatePicker } from "@mui/x-date-pickers";
+import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { TextInput } from "../../../components/inputs/TextInput";
+import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
 
 interface EditExpenseModalProps {
   isVisible: boolean;
@@ -21,7 +21,29 @@ export const EditExpenseModal: React.FC<EditExpenseModalProps> = ({
   onUpdate,
 }) => {
   return (
-    <Modal isVisible={isVisible} title="Update Expense" onClose={onClose}>
+    <ConfirmActionModal
+      isVisible={isVisible}
+      title="Update Expense"
+      onClose={onClose}
+      actions={
+        <>
+          <Button
+            color="error"
+            startIcon={<DeleteOutline sx={{ color: colors.error }} />}
+            onClick={onDelete}
+          >
+            Delete
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<Save sx={{ color: colors.primary }} />}
+            onClick={onUpdate}
+          >
+            Update
+          </Button>
+        </>
+      }
+    >
       <Stack spacing={3}>
         <DatePicker label="Date" value={dayjs("2022-04-17")} />
         <TextInput
@@ -30,29 +52,8 @@ export const EditExpenseModal: React.FC<EditExpenseModalProps> = ({
           endAdornment={<DeleteOutline />}
           EndIconComponent={undefined}
         />
-        <TextInput
-          fullWidth
-          label="Amount"
-          EndIconComponent={<CalendarIcon />}
-        />
+        <TextInput fullWidth label="Amount" />
       </Stack>
-      <Box height="32px" />
-      <Stack direction="row" spacing={2} justifyContent="flex-end">
-        <Button
-          color="error"
-          startIcon={<DeleteOutline sx={{ color: colors.error }} />}
-          onClick={onDelete}
-        >
-          Delete
-        </Button>
-        <Button
-          variant="contained"
-          startIcon={<Save sx={{ color: colors.primary }} />}
-          onClick={onUpdate}
-        >
-          Update
-        </Button>
-      </Stack>
-    </Modal>
+    </ConfirmActionModal>
   );
 };

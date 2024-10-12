@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import {
   Box,
   IconButton,
@@ -10,7 +10,7 @@ import { colors } from "../../theme/colors";
 import { styles } from "../../theme/styles";
 import { Close } from "@mui/icons-material";
 
-interface ConfirmActionModalProps {
+interface ConfirmActionModalProps extends PropsWithChildren {
   isVisible: boolean;
   title: string;
   description?: string;
@@ -22,6 +22,7 @@ export const ConfirmActionModal: React.FC<ConfirmActionModalProps> = ({
   isVisible,
   title,
   description,
+  children,
   onClose,
   actions,
 }) => {
@@ -44,7 +45,6 @@ export const ConfirmActionModal: React.FC<ConfirmActionModalProps> = ({
           p: 4,
         }}
       >
-        <Box></Box>
         <Stack
           direction="row"
           justifyContent="space-between"
@@ -60,7 +60,9 @@ export const ConfirmActionModal: React.FC<ConfirmActionModalProps> = ({
         <Typography id="modal-modal-title" variant="body1">
           {description}
         </Typography>
-        <Box height="16px" />
+        <Box height="24px" />
+        {children}
+        <Box height="32px" />
         <Stack direction="row" spacing={2} justifyContent="flex-end">
           {actions}
         </Stack>

@@ -39,12 +39,31 @@ export const theme = createTheme({
     ].join(","),
   },
   components: {
+    MuiBreadcrumbs: {
+      styleOverrides: {
+        root: {
+          "> ol": {
+            "> li > a": {
+              cursor: "pointer",
+              textDecoration: "none",
+            },
+            "> li:last-child > a > h6": {
+              padding: "8px",
+              borderRadius: styles.borderRadius,
+              backgroundColor: colors.borderColor,
+              "&:hover": {
+                backgroundColor: colors.borderColor,
+              },
+            },
+          },
+        },
+      },
+    },
     MuiInputAdornment: {
       styleOverrides: {
         root: {
           ">.MuiButtonBase-root": {
             marginRight: "-6px",
-            boxShadow: "none !important",
           },
         },
       },
@@ -52,8 +71,8 @@ export const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderColor: colors.borderColor,
-          borderRadius: ".55rem",
+          border: styles.border,
+          borderRadius: styles.borderRadius,
           boxShadow: styles.boxShadowOutset.primary,
           fontSize: "1rem",
           fontWeight: 400,
@@ -81,7 +100,6 @@ export const theme = createTheme({
         },
       },
     },
-
     MuiCard: {
       defaultProps: {
         elevation: 0,
@@ -89,6 +107,10 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           boxShadow: styles.boxShadowOutset.primary,
+          "&.inset": {
+            boxShadow: styles.boxShadowInset.primary,
+            padding: "8px 16px",
+          },
         },
       },
     },
@@ -102,8 +124,8 @@ export const theme = createTheme({
     MuiIconButton: {
       styleOverrides: {
         root: {
-          borderColor: colors.borderColor,
-          borderRadius: ".55rem",
+          border: styles.border,
+          borderRadius: styles.borderRadius,
           boxShadow: styles.boxShadowOutset.primary,
           ":hover": {
             boxShadow: styles.boxShadowInset.primary,
@@ -111,13 +133,6 @@ export const theme = createTheme({
         },
       },
     },
-    // MuiOutlinedInput: {
-    //   styleOverrides: {
-    //     root: {
-    //       backgroundColor: "red",
-    //     },
-    //   },
-    // },
     MuiList: {
       styleOverrides: {
         root: {
@@ -130,10 +145,10 @@ export const theme = createTheme({
         root: {
           fontSize: "1rem",
           textTransform: "none",
-          borderColor: colors.borderColor,
-          borderRadius: ".55rem",
+          borderRadius: styles.borderRadius,
           fontWeight: 400,
-          "& >.MuiSelected": {
+          marginBottom: "4px",
+          "& > .MuiSelected": {
             boxShadow: styles.boxShadowInset.primary,
           },
           ":hover": {
@@ -183,11 +198,10 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           ">tbody>tr.MuiTableRow-root:hover": {
-            borderColor: colors.borderColor,
-            borderRadius: ".55rem",
             boxShadow: styles.boxShadowOutset.primary,
             ":hover": {
               boxShadow: styles.boxShadowInset.primary,
+              borderRadius: styles.borderRadius,
               cursor: "pointer",
             },
           },
@@ -204,9 +218,9 @@ export const theme = createTheme({
     MuiTableContainer: {
       styleOverrides: {
         root: {
-          borderColor: colors.borderColor,
+          border: styles.border,
           boxShadow: styles.boxShadowOutset.primary,
-          borderRadius: ".55rem",
+          borderRadius: styles.borderRadius,
           padding: "16px",
         },
       },
