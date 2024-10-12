@@ -81,7 +81,7 @@ export const Expenses = () => {
               >
                 <TableCell>{expense.description}</TableCell>
                 <TableCell>
-                  {dayjs(expense.date).format("MMM DD, YYYY HH:mm")}
+                  {dayjs(expense.date).format("MMM DD, YYYY")}
                 </TableCell>
                 <TableCell>{expense.amount}</TableCell>
               </TableRow>
