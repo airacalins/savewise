@@ -1,5 +1,12 @@
 import React from "react";
-import { Button, Stack } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+} from "@mui/material";
 import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
@@ -42,6 +49,14 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
           EndIconComponent={undefined}
         />
         <TextInput fullWidth label="Amount" />
+        <FormControl fullWidth>
+          <InputLabel id="source-select-label">Source</InputLabel>
+          <Select labelId="source-select-label" label="Source">
+            <MenuItem value="source1">Source 1</MenuItem>
+            <MenuItem value="source2">Source 2</MenuItem>
+            <MenuItem value="source3">Source 3</MenuItem>
+          </Select>
+        </FormControl>
       </Stack>
     </ConfirmActionModal>
   );

@@ -5,7 +5,7 @@ import React from "react";
 interface Breadcrumb {
   key: string;
   name: string;
-  link: string;
+  link?: string;
 }
 
 interface PageContainerProps extends React.PropsWithChildren {

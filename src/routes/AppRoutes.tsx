@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import { OutletPage } from "../components/containers/OutletPage";
 import { HomePage } from "../pages/home/HomePage";
-import { ExpensesPage } from "../pages/expenses/ExpensesPage";
+import { ExpensesCollectionPage } from "../pages/expenses/ExpensesCollectionPage";
 import { FundsPage } from "../pages/funds/FundsPage";
-import { ExpenseDetailsPage } from "../pages/expenses/ExpenseDetailsPage";
+import { Expenses } from "../pages/expenses/Expenses";
 
 export const router = createBrowserRouter([
   {
@@ -19,16 +19,12 @@ export const router = createBrowserRouter([
         element: <FundsPage />,
       },
       {
-        path: "/expenses",
-        element: <ExpensesPage />,
+        path: "/expensesCollection",
+        element: <ExpensesCollectionPage />,
       },
       {
-        path: "/expenses/:id",
-        element: <ExpenseDetailsPage />,
-      },
-      {
-        path: "/expenses/:id",
-        element: <ExpenseDetailsPage />,
+        path: "/expensesCollection/:id",
+        element: <Expenses />,
       },
     ],
   },

@@ -77,6 +77,7 @@ export const theme = createTheme({
           fontSize: "1rem",
           fontWeight: 400,
           textTransform: "none",
+
           ":hover": {
             boxShadow: styles.boxShadowInset.primary,
           },
@@ -96,6 +97,11 @@ export const theme = createTheme({
           },
           "&.Mui-selected": {
             boxShadow: styles.boxShadowInset.primary,
+            borderRadius: styles.borderRadius,
+            backgroundColor: colors.primary,
+          },
+          "&:hover": {
+            borderRadius: styles.borderRadius,
           },
         },
       },

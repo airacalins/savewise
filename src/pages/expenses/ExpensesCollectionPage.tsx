@@ -17,20 +17,10 @@ import { PageContainer } from "../../components/containers/PageContainer";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { useNavigate } from "react-router-dom";
 import { CalendarMonth } from "@mui/icons-material";
-import { CreateExpenseCategoryModal } from "./components/CreateExpenseCategoryModal";
+import { mockExpensesCollectionData } from "../../api/expense/mockExpenseCollection";
+import { CreateExpenseCollectionModal } from "./components/CreateExpenseCollectionModal";
 
-function createData(name: string, amount: number) {
-  return { name, amount };
-}
-
-const rows = [
-  createData("Electricity", 4000),
-  createData("Internet", 2000),
-  createData("Foods", 1000),
-  createData("Transportation", 2500),
-];
-
-export const ExpensesPage = () => {
+export const ExpensesCollectionPage = () => {
   const navigate = useNavigate();
   const addExpenseModal = useVisibilityState();
 
@@ -38,12 +28,18 @@ export const ExpensesPage = () => {
     addExpenseModal.hide();
   };
 
+  const expensesCollectionData = mockExpensesCollectionData;
+
+  const headers = ["Name", "Current Month", "Year-to-Date"];
+
   return (
     <PageContainer
-      title="Expenses"
+      title="Expenses Collection"
       subtitle="View, create and manage expenses."
       actions={
-        <Button onClick={addExpenseModal.show}>Create expense category</Button>
+        <Button onClick={addExpenseModal.show}>
+          Create expense collection
+        </Button>
       }
     >
       <Stack direction="row" spacing={4}>
@@ -52,21 +48,29 @@ export const ExpensesPage = () => {
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell>Name</TableCell>
-                  <TableCell align="right">Amount</TableCell>
+                  {headers.map((header) => (
+                    <TableCell key={header}>{header}</TableCell>
+                  ))}
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
+                {expensesCollectionData.map((expenseCollection) => (
                   <TableRow
-                    key={row.name}
+                    key={expenseCollection.name}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    onClick={() => navigate(`/expenses/${row.name}`)}
+                    onClick={() =>
+                      navigate(`/expensesCollection/${expenseCollection.id}`)
+                    }
                   >
                     <TableCell component="th" scope="row">
-                      {row.name}
+                      {expenseCollection.name}
                     </TableCell>
-                    <TableCell align="right">{row.amount}</TableCell>
+                    <TableCell component="th" scope="row">
+                      {expenseCollection.currentMonthTotal}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      {expenseCollection.yearToDateTotal}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -114,7 +118,7 @@ export const ExpensesPage = () => {
           </Card>
         </Box>
       </Stack>
-      <CreateExpenseCategoryModal
+      <CreateExpenseCollectionModal
         isVisible={addExpenseModal.isVisible}
         onClose={addExpenseModal.hide}
         onCancel={addExpenseModal.hide}

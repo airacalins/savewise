@@ -9,41 +9,28 @@ import {
   TableBody,
   Button,
 } from "@mui/material";
-import { format } from "date-fns";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { EditExpenseModal } from "./components/EditExpenseModal";
 import { ConfirmActionModal } from "../../components/modals/ConfirmActionModal";
 import { AddExpenseModal } from "./components/AddExpenseModal";
 import { useMemo } from "react";
+import { mockExpensesCollectionData } from "../../api/expense/mockExpenseCollection";
+import { mockExpenses } from "../../api/expense/mockExpenses";
+import dayjs from "dayjs";
 
-function createData(date: string, description: string, amount: number) {
-  return { date, description, amount };
-}
-
-const rows = [
-  createData(
-    format(new Date(), "MMM dd, yyyy HH:mm"),
-    "Estimated Usage Charge",
-    4000
-  ),
-  createData(format(new Date(), "MMM dd, yyyy HH:mm"), "Service Fees", 2000),
-  createData(
-    format(new Date(), "MMM dd, yyyy HH:mm"),
-    "Late Payment Fee",
-    1000
-  ),
-  createData(
-    format(new Date(), "MMM dd, yyyy HH:mm"),
-    "Previous Balance",
-    2500
-  ),
-];
-
-export const ExpenseDetailsPage = () => {
+export const Expenses = () => {
   const { id } = useParams();
   const addExpenseModal = useVisibilityState();
   const editExpenseModal = useVisibilityState();
   const deleteConfirmationExpenseModal = useVisibilityState();
+
+  // API
+  const expenseCollectionData = mockExpensesCollectionData.find(
+    (expenseCollection) => expenseCollection.id === id
+  );
+  const expenseData = mockExpenses.filter(
+    (expenseCollection) => expenseCollection.expenseCollectionId === id
+  );
 
   // Functions
   const handleShowConfirmDeleteModal = () => {
@@ -55,20 +42,19 @@ export const ExpenseDetailsPage = () => {
     return [
       {
         key: "expenses",
-        name: "Expenses",
-        link: "/expenses",
+        name: "Expenses Collection",
+        link: "/expensesCollection",
       },
       {
-        key: id ?? "",
-        name: id ?? "",
-        link: `/expenses/${id ?? ""}`,
+        key: expenseCollectionData?.name ?? "",
+        name: expenseCollectionData?.name ?? "",
       },
     ];
-  }, [id]);
+  }, [expenseCollectionData]);
 
   return (
     <PageContainer
-      title={id ?? ""}
+      title={expenseCollectionData?.name ?? ""}
       subtitle="View, create and manage expenses."
       breadcrumbs={breadcrumbs}
       actions={<Button onClick={addExpenseModal.show}>Add Expense</Button>}
@@ -83,15 +69,17 @@ export const ExpenseDetailsPage = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, index) => (
+            {expenseData.map((expense, index) => (
               <TableRow
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 onClick={editExpenseModal.show}
               >
-                <TableCell>{row.description}</TableCell>
-                <TableCell>{row.date}</TableCell>
-                <TableCell>{row.amount}</TableCell>
+                <TableCell>{expense.description}</TableCell>
+                <TableCell>
+                  {dayjs(expense.date).format("MMM DD, YYYY HH:mm")}
+                </TableCell>
+                <TableCell>{expense.amount}</TableCell>
               </TableRow>
             ))}
           </TableBody>

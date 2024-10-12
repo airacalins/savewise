@@ -2,20 +2,20 @@ import React from "react";
 import { Box, Button, TextField } from "@mui/material";
 import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
 
-interface CreateExpenseCategoryModalProps {
+interface CreateExpenseCollectionModalProps {
   isVisible: boolean;
   onClose: () => void;
   onCancel: () => void;
   onSubmit: () => void;
 }
 
-export const CreateExpenseCategoryModal: React.FC<
-  CreateExpenseCategoryModalProps
+export const CreateExpenseCollectionModal: React.FC<
+  CreateExpenseCollectionModalProps
 > = ({ isVisible, onClose, onCancel, onSubmit }) => {
   return (
     <ConfirmActionModal
       isVisible={isVisible}
-      title="Create expense category"
+      title="Create expense collection"
       onClose={onClose}
       actions={
         <>
