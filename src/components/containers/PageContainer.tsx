@@ -16,10 +16,8 @@ export const PageContainer: React.FC<PageContainerProps> = ({
   return (
     <Box
       sx={{
-        display: "flex",
         flexDirection: "column",
         p: 2,
-        overflowY: "scroll",
         width: "100%",
       }}
     >
@@ -30,8 +28,9 @@ export const PageContainer: React.FC<PageContainerProps> = ({
         </Box>
         <Box>{actions}</Box>
       </Stack>
-      <Box height="32px" />
+      <Box height="24px" />
       {children}
+      <Box height="32px" />
     </Box>
   );
 };

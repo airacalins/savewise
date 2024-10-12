@@ -4,19 +4,11 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import {
-  Box,
-  Button,
-  Card,
-  Divider,
-  IconButton,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { PageContainer } from "../../components/containers/PageContainer";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { AddFundModal } from "./components/AddFundModal";
-import { CalendarMonth } from "@mui/icons-material";
+import { FundSummary } from "./components/FundSummary";
 
 function createData(name: string, amount: number) {
   return { name, amount };
@@ -70,44 +62,7 @@ export const FundsPage = () => {
           </TableContainer>
         </Box>
         <Box flex={1}>
-          <Card style={{ padding: "24px" }}>
-            <Typography variant="caption">Current month total</Typography>
-            <Box height="8px" />
-            <Typography variant="body1">Php 10,000</Typography>
-            <Box height="16px" />
-            <Divider />
-            <Box height="16px" />
-            <Stack
-              alignItems="center"
-              flexDirection="row"
-              justifyContent="space-between"
-            >
-              <Box>
-                <Typography variant="caption">
-                  Previous month total - Sep 2024
-                </Typography>
-                <Box height="8px" />
-                <Typography variant="body1">Php 10,000</Typography>
-              </Box>
-              <Box>
-                <IconButton>
-                  <CalendarMonth />
-                </IconButton>
-              </Box>
-            </Stack>
-            <Box height="16px" />
-            <Divider />
-            <Box height="16px" />
-            <Typography variant="caption">Year-to-Date total </Typography>
-            <Box height="8px" />
-            <Typography variant="body1">Php 10,000</Typography>
-            <Box height="16px" />
-            <Divider />
-            <Box height="16px" />
-            <Typography variant="caption">Overall total</Typography>
-            <Box height="8px" />
-            <Typography variant="body1">Php 10,000</Typography>
-          </Card>
+          <FundSummary />
         </Box>
       </Stack>
       <AddFundModal

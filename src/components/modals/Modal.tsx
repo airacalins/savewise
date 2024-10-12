@@ -43,7 +43,6 @@ export const Modal: React.FC<ModalProps> = ({
           p: 4,
         }}
       >
-        <Box></Box>
         <Stack
           direction="row"
           justifyContent="space-between"
@@ -56,6 +55,7 @@ export const Modal: React.FC<ModalProps> = ({
             <Close />
           </IconButton>
         </Stack>
+        <Box height="16px" />
         <Typography id="modal-modal-title" variant="body1">
           {description}
         </Typography>

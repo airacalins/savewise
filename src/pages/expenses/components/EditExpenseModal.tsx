@@ -1,8 +1,9 @@
 import React from "react";
 import { Modal } from "../../../components/modals/Modal";
 import { Box, Button, Stack, TextField } from "@mui/material";
-import { DeleteOutline, Save } from "@mui/icons-material";
+import { DeleteOutline, Save, Today } from "@mui/icons-material";
 import { colors } from "../../../theme/colors";
+import { TextInput } from "../../../components/inputs/TextInput";
 
 interface EditExpenseModalProps {
   isVisible: boolean;
@@ -19,10 +20,12 @@ export const EditExpenseModal: React.FC<EditExpenseModalProps> = ({
 }) => {
   return (
     <Modal isVisible={isVisible} title="Update Expense" onClose={onClose}>
-      <TextField fullWidth label="Description" />
-      <Box height="16px" />
-      <TextField fullWidth label="Amount" />
-      <Box height="24px" />
+      <Stack spacing={3}>
+        <TextInput label="Date" EndIconComponent={<Today />} />
+        <TextField fullWidth label="Description" />
+        <TextField fullWidth label="Amount" />
+      </Stack>
+      <Box height="32px" />
       <Stack direction="row" spacing={2} justifyContent="flex-end">
         <Button
           color="error"
