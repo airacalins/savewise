@@ -7,5 +7,8 @@ export const colors = {
   error: "#a91e2c",
   dark: "#31344b",
   borderColor: "#d1d9e6",
-  boxShadow: ["#b8b9be", "#fff "],
+  boxShadow: {
+    primary: ["#b8b9be", "#fff "],
+    secondary: ["#14151e", "#4e5378"],
+  },
 };

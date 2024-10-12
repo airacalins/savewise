@@ -54,12 +54,12 @@ export const theme = createTheme({
         root: {
           borderColor: colors.borderColor,
           borderRadius: ".55rem",
-          boxShadow: styles.boxShadowOutset,
+          boxShadow: styles.boxShadowOutset.primary,
           fontSize: "1rem",
           fontWeight: 400,
           textTransform: "none",
           ":hover": {
-            boxShadow: styles.boxShadowInset,
+            boxShadow: styles.boxShadowInset.primary,
           },
         },
       },
@@ -70,8 +70,13 @@ export const theme = createTheme({
       },
       styleOverrides: {
         root: {
+          "&.MuiButton-contained": {
+            "&:hover": {
+              boxShadow: `inset 2px 2px 4px ${colors.boxShadow.secondary[0]},inset -3px -3px 4px ${colors.boxShadow.secondary[1]}`,
+            },
+          },
           "&.Mui-selected": {
-            boxShadow: styles.boxShadowInset,
+            boxShadow: styles.boxShadowInset.primary,
           },
         },
       },
@@ -83,7 +88,7 @@ export const theme = createTheme({
       },
       styleOverrides: {
         root: {
-          boxShadow: styles.boxShadowOutset,
+          boxShadow: styles.boxShadowOutset.primary,
         },
       },
     },
@@ -99,20 +104,20 @@ export const theme = createTheme({
         root: {
           borderColor: colors.borderColor,
           borderRadius: ".55rem",
-          boxShadow: styles.boxShadowOutset,
+          boxShadow: styles.boxShadowOutset.primary,
           ":hover": {
-            boxShadow: styles.boxShadowInset,
+            boxShadow: styles.boxShadowInset.primary,
           },
         },
       },
     },
-    MuiOutlinedInput: {
-      styleOverrides: {
-        root: {
-          backgorundColor: "red",
-        },
-      },
-    },
+    // MuiOutlinedInput: {
+    //   styleOverrides: {
+    //     root: {
+    //       backgroundColor: "red",
+    //     },
+    //   },
+    // },
     MuiList: {
       styleOverrides: {
         root: {
@@ -129,10 +134,10 @@ export const theme = createTheme({
           borderRadius: ".55rem",
           fontWeight: 400,
           "& >.MuiSelected": {
-            boxShadow: styles.boxShadowInset,
+            boxShadow: styles.boxShadowInset.primary,
           },
           ":hover": {
-            boxShadow: styles.boxShadowInset,
+            boxShadow: styles.boxShadowInset.primary,
           },
         },
       },
@@ -143,19 +148,27 @@ export const theme = createTheme({
         root: {
           backgroundColor: colors.primary,
           borderColor: `${colors.borderColor} !important`,
-          borderRight: styles.boxShadowOutset,
+          borderRight: styles.boxShadowOutset.primary,
           borderWidth: "12px",
-          ">.MuiPickersLayout-root>.MuiPickersLayout-contentWrapper>.MuiDateCalendar-root>.MuiPickersCalendarHeader-root":
+          "> .MuiPickersLayout-root > .MuiPickersLayout-contentWrapper > .MuiDateCalendar-root":
             {
-              ">.MuiPickersCalendarHeader-labelContainer": {
-                padding: "8px",
-                paddingLeft: 0,
+              "> .MuiPickersCalendarHeader-root": {
+                "> .MuiPickersCalendarHeader-labelContainer": {
+                  padding: "8px",
+                  paddingLeft: 0,
+                },
+                "> .MuiPickersArrowSwitcher-root": {
+                  padding: "8px",
+                  gap: "4px",
+                },
               },
-              ">.MuiPickersArrowSwitcher-root": {
-                padding: "8px",
-                gap: "4px",
-              },
+              "> .MuiPickersFadeTransitionGroup-root > div > .MuiDayCalendar-root > .MuiPickersSlideTransition-root > .MuiDayCalendar-monthContainer > .MuiDayCalendar-weekContainer > .Mui-selected":
+                {
+                  backgroundColor: colors.primary,
+                  color: colors.secondary,
+                },
             },
+          //
         },
       },
     },
@@ -172,9 +185,9 @@ export const theme = createTheme({
           ">tbody>tr.MuiTableRow-root:hover": {
             borderColor: colors.borderColor,
             borderRadius: ".55rem",
-            boxShadow: styles.boxShadowOutset,
+            boxShadow: styles.boxShadowOutset.primary,
             ":hover": {
-              boxShadow: styles.boxShadowInset,
+              boxShadow: styles.boxShadowInset.primary,
               cursor: "pointer",
             },
           },
@@ -192,7 +205,7 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           borderColor: colors.borderColor,
-          boxShadow: styles.boxShadowOutset,
+          boxShadow: styles.boxShadowOutset.primary,
           borderRadius: ".55rem",
           padding: "16px",
         },
