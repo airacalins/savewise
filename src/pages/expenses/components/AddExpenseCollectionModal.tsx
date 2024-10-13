@@ -2,15 +2,15 @@ import React from "react";
 import { Box, Button, TextField } from "@mui/material";
 import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
 
-interface CreateExpenseCollectionModalProps {
+interface AddExpenseCollectionModalProps {
   isVisible: boolean;
   onClose: () => void;
   onCancel: () => void;
   onSubmit: () => void;
 }
 
-export const CreateExpenseCollectionModal: React.FC<
-  CreateExpenseCollectionModalProps
+export const AddExpenseCollectionModal: React.FC<
+  AddExpenseCollectionModalProps
 > = ({ isVisible, onClose, onCancel, onSubmit }) => {
   return (
     <ConfirmActionModal

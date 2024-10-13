@@ -34,15 +34,15 @@ export const ConfirmActionModal: React.FC<ConfirmActionModalProps> = ({
       aria-describedby="modal-modal-description"
     >
       <Box
+        bgcolor={colors.primary}
+        boxShadow={styles.boxInset}
+        left="50%"
+        p={4}
+        position="absolute"
+        top="50%"
+        width="50%"
         sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
           transform: "translate(-50%, -50%)",
-          width: "50%",
-          bgcolor: colors.primary,
-          boxShadow: styles.boxInset,
-          p: 4,
         }}
       >
         <Stack

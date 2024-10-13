@@ -7,7 +7,7 @@ import TableRow from "@mui/material/TableRow";
 import { Box, Button, Stack } from "@mui/material";
 import { PageContainer } from "../../components/containers/PageContainer";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
-import { AddFundModal } from "./components/AddFundModal";
+import { AddFundCollectionModal } from "./components/AddFundCollectionModal";
 import { FundSummary } from "./components/FundSummary";
 import { useNavigate } from "react-router-dom";
 import { mockFundsCollection } from "../../api/funds/mockFundsCollection";
@@ -33,7 +33,9 @@ export const FundsCollectionPage = () => {
     <PageContainer
       title="Funds Collection"
       subtitle="View, create and manage funds collection."
-      actions={<Button onClick={addAccountModal.show}>Create Fund</Button>}
+      actions={
+        <Button onClick={addAccountModal.show}>Add Fund Collection</Button>
+      }
     >
       <Stack direction="row" spacing={4}>
         <Box flex={2}>
@@ -60,7 +62,7 @@ export const FundsCollectionPage = () => {
                     <TableCell component="th" scope="row">
                       {fundCollection.name}
                     </TableCell>
-                    <TableCell>{fundCollection.balance}</TableCell>
+                    <TableCell>{fundCollection.balance.toFixed(2)}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -71,7 +73,7 @@ export const FundsCollectionPage = () => {
           <FundSummary />
         </Box>
       </Stack>
-      <AddFundModal
+      <AddFundCollectionModal
         isVisible={addAccountModal.isVisible}
         onClose={addAccountModal.hide}
         onCancel={addAccountModal.hide}

@@ -112,12 +112,13 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
 }) => {
   const theme = useTheme();
   const navigate = useNavigate();
+
   const [selectedNavKey, setSelectedNavKey] = React.useState(sideNavs[0].key);
 
   //   Functions
   const handleNavigate = (sideNav: SideNavProps) => {
     setSelectedNavKey(sideNav.key);
-    navigate(sideNav.link);
+    navigate(sideNav.link, { replace: true });
   };
 
   return (

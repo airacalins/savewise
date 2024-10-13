@@ -6,7 +6,7 @@ export enum TransactionType {
 export type Transaction = {
   id: string;
   fundCollectionId: string;
-  expenseCollectionId: string;
+  expenseCollectionId?: string;
   transactionType: TransactionType;
   description: string;
   amount: number;

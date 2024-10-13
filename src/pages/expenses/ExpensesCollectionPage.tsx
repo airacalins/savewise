@@ -18,7 +18,7 @@ import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { useNavigate } from "react-router-dom";
 import { CalendarMonth } from "@mui/icons-material";
 import { mockExpensesCollectionData } from "../../api/expenses/mockExpensesCollection";
-import { CreateExpenseCollectionModal } from "./components/CreateExpenseCollectionModal";
+import { AddExpenseCollectionModal } from "./components/AddExpenseCollectionModal";
 import { EmptyStateCard } from "../../components/cards/EmptyStateCard";
 
 export const ExpensesCollectionPage = () => {
@@ -38,9 +38,7 @@ export const ExpensesCollectionPage = () => {
       title="Expenses Collection"
       subtitle="View, create and manage expenses."
       actions={
-        <Button onClick={addExpenseModal.show}>
-          Create expense collection
-        </Button>
+        <Button onClick={addExpenseModal.show}>Add Expense Collection</Button>
       }
     >
       {expensesCollectionData.length === 0 ? (
@@ -70,10 +68,10 @@ export const ExpensesCollectionPage = () => {
                         {expenseCollection.name}
                       </TableCell>
                       <TableCell component="th" scope="row">
-                        {expenseCollection.currentMonthTotal}
+                        {expenseCollection.currentMonthTotal.toFixed(2)}
                       </TableCell>
                       <TableCell component="th" scope="row">
-                        {expenseCollection.yearToDateTotal}
+                        {expenseCollection.yearToDateTotal.toFixed(2)}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -124,7 +122,7 @@ export const ExpensesCollectionPage = () => {
         </Stack>
       )}
 
-      <CreateExpenseCollectionModal
+      <AddExpenseCollectionModal
         isVisible={addExpenseModal.isVisible}
         onClose={addExpenseModal.hide}
         onCancel={addExpenseModal.hide}
