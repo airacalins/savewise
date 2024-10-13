@@ -8,7 +8,7 @@ import { Box, Button, Stack } from "@mui/material";
 import { PageContainer } from "../../components/containers/PageContainer";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { AddFundCollectionModal } from "./components/AddFundCollectionModal";
-import { FundSummary } from "./components/FundSummary";
+import { FundsSummary } from "./components/FundsSummary";
 import { useNavigate } from "react-router-dom";
 import { mockFundsCollection } from "../../api/funds/mockFundsCollection";
 
@@ -70,7 +70,7 @@ export const FundsCollectionPage = () => {
           </TableContainer>
         </Box>
         <Box flex={1}>
-          <FundSummary />
+          <FundsSummary />
         </Box>
       </Stack>
       <AddFundCollectionModal

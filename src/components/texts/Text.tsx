@@ -1,4 +1,5 @@
 import { Typography, TypographyProps, useTheme } from "@mui/material";
+import { colors } from "../../theme/colors";
 
 interface TextProps extends TypographyProps {
   color?:
@@ -34,7 +35,7 @@ export const Text: React.FC<TextProps> = ({
         return theme.palette.success.main;
       case "dark":
       default:
-        return theme.palette.text.primary;
+        return colors.dark;
     }
   })();
 

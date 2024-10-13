@@ -1,5 +1,6 @@
-import { Stack, Box, Typography, IconButton } from "@mui/material";
+import { Stack, Box, IconButton } from "@mui/material";
 import React from "react";
+import { Text } from "../texts/Text";
 
 interface InfoDisplayProps {
   label: string;
@@ -19,9 +20,9 @@ export const InfoDisplay: React.FC<InfoDisplayProps> = ({
       justifyContent="space-between"
     >
       <Box>
-        <Typography variant="caption">{label}</Typography>
+        <Text variant="caption">{label}</Text>
         <Box height="8px" />
-        <Typography variant="body1">{details}</Typography>
+        <Text variant="body1">{details}</Text>
       </Box>
       {EndIconComponent && (
         <Box>

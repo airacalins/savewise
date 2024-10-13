@@ -1,6 +1,7 @@
 import { NavigateNext } from "@mui/icons-material";
 import { Stack, Box, Typography, Link, Breadcrumbs } from "@mui/material";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Breadcrumb {
   key: string;
@@ -22,6 +23,8 @@ export const PageContainer: React.FC<PageContainerProps> = ({
   actions,
   children,
 }) => {
+  const navigate = useNavigate();
+
   return (
     <Box
       sx={{
@@ -43,11 +46,20 @@ export const PageContainer: React.FC<PageContainerProps> = ({
         aria-label="breadcrumb"
       >
         {breadcrumbs &&
-          breadcrumbs.map((breadcrumb, index) => (
-            <Link key={index} href={breadcrumb.link}>
-              <Typography variant="subtitle2">{breadcrumb.name}</Typography>
-            </Link>
-          ))}
+          breadcrumbs.map((breadcrumb, index) =>
+            !breadcrumb.link ? (
+              <Link key={index}>
+                <Typography variant="subtitle2">{breadcrumb.name}</Typography>
+              </Link>
+            ) : (
+              <Link
+                key={index}
+                onClick={() => navigate(breadcrumb.link ?? "/")}
+              >
+                <Typography variant="subtitle2">{breadcrumb.name}</Typography>
+              </Link>
+            )
+          )}
       </Breadcrumbs>
       <Box height="16px" />
       {children}

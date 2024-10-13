@@ -8,18 +8,14 @@ import {
   Button,
   Stack,
   Box,
-  Card,
-  Divider,
-  IconButton,
-  Typography,
 } from "@mui/material";
 import { PageContainer } from "../../components/containers/PageContainer";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { useNavigate } from "react-router-dom";
-import { CalendarMonth } from "@mui/icons-material";
 import { mockExpensesCollectionData } from "../../api/expenses/mockExpensesCollection";
 import { AddExpenseCollectionModal } from "./components/AddExpenseCollectionModal";
 import { EmptyStateCard } from "../../components/cards/EmptyStateCard";
+import { ExpensesSummary } from "./components/ExpensesSummary";
 
 export const ExpensesCollectionPage = () => {
   const navigate = useNavigate();
@@ -80,44 +76,7 @@ export const ExpensesCollectionPage = () => {
             </TableContainer>
           </Box>
           <Box flex={1}>
-            <Card style={{ padding: "24px" }}>
-              <Typography variant="caption">Current month total</Typography>
-              <Box height="8px" />
-              <Typography variant="body1">Php 10,000</Typography>
-              <Box height="16px" />
-              <Divider />
-              <Box height="16px" />
-              <Stack
-                alignItems="center"
-                flexDirection="row"
-                justifyContent="space-between"
-              >
-                <Box>
-                  <Typography variant="caption">
-                    Previous month total - Sep 2024
-                  </Typography>
-                  <Box height="8px" />
-                  <Typography variant="body1">Php 10,000</Typography>
-                </Box>
-                <Box>
-                  <IconButton>
-                    <CalendarMonth />
-                  </IconButton>
-                </Box>
-              </Stack>
-              <Box height="16px" />
-              <Divider />
-              <Box height="16px" />
-              <Typography variant="caption">Year-to-Date total </Typography>
-              <Box height="8px" />
-              <Typography variant="body1">Php 10,000</Typography>
-              <Box height="16px" />
-              <Divider />
-              <Box height="16px" />
-              <Typography variant="caption">Overall Total</Typography>
-              <Box height="8px" />
-              <Typography variant="body1">Php 10,000</Typography>
-            </Card>
+            <ExpensesSummary />
           </Box>
         </Stack>
       )}
