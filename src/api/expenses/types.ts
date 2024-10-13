@@ -3,6 +3,7 @@ export type ExpenseCollection = {
   name: string;
   currentMonthTotal: number;
   yearToDateTotal: number;
+  isHidden: boolean;
 };
 
 export type Expense = {

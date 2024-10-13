@@ -12,7 +12,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { TextInput } from "../../../components/inputs/TextInput";
 import { DeleteOutline } from "@mui/icons-material";
-import { mockFundCollection } from "../../../api/funds/mockFundCollection";
+import { mockFundsCollection } from "../../../api/funds/mockFundsCollection";
 
 interface AddExpenseModalProps {
   isVisible: boolean;
@@ -27,7 +27,7 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
   onCancel,
   onSubmit,
 }) => {
-  const fundsCollectionData = mockFundCollection;
+  const fundsCollectionData = mockFundsCollection;
 
   return (
     <ConfirmActionModal

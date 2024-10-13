@@ -6,7 +6,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { TextInput } from "../../../components/inputs/TextInput";
 import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
-import { mockExpenses } from "../../../api/expense/mockExpenses";
+import { mockTransactions } from "../../../api/transactions/mockTransactions";
 
 interface EditExpenseModalProps {
   isVisible: boolean;
@@ -23,7 +23,9 @@ export const EditExpenseModal: React.FC<EditExpenseModalProps> = ({
   onDelete,
   onUpdate,
 }) => {
-  const expenseData = mockExpenses.find((expense) => expense.id === expenseId);
+  const expenseData = mockTransactions.find(
+    (expense) => expense.id === expenseId
+  );
 
   console.log(expenseData);
 

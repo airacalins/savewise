@@ -114,6 +114,8 @@ export const theme = createTheme({
         root: {
           boxShadow: styles.boxShadowOutset.primary,
           "&.inset": {
+            border: styles.border,
+            borderRadius: styles.borderRadius,
             boxShadow: styles.boxShadowInset.primary,
             padding: "8px 16px",
           },

@@ -88,7 +88,7 @@ const sideNavs = [
   {
     key: "funds",
     name: "Funds",
-    link: "/funds",
+    link: "/fundsCollection",
     icon: <Savings />,
   },
   {

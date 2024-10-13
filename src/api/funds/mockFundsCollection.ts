@@ -1,6 +1,6 @@
 import { FundCollection } from "./types";
 
-export const mockFundCollection: FundCollection[] = [
+export const mockFundsCollection: FundCollection[] = [
   {
     id: "1",
     name: "Growth",

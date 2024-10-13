@@ -17,8 +17,9 @@ import { PageContainer } from "../../components/containers/PageContainer";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { useNavigate } from "react-router-dom";
 import { CalendarMonth } from "@mui/icons-material";
-import { mockExpensesCollectionData } from "../../api/expense/mockExpenseCollection";
+import { mockExpensesCollectionData } from "../../api/expenses/mockExpensesCollection";
 import { CreateExpenseCollectionModal } from "./components/CreateExpenseCollectionModal";
+import { EmptyStateCard } from "../../components/cards/EmptyStateCard";
 
 export const ExpensesCollectionPage = () => {
   const navigate = useNavigate();
@@ -42,82 +43,87 @@ export const ExpensesCollectionPage = () => {
         </Button>
       }
     >
-      <Stack direction="row" spacing={4}>
-        <Box flex={2}>
-          <TableContainer>
-            <Table aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  {headers.map((header) => (
-                    <TableCell key={header}>{header}</TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {expensesCollectionData.map((expenseCollection) => (
-                  <TableRow
-                    key={expenseCollection.name}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    onClick={() =>
-                      navigate(`/expensesCollection/${expenseCollection.id}`)
-                    }
-                  >
-                    <TableCell component="th" scope="row">
-                      {expenseCollection.name}
-                    </TableCell>
-                    <TableCell component="th" scope="row">
-                      {expenseCollection.currentMonthTotal}
-                    </TableCell>
-                    <TableCell component="th" scope="row">
-                      {expenseCollection.yearToDateTotal}
-                    </TableCell>
+      {expensesCollectionData.length === 0 ? (
+        <EmptyStateCard message="No expenses collections yet." />
+      ) : (
+        <Stack direction="row" spacing={4}>
+          <Box flex={2}>
+            <TableContainer>
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    {headers.map((header) => (
+                      <TableCell key={header}>{header}</TableCell>
+                    ))}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
-        <Box flex={1}>
-          <Card style={{ padding: "24px" }}>
-            <Typography variant="caption">Current month total</Typography>
-            <Box height="8px" />
-            <Typography variant="body1">Php 10,000</Typography>
-            <Box height="16px" />
-            <Divider />
-            <Box height="16px" />
-            <Stack
-              alignItems="center"
-              flexDirection="row"
-              justifyContent="space-between"
-            >
-              <Box>
-                <Typography variant="caption">
-                  Previous month total - Sep 2024
-                </Typography>
-                <Box height="8px" />
-                <Typography variant="body1">Php 10,000</Typography>
-              </Box>
-              <Box>
-                <IconButton>
-                  <CalendarMonth />
-                </IconButton>
-              </Box>
-            </Stack>
-            <Box height="16px" />
-            <Divider />
-            <Box height="16px" />
-            <Typography variant="caption">Year-to-Date total </Typography>
-            <Box height="8px" />
-            <Typography variant="body1">Php 10,000</Typography>
-            <Box height="16px" />
-            <Divider />
-            <Box height="16px" />
-            <Typography variant="caption">Overall Total</Typography>
-            <Box height="8px" />
-            <Typography variant="body1">Php 10,000</Typography>
-          </Card>
-        </Box>
-      </Stack>
+                </TableHead>
+                <TableBody>
+                  {expensesCollectionData.map((expenseCollection) => (
+                    <TableRow
+                      key={expenseCollection.name}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                      onClick={() =>
+                        navigate(`/expensesCollection/${expenseCollection.id}`)
+                      }
+                    >
+                      <TableCell component="th" scope="row">
+                        {expenseCollection.name}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        {expenseCollection.currentMonthTotal}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        {expenseCollection.yearToDateTotal}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+          <Box flex={1}>
+            <Card style={{ padding: "24px" }}>
+              <Typography variant="caption">Current month total</Typography>
+              <Box height="8px" />
+              <Typography variant="body1">Php 10,000</Typography>
+              <Box height="16px" />
+              <Divider />
+              <Box height="16px" />
+              <Stack
+                alignItems="center"
+                flexDirection="row"
+                justifyContent="space-between"
+              >
+                <Box>
+                  <Typography variant="caption">
+                    Previous month total - Sep 2024
+                  </Typography>
+                  <Box height="8px" />
+                  <Typography variant="body1">Php 10,000</Typography>
+                </Box>
+                <Box>
+                  <IconButton>
+                    <CalendarMonth />
+                  </IconButton>
+                </Box>
+              </Stack>
+              <Box height="16px" />
+              <Divider />
+              <Box height="16px" />
+              <Typography variant="caption">Year-to-Date total </Typography>
+              <Box height="8px" />
+              <Typography variant="body1">Php 10,000</Typography>
+              <Box height="16px" />
+              <Divider />
+              <Box height="16px" />
+              <Typography variant="caption">Overall Total</Typography>
+              <Box height="8px" />
+              <Typography variant="body1">Php 10,000</Typography>
+            </Card>
+          </Box>
+        </Stack>
+      )}
+
       <CreateExpenseCollectionModal
         isVisible={addExpenseModal.isVisible}
         onClose={addExpenseModal.hide}

@@ -2,8 +2,9 @@ import { createBrowserRouter } from "react-router-dom";
 import { OutletPage } from "../components/containers/OutletPage";
 import { HomePage } from "../pages/home/HomePage";
 import { ExpensesCollectionPage } from "../pages/expenses/ExpensesCollectionPage";
+import { FundsCollectionPage } from "../pages/funds/FundsCollectionPage";
+import { ExpensesPage } from "../pages/expenses/ExpensesPage";
 import { FundsPage } from "../pages/funds/FundsPage";
-import { Expenses } from "../pages/expenses/Expenses";
 
 export const router = createBrowserRouter([
   {
@@ -15,7 +16,11 @@ export const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "/funds",
+        path: "/fundsCollection",
+        element: <FundsCollectionPage />,
+      },
+      {
+        path: "/fundsCollection/:id",
         element: <FundsPage />,
       },
       {
@@ -24,7 +29,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/expensesCollection/:id",
-        element: <Expenses />,
+        element: <ExpensesPage />,
       },
     ],
   },

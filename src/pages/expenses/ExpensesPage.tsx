@@ -14,11 +14,19 @@ import { EditExpenseModal } from "./components/EditExpenseModal";
 import { ConfirmActionModal } from "../../components/modals/ConfirmActionModal";
 import { AddExpenseModal } from "./components/AddExpenseModal";
 import { useMemo, useState } from "react";
-import { mockExpensesCollectionData } from "../../api/expense/mockExpenseCollection";
-import { mockExpenses } from "../../api/expense/mockExpenses";
+import { mockExpensesCollectionData } from "../../api/expenses/mockExpensesCollection";
 import dayjs from "dayjs";
+import { mockTransactions } from "../../api/transactions/mockTransactions";
+import { TransactionType } from "../../api/transactions/type";
+import { EmptyStateCard } from "../../components/cards/EmptyStateCard";
 
-export const Expenses = () => {
+const tableHeaders = [
+  { key: "description", label: "Description" },
+  { key: "date", label: "Date" },
+  { key: "amount", label: "Amount" },
+];
+
+export const ExpensesPage = () => {
   const { id } = useParams();
   const addExpenseModal = useVisibilityState();
   const editExpenseModal = useVisibilityState();
@@ -29,8 +37,10 @@ export const Expenses = () => {
   const expenseCollectionData = mockExpensesCollectionData.find(
     (expenseCollection) => expenseCollection.id === id
   );
-  const expenseData = mockExpenses.filter(
-    (expenseCollection) => expenseCollection.expenseCollectionId === id
+  const transactionData = mockTransactions.filter(
+    (transaction) =>
+      transaction.expenseCollectionId === id &&
+      transaction.transactionType === TransactionType.Credit
   );
 
   // Functions
@@ -42,7 +52,7 @@ export const Expenses = () => {
   const breadcrumbs = useMemo(() => {
     return [
       {
-        key: "expenses",
+        key: "expensesCollection",
         name: "Expenses Collection",
         link: "/expensesCollection",
       },
@@ -60,35 +70,41 @@ export const Expenses = () => {
       breadcrumbs={breadcrumbs}
       actions={<Button onClick={addExpenseModal.show}>Add Expense</Button>}
     >
-      <TableContainer>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Description</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Amount</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {expenseData.map((expense, index) => (
-              <TableRow
-                key={index}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                onClick={() => {
-                  editExpenseModal.show();
-                  setSelectedExpenseId(expense.id);
-                }}
-              >
-                <TableCell>{expense.description}</TableCell>
-                <TableCell>
-                  {dayjs(expense.date).format("MMM DD, YYYY")}
-                </TableCell>
-                <TableCell>{expense.amount}</TableCell>
+      {transactionData.length === 0 ? (
+        <EmptyStateCard message="No expenses for this collection yet." />
+      ) : (
+        <TableContainer>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                {tableHeaders.map((tableHeader) => (
+                  <TableCell key={tableHeader.key}>
+                    {tableHeader.label}
+                  </TableCell>
+                ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {transactionData.map((expense, index) => (
+                <TableRow
+                  key={index}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  onClick={() => {
+                    editExpenseModal.show();
+                    setSelectedExpenseId(expense.id);
+                  }}
+                >
+                  <TableCell>{expense.description}</TableCell>
+                  <TableCell>
+                    {dayjs(expense.date).format("MMM DD, YYYY")}
+                  </TableCell>
+                  <TableCell>{expense.amount}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
       <AddExpenseModal
         isVisible={addExpenseModal.isVisible}
         onClose={addExpenseModal.hide}
