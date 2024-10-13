@@ -19,9 +19,11 @@ import dayjs from "dayjs";
 import { mockTransactions } from "../../api/transactions/mockTransactions";
 import { TransactionType } from "../../api/transactions/type";
 import { EmptyStateCard } from "../../components/cards/EmptyStateCard";
+import { mockFundsCollection } from "../../api/funds/mockFundsCollection";
 
 const tableHeaders = [
   { key: "description", label: "Description" },
+  { key: "fundSource", label: "Fund Source" },
   { key: "date", label: "Date" },
   { key: "amount", label: "Amount" },
 ];
@@ -37,6 +39,7 @@ export const ExpensesPage = () => {
   const expenseCollectionData = mockExpensesCollectionData.find(
     (expenseCollection) => expenseCollection.id === id
   );
+  const fundCollectionData = mockFundsCollection;
   const transactionData = mockTransactions.filter(
     (transaction) =>
       transaction.expenseCollectionId === id &&
@@ -62,6 +65,14 @@ export const ExpensesPage = () => {
       },
     ];
   }, [expenseCollectionData]);
+
+  // Functions
+  const getFundSource = (id: string) => {
+    const fundCollection = fundCollectionData.find(
+      (fundCollection) => fundCollection.id === id
+    );
+    return fundCollection?.name ?? "Unknown Fund Source";
+  };
 
   return (
     <PageContainer
@@ -96,6 +107,9 @@ export const ExpensesPage = () => {
                 >
                   <TableCell>{expense.description}</TableCell>
                   <TableCell>
+                    {getFundSource(expense.fundCollectionId)}
+                  </TableCell>
+                  <TableCell>
                     {dayjs(expense.date).format("MMM DD, YYYY")}
                   </TableCell>
                   <TableCell>{expense.amount}</TableCell>
@@ -107,6 +121,7 @@ export const ExpensesPage = () => {
       )}
       <AddExpenseModal
         isVisible={addExpenseModal.isVisible}
+        expenseCollectionName={expenseCollectionData?.name ?? ""}
         onClose={addExpenseModal.hide}
         onCancel={addExpenseModal.hide}
         onSubmit={addExpenseModal.hide}

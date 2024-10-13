@@ -16,6 +16,7 @@ import { mockFundsCollection } from "../../../api/funds/mockFundsCollection";
 
 interface AddExpenseModalProps {
   isVisible: boolean;
+  expenseCollectionName: string;
   onClose: () => void;
   onCancel: () => void;
   onSubmit: () => void;
@@ -23,6 +24,7 @@ interface AddExpenseModalProps {
 
 export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
   isVisible,
+  expenseCollectionName,
   onClose,
   onCancel,
   onSubmit,
@@ -32,7 +34,7 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
   return (
     <ConfirmActionModal
       isVisible={isVisible}
-      title="Add Expense"
+      title={`Add ${expenseCollectionName} Expense`}
       onClose={onClose}
       actions={
         <>
@@ -54,7 +56,7 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
         <TextInput fullWidth label="Amount" />
         <FormControl fullWidth>
           <InputLabel id="source-select-label">Source</InputLabel>
-          <Select labelId="source-select-label" label="Source">
+          <Select labelId="source-select-label" label="Fund Source">
             {fundsCollectionData.map((fund) => (
               <MenuItem key={fund.id} value={fund.id}>
                 {fund.name}

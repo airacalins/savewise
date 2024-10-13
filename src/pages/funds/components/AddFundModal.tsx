@@ -1,8 +1,13 @@
 import React from "react";
-import { Modal } from "../../../components/modals/Modal";
-import { Box, Button, Stack, TextField } from "@mui/material";
+import { Button, Stack } from "@mui/material";
+import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
+import { DeleteOutline } from "@mui/icons-material";
+import { DatePicker } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
+import { TextInput } from "../../../components/inputs/TextInput";
 
 interface AddFundModalProps {
+  fundCollectionName: string;
   isVisible: boolean;
   onClose: () => void;
   onCancel: () => void;
@@ -10,23 +15,36 @@ interface AddFundModalProps {
 }
 
 export const AddFundModal: React.FC<AddFundModalProps> = ({
+  fundCollectionName,
   isVisible,
   onClose,
   onCancel,
   onSubmit,
 }) => {
   return (
-    <Modal isVisible={isVisible} title="Create Fund" onClose={onClose}>
-      <TextField fullWidth label="Account Name" />
-      <Box height="16px" />
-      <TextField fullWidth label="Initial Balance" />
-      <Box height="24px" />
-      <Stack direction="row" spacing={2} justifyContent="flex-end">
-        <Button variant="contained" onClick={onCancel}>
-          Cancel
-        </Button>
-        <Button onClick={onSubmit}>Submit</Button>
+    <ConfirmActionModal
+      isVisible={isVisible}
+      title={`Add ${fundCollectionName} Fund`}
+      onClose={onClose}
+      actions={
+        <>
+          <Button variant="contained" onClick={onCancel}>
+            Cancel
+          </Button>
+          <Button onClick={onSubmit}>Submit</Button>
+        </>
+      }
+    >
+      <Stack spacing={3}>
+        <DatePicker label="Date" value={dayjs(new Date())} />
+        <TextInput
+          fullWidth
+          label="Description"
+          endAdornment={<DeleteOutline />}
+          EndIconComponent={undefined}
+        />
+        <TextInput fullWidth label="Amount" type="number" />
       </Stack>
-    </Modal>
+    </ConfirmActionModal>
   );
 };

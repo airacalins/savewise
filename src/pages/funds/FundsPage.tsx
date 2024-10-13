@@ -132,6 +132,7 @@ export const FundsPage = () => {
       )}
       <AddFundModal
         isVisible={addFundModal.isVisible}
+        fundCollectionName={fundCollectionData?.name ?? ""}
         onClose={addFundModal.hide}
         onCancel={addFundModal.hide}
         onSubmit={addFundModal.hide}
