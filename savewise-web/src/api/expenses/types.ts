@@ -14,3 +14,5 @@ export type Expense = {
   expenseCollectionId: string;
   fundId: string;
 };
+
+export type AddExpenseRequest = Omit<Expense, "id">;
