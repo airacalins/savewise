@@ -91,6 +91,10 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           "&.MuiButton-contained": {
+            "&.Mui-disabled": {
+              backgroundColor: colors.button.primary.disabled,
+              color: colors.primary,
+            },
             "&:hover": {
               boxShadow: `inset 2px 2px 4px ${colors.boxShadow.secondary[0]},inset -3px -3px 4px ${colors.boxShadow.secondary[1]}`,
             },

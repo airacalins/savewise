@@ -8,6 +8,7 @@ import {
   TCreateFundCollectionSchema,
 } from "../../../api/funds/schema";
 import { Controller, useForm } from "react-hook-form";
+import { ContainedButton } from "../../../components/buttons/ContainedButton";
 
 const defaultValues = {
   name: "",
@@ -49,9 +50,12 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
       actions={
         <>
           <Button onClick={onCancel}>Cancel</Button>
-          <Button variant="contained" onClick={handleSubmit(handleFormSubmit)}>
+          <ContainedButton
+            variant="contained"
+            onClick={handleSubmit(handleFormSubmit)}
+          >
             Submit
-          </Button>
+          </ContainedButton>
         </>
       }
     >

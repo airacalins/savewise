@@ -11,4 +11,9 @@ export const colors = {
     primary: ["#b8b9be", "#fff "],
     secondary: ["#14151e", "#4e5378"],
   },
+  button: {
+    primary: {
+      disabled: "#6E81D6",
+    },
+  },
 };
