@@ -11,22 +11,30 @@ import { AddFundCollectionModal } from "./components/AddFundCollectionModal";
 import { FundsSummary } from "./components/FundsSummary";
 import { useNavigate } from "react-router-dom";
 import { mockFundsCollection } from "../../api/funds/mockFundsCollection";
+import { TCreateFundCollectionSchema } from "../../api/funds/schema";
 
-const tableHeaders = [
-  { key: "name", label: "Name" },
-  { key: "balance", label: "Balance" },
+const TABLE_HEADERS = [
+  {
+    key: "name",
+    label: "Name",
+  },
+  {
+    key: "balance",
+    label: "Balance",
+  },
 ];
 
 export const FundsCollectionPage = () => {
   const navigate = useNavigate();
-  const addAccountModal = useVisibilityState();
+  const addFundCollectionModal = useVisibilityState();
 
   // API
   const fundsCollectionData = mockFundsCollection;
 
   // Functions
-  const handleSaveFund = () => {
-    addAccountModal.hide();
+  const handleAddFundCollection = (data: TCreateFundCollectionSchema) => {
+    console.log(data);
+    addFundCollectionModal.hide();
   };
 
   return (
@@ -34,7 +42,9 @@ export const FundsCollectionPage = () => {
       title="Funds Collection"
       subtitle="View, create and manage funds collection."
       actions={
-        <Button onClick={addAccountModal.show}>Add Fund Collection</Button>
+        <Button onClick={addFundCollectionModal.show}>
+          Add Fund Collection
+        </Button>
       }
     >
       <Stack direction="row" spacing={4}>
@@ -43,7 +53,7 @@ export const FundsCollectionPage = () => {
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  {tableHeaders.map((tableHeader) => (
+                  {TABLE_HEADERS.map((tableHeader) => (
                     <TableCell key={tableHeader.key}>
                       {tableHeader.label}
                     </TableCell>
@@ -74,10 +84,10 @@ export const FundsCollectionPage = () => {
         </Box>
       </Stack>
       <AddFundCollectionModal
-        isVisible={addAccountModal.isVisible}
-        onClose={addAccountModal.hide}
-        onCancel={addAccountModal.hide}
-        onSubmit={handleSaveFund}
+        isVisible={addFundCollectionModal.isVisible}
+        onClose={addFundCollectionModal.hide}
+        onCancel={addFundCollectionModal.hide}
+        onSubmit={handleAddFundCollection}
       />
     </PageContainer>
   );

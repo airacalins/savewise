@@ -16,25 +16,44 @@ import { mockExpensesCollectionData } from "../../api/expenses/mockExpensesColle
 import { AddExpenseCollectionModal } from "./components/AddExpenseCollectionModal";
 import { EmptyStateCard } from "../../components/cards/EmptyStateCard";
 import { ExpensesSummary } from "./components/ExpensesSummary";
+import { TCreateExpenseCollectionSchema } from "../../api/expenses/schema";
+
+const TABLE_HEADERS = [
+  {
+    key: "name",
+    label: "Name",
+  },
+  {
+    key: "currentMonth",
+    label: "Current Month",
+  },
+  {
+    key: "yearToDate",
+    label: "Year-to-Date",
+  },
+];
 
 export const ExpensesCollectionPage = () => {
   const navigate = useNavigate();
-  const addExpenseModal = useVisibilityState();
+  const addExpenseCollectionModal = useVisibilityState();
 
-  const handleSaveExpense = () => {
-    addExpenseModal.hide();
-  };
-
+  // API
   const expensesCollectionData = mockExpensesCollectionData;
 
-  const headers = ["Name", "Current Month", "Year-to-Date"];
+  // Functions
+  const handleAddExpenseCollection = (data: TCreateExpenseCollectionSchema) => {
+    console.log(data);
+    addExpenseCollectionModal.hide();
+  };
 
   return (
     <PageContainer
       title="Expenses Collection"
       subtitle="View, create and manage expenses."
       actions={
-        <Button onClick={addExpenseModal.show}>Add Expense Collection</Button>
+        <Button onClick={addExpenseCollectionModal.show}>
+          Add Expense Collection
+        </Button>
       }
     >
       {expensesCollectionData.length === 0 ? (
@@ -46,8 +65,8 @@ export const ExpensesCollectionPage = () => {
               <Table aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    {headers.map((header) => (
-                      <TableCell key={header}>{header}</TableCell>
+                    {TABLE_HEADERS.map((header) => (
+                      <TableCell key={header.key}>{header.label}</TableCell>
                     ))}
                   </TableRow>
                 </TableHead>
@@ -82,10 +101,10 @@ export const ExpensesCollectionPage = () => {
       )}
 
       <AddExpenseCollectionModal
-        isVisible={addExpenseModal.isVisible}
-        onClose={addExpenseModal.hide}
-        onCancel={addExpenseModal.hide}
-        onSubmit={handleSaveExpense}
+        isVisible={addExpenseCollectionModal.isVisible}
+        onClose={addExpenseCollectionModal.hide}
+        onCancel={addExpenseCollectionModal.hide}
+        onSubmit={handleAddExpenseCollection}
       />
     </PageContainer>
   );

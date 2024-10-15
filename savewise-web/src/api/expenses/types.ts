@@ -6,6 +6,8 @@ export type ExpenseCollection = {
   isHidden: boolean;
 };
 
+export type AddExpenseCollectionRequest = Pick<ExpenseCollection, "name">;
+
 export type Expense = {
   id: string;
   date: string;

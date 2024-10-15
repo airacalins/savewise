@@ -1,13 +1,23 @@
 import React from "react";
-import { Button, Stack } from "@mui/material";
+import { Button } from "@mui/material";
 import { TextInput } from "../../../components/inputs/TextInput";
 import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
+import { yupResolver } from "@hookform/resolvers/yup";
+import {
+  createFundCollectionSchema,
+  TCreateFundCollectionSchema,
+} from "../../../api/funds/schema";
+import { Controller, useForm } from "react-hook-form";
+
+const defaultValues = {
+  name: "",
+};
 
 interface AddFundCollectionModalProps {
   isVisible: boolean;
   onClose: () => void;
   onCancel: () => void;
-  onSubmit: () => void;
+  onSubmit: (data: TCreateFundCollectionSchema) => void;
 }
 
 export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
@@ -16,6 +26,21 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
   onCancel,
   onSubmit,
 }) => {
+  const {
+    control,
+    formState: { errors },
+    reset,
+    handleSubmit,
+  } = useForm<TCreateFundCollectionSchema>({
+    resolver: yupResolver(createFundCollectionSchema),
+    defaultValues,
+  });
+
+  const handleFormSubmit = (data: TCreateFundCollectionSchema) => {
+    onSubmit(data);
+    reset();
+  };
+
   return (
     <ConfirmActionModal
       isVisible={isVisible}
@@ -23,17 +48,27 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
       onClose={onClose}
       actions={
         <>
-          <Button variant="contained" onClick={onCancel}>
-            Cancel
+          <Button onClick={onCancel}>Cancel</Button>
+          <Button variant="contained" onClick={handleSubmit(handleFormSubmit)}>
+            Submit
           </Button>
-          <Button onClick={onSubmit}>Submit</Button>
         </>
       }
     >
-      <Stack spacing={3}>
-        <TextInput fullWidth label="Account Name" />
-        <TextInput fullWidth label="Initial Balance" />
-      </Stack>
+      <Controller
+        name="name"
+        control={control}
+        render={({ field }) => (
+          <TextInput
+            label="Name"
+            placeholder="Groceries, Electricity, etc."
+            error={!!errors.name}
+            defaultValue={defaultValues.name}
+            helperText={errors.name?.message}
+            {...field}
+          />
+        )}
+      />
     </ConfirmActionModal>
   );
 };
