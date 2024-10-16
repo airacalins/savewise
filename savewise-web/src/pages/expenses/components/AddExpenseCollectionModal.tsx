@@ -31,6 +31,7 @@ export const AddExpenseCollectionModal: React.FC<
   } = useForm<TCreateExpenseCollectionSchema>({
     resolver: yupResolver(createExpenseCollectionSchema),
     defaultValues: DEFAULT_VALUES,
+    mode: "onChange",
   });
 
   const handleFormSubmit = (data: TCreateExpenseCollectionSchema) => {

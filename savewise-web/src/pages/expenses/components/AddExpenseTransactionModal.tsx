@@ -42,12 +42,13 @@ export const AddExpenseTransactionModal: React.FC<
 
   const {
     control,
-    formState: { errors },
+    formState: { errors, isValid },
     reset,
     handleSubmit,
   } = useForm<TCreateExpenseTransactionSchema>({
     resolver: yupResolver(createExpenseTransactionSchema),
     defaultValues: DEFAULT_VALUES,
+    mode: "onChange",
   });
 
   // Functions
@@ -60,7 +61,10 @@ export const AddExpenseTransactionModal: React.FC<
     <ConfirmActionModal
       isVisible={isVisible}
       title={`Add ${expenseCollectionName} Expense`}
-      onClose={onClose}
+      onClose={() => {
+        reset();
+        onClose();
+      }}
       actions={
         <>
           <Button
@@ -71,7 +75,10 @@ export const AddExpenseTransactionModal: React.FC<
           >
             Cancel
           </Button>
-          <ContainedButton onClick={handleSubmit(handleFormSubmit)}>
+          <ContainedButton
+            disabled={!isValid}
+            onClick={handleSubmit(handleFormSubmit)}
+          >
             Submit
           </ContainedButton>
         </>

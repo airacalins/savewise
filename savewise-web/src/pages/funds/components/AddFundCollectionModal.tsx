@@ -35,6 +35,7 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
   } = useForm<TCreateFundCollectionSchema>({
     resolver: yupResolver(createFundCollectionSchema),
     defaultValues,
+    mode: "onChange",
   });
 
   const handleFormSubmit = (data: TCreateFundCollectionSchema) => {

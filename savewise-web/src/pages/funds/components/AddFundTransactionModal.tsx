@@ -66,10 +66,7 @@ export const AddFundTransactionModal: React.FC<
           >
             Cancel
           </Button>
-          <ContainedButton
-            disabled={!isValid}
-            onClick={handleSubmit(handleFormSubmit)}
-          >
+          <ContainedButton onClick={handleSubmit(handleFormSubmit)}>
             Submit
           </ContainedButton>
         </>
