@@ -79,7 +79,7 @@ export const FundsPage = () => {
     deleteFundCollectionWarningModal.hide();
   };
 
-  const handleFundTransaction = (data: TCreateFundTransactionSchema) => {
+  const handleCreateFundTransaction = (data: TCreateFundTransactionSchema) => {
     const input: AddFundRequest = {
       transactionType: TransactionType.Debit,
       fundCollectionId: id ?? "",
@@ -180,11 +180,11 @@ export const FundsPage = () => {
         itemName={fundCollectionData?.name ?? ""}
         onClose={() => {
           deleteFundCollectionWarningModal.hide();
-          editFundCollectionModal.hide();
+          editFundCollectionModal.show();
         }}
         onCancel={() => {
           deleteFundCollectionWarningModal.hide();
-          editFundCollectionModal.hide();
+          editFundCollectionModal.show();
         }}
         onConfirm={handleDeleteFundCollection}
       />
@@ -193,7 +193,7 @@ export const FundsPage = () => {
         fundCollectionName={fundCollectionData?.name ?? ""}
         onClose={addFundTransactionModal.hide}
         onCancel={addFundTransactionModal.hide}
-        onSubmit={handleFundTransaction}
+        onSubmit={handleCreateFundTransaction}
       />
     </PageContainer>
   );

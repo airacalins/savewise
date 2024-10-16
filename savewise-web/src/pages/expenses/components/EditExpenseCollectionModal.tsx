@@ -1,38 +1,38 @@
 import React, { useMemo } from "react";
 import { Button } from "@mui/material";
-import { TextInput } from "../../../components/inputs/TextInput";
 import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
-import { yupResolver } from "@hookform/resolvers/yup";
 import {
-  TUpdateFundCollectionSchema,
-  updateFundCollectionSchema,
-} from "../../../api/funds/schema";
+  TUpdateExpenseCollectionSchema,
+  updateExpenseCollectionSchema,
+} from "../../../api/expenses/schema";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
+import { TextInput } from "../../../components/inputs/TextInput";
 import { ContainedButton } from "../../../components/buttons/ContainedButton";
+import { mockExpensesCollectionData } from "../../../api/expenses/mockExpensesCollection";
 import { DeleteOutline, Save } from "@mui/icons-material";
-import { mockFundsCollection } from "../../../api/funds/mockFundsCollection";
 import { colors } from "../../../theme/colors";
 
-interface EditFundCollectionModalProps {
+interface EditExpenseCollectionModalProps {
   isVisible: boolean;
-  fundCollectionId: string;
+  expenseCollectionId: string;
   onClose: () => void;
   onDelete: () => void;
-  onUpdate: (data: TUpdateFundCollectionSchema) => void;
+  onUpdate: (data: TUpdateExpenseCollectionSchema) => void;
 }
 
-export const EditFundCollectionModal: React.FC<
-  EditFundCollectionModalProps
-> = ({ isVisible, fundCollectionId, onClose, onDelete, onUpdate }) => {
-  const fundCollectionData = mockFundsCollection.find(
-    (fundCollection) => fundCollection.id === fundCollectionId
+export const EditExpenseCollectionModal: React.FC<
+  EditExpenseCollectionModalProps
+> = ({ isVisible, expenseCollectionId, onClose, onDelete, onUpdate }) => {
+  const expenseCollectionData = mockExpensesCollectionData.find(
+    (expenseCollection) => expenseCollection.id === expenseCollectionId
   );
 
   const defaultValues = useMemo(
     () => ({
-      name: fundCollectionData?.name ?? "",
+      name: expenseCollectionData?.name ?? "",
     }),
-    [fundCollectionData]
+    [expenseCollectionData]
   );
 
   const {
@@ -40,8 +40,8 @@ export const EditFundCollectionModal: React.FC<
     formState: { errors, isDirty, isValid },
     reset,
     handleSubmit,
-  } = useForm<TUpdateFundCollectionSchema>({
-    resolver: yupResolver(updateFundCollectionSchema),
+  } = useForm<TUpdateExpenseCollectionSchema>({
+    resolver: yupResolver(updateExpenseCollectionSchema),
     defaultValues,
     mode: "onChange",
   });
@@ -52,7 +52,7 @@ export const EditFundCollectionModal: React.FC<
     onClose();
   };
 
-  const handleFormSubmit = (data: TUpdateFundCollectionSchema) => {
+  const handleFormSubmit = (data: TUpdateExpenseCollectionSchema) => {
     onUpdate(data);
     reset();
   };
@@ -60,7 +60,7 @@ export const EditFundCollectionModal: React.FC<
   return (
     <ConfirmActionModal
       isVisible={isVisible}
-      title="Update Fund Collection"
+      title="Update Expense Collection"
       onClose={handleCloseModal}
       actions={
         <>
@@ -88,7 +88,7 @@ export const EditFundCollectionModal: React.FC<
         render={({ field }) => (
           <TextInput
             label="Name"
-            placeholder="Income, Business, etc."
+            placeholder="Groceries, Electricity, etc."
             error={!!errors.name}
             helperText={errors.name?.message}
             {...field}

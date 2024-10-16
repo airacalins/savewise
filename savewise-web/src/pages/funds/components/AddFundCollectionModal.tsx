@@ -77,7 +77,7 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
         render={({ field }) => (
           <TextInput
             label="Name"
-            placeholder="Groceries, Electricity, etc."
+            placeholder="Income, Business, etc."
             error={!!errors.name}
             defaultValue={DEFAULT_VALUES.name}
             helperText={errors.name?.message}

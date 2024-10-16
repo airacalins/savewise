@@ -8,6 +8,7 @@ import {
   TableCell,
   TableBody,
   Button,
+  IconButton,
 } from "@mui/material";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { useMemo, useState } from "react";
@@ -29,6 +30,9 @@ import { newDateFormat } from "../../ultils/date";
 import { EditExpenseTransactionModal } from "./components/EditExpenseTransactionModal";
 import { AddExpenseTransactionModal } from "./components/AddExpenseTransactionModal";
 import { DeleteWarningActionModal } from "../../components/modals/DeleteWarningActionModal";
+import { Edit } from "@mui/icons-material";
+import { EditExpenseCollectionModal } from "./components/EditExpenseCollectionModal";
+import { TUpdateExpenseCollectionSchema } from "../../api/expenses/schema";
 
 const tableHeaders = [
   { key: "description", label: "Description" },
@@ -39,8 +43,9 @@ const tableHeaders = [
 
 export const ExpensesPage = () => {
   const { id } = useParams();
-  const addExpenseModal = useVisibilityState();
-  const editExpenseModal = useVisibilityState();
+  const editExpenseCollectionModal = useVisibilityState();
+  const addExpenseTransactionModal = useVisibilityState();
+  const editExpenseTransactionModal = useVisibilityState();
   const deleteExpenseCollectionWarningModal = useVisibilityState();
   const [selectedExpenseId, setSelectedExpenseId] = useState<null | string>();
 
@@ -57,7 +62,7 @@ export const ExpensesPage = () => {
 
   // Functions
   const handleShowConfirmDeleteModal = () => {
-    editExpenseModal.hide();
+    editExpenseTransactionModal.hide();
     deleteExpenseCollectionWarningModal.show();
   };
 
@@ -83,6 +88,13 @@ export const ExpensesPage = () => {
     return fundCollection?.name ?? "Unknown Fund Source";
   };
 
+  const handleUpdateExpenseCollection = (
+    data: TUpdateExpenseCollectionSchema
+  ) => {
+    console.log(data);
+    editExpenseCollectionModal.hide();
+  };
+
   const handleDeleteExpenseCollection = () => {
     deleteExpenseCollectionWarningModal.hide();
   };
@@ -99,7 +111,7 @@ export const ExpensesPage = () => {
 
     console.log("AddExpenseTransactionRequest: ", input);
 
-    addExpenseModal.hide();
+    addExpenseTransactionModal.hide();
   };
 
   const handleUpdateExpenseTransaction = (
@@ -112,15 +124,22 @@ export const ExpensesPage = () => {
 
     console.log("UpdateExpenseTransactionRequest: ", input);
 
-    editExpenseModal.hide();
+    editExpenseTransactionModal.hide();
   };
 
   return (
     <PageContainer
       title={expenseCollectionData?.name ?? ""}
+      titleAction={
+        <IconButton size="small" onClick={editExpenseCollectionModal.show}>
+          <Edit />
+        </IconButton>
+      }
       subtitle="View, create and manage expenses."
       breadcrumbs={breadcrumbs}
-      actions={<Button onClick={addExpenseModal.show}>Add Expense</Button>}
+      actions={
+        <Button onClick={addExpenseTransactionModal.show}>Add Expense</Button>
+      }
     >
       {transactionData.length === 0 ? (
         <EmptyStateCard message="No expenses for this collection yet." />
@@ -142,7 +161,7 @@ export const ExpensesPage = () => {
                   key={index}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   onClick={() => {
-                    editExpenseModal.show();
+                    editExpenseTransactionModal.show();
                     setSelectedExpenseId(expense.id);
                   }}
                 >
@@ -160,17 +179,27 @@ export const ExpensesPage = () => {
           </Table>
         </TableContainer>
       )}
+      <EditExpenseCollectionModal
+        isVisible={editExpenseCollectionModal.isVisible}
+        expenseCollectionId={expenseCollectionData?.id ?? ""}
+        onClose={editExpenseCollectionModal.hide}
+        onDelete={() => {
+          editExpenseCollectionModal.hide();
+          deleteExpenseCollectionWarningModal.show();
+        }}
+        onUpdate={handleUpdateExpenseCollection}
+      />
       <AddExpenseTransactionModal
-        isVisible={addExpenseModal.isVisible}
+        isVisible={addExpenseTransactionModal.isVisible}
         expenseCollectionName={expenseCollectionData?.name ?? ""}
-        onClose={addExpenseModal.hide}
-        onCancel={addExpenseModal.hide}
+        onClose={addExpenseTransactionModal.hide}
+        onCancel={addExpenseTransactionModal.hide}
         onSubmit={handleAddExpenseTransaction}
       />
       <EditExpenseTransactionModal
-        isVisible={editExpenseModal.isVisible}
+        isVisible={editExpenseTransactionModal.isVisible}
         expenseId={selectedExpenseId ?? ""}
-        onClose={editExpenseModal.hide}
+        onClose={editExpenseTransactionModal.hide}
         onDelete={handleShowConfirmDeleteModal}
         onUpdate={handleUpdateExpenseTransaction}
       />
@@ -178,12 +207,12 @@ export const ExpensesPage = () => {
         isVisible={deleteExpenseCollectionWarningModal.isVisible}
         itemName={expenseCollectionData?.name ?? ""}
         onClose={() => {
-          editExpenseModal.show();
           deleteExpenseCollectionWarningModal.hide();
+          editExpenseCollectionModal.show();
         }}
         onCancel={() => {
-          editExpenseModal.show();
           deleteExpenseCollectionWarningModal.hide();
+          editExpenseCollectionModal.show();
         }}
         onConfirm={handleDeleteExpenseCollection}
       />
