@@ -46,14 +46,21 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
     <ConfirmActionModal
       isVisible={isVisible}
       title="Add Fund Collection"
-      onClose={onClose}
+      onClose={() => {
+        reset();
+        onClose();
+      }}
       actions={
         <>
-          <Button onClick={onCancel}>Cancel</Button>
-          <ContainedButton
-            variant="contained"
-            onClick={handleSubmit(handleFormSubmit)}
+          <Button
+            onClick={() => {
+              reset();
+              onCancel();
+            }}
           >
+            Cancel
+          </Button>
+          <ContainedButton onClick={handleSubmit(handleFormSubmit)}>
             Submit
           </ContainedButton>
         </>

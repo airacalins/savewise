@@ -19,9 +19,10 @@ import dayjs from "dayjs";
 import { EmptyStateCard } from "../../components/cards/EmptyStateCard";
 import { mockTransactions } from "../../api/transactions/mockTransactions";
 import { Text } from "../../components/texts/Text";
-import { TransactionType } from "../../api/transactions/type";
+import { AddFundRequest, TransactionType } from "../../api/transactions/type";
 import { AddFundModal } from "./components/AddFundModal";
 import { mockExpensesCollectionData } from "../../api/expenses/mockExpensesCollection";
+import { TCreateFundTransactionSchema } from "../../api/transactions/schema";
 
 const tableHeaders = [
   { key: "date", label: "Date" },
@@ -60,6 +61,19 @@ export const FundsPage = () => {
   const getExpenseName = (id: string) => {
     const expense = expenseCollectionData.find((expense) => expense.id === id);
     return expense ? expense.name : "Unknown Expense";
+  };
+
+  const handleFundTransaction = (data: TCreateFundTransactionSchema) => {
+    const input: AddFundRequest = {
+      transactionType: TransactionType.Debit,
+      fundCollectionId: fundCollectionData?.id ?? "",
+      ...data,
+      date: dayjs(data.date).format("YYYY-MM-DDTHH:mm:ssZ"),
+    };
+
+    console.log("AddFundTransactionRequest: ", input);
+
+    addFundModal.hide();
   };
 
   return (
@@ -135,7 +149,7 @@ export const FundsPage = () => {
         fundCollectionName={fundCollectionData?.name ?? ""}
         onClose={addFundModal.hide}
         onCancel={addFundModal.hide}
-        onSubmit={addFundModal.hide}
+        onSubmit={handleFundTransaction}
       />
     </PageContainer>
   );

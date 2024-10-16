@@ -8,17 +8,17 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import { TextInput } from "../../../components/inputs/TextInput";
+import { ContainedButton } from "../../../components/buttons/ContainedButton";
 
+const DEFAULT_VALUES = {
+  name: "",
+};
 interface AddExpenseCollectionModalProps {
   isVisible: boolean;
   onClose: () => void;
   onCancel: () => void;
   onSubmit: (data: TCreateExpenseCollectionSchema) => void;
 }
-
-const defaultValues = {
-  name: "",
-};
 
 export const AddExpenseCollectionModal: React.FC<
   AddExpenseCollectionModalProps
@@ -30,7 +30,7 @@ export const AddExpenseCollectionModal: React.FC<
     handleSubmit,
   } = useForm<TCreateExpenseCollectionSchema>({
     resolver: yupResolver(createExpenseCollectionSchema),
-    defaultValues,
+    defaultValues: DEFAULT_VALUES,
   });
 
   const handleFormSubmit = (data: TCreateExpenseCollectionSchema) => {
@@ -46,9 +46,9 @@ export const AddExpenseCollectionModal: React.FC<
       actions={
         <>
           <Button onClick={onCancel}>Cancel</Button>
-          <Button variant="contained" onClick={handleSubmit(handleFormSubmit)}>
+          <ContainedButton onClick={handleSubmit(handleFormSubmit)}>
             Submit
-          </Button>
+          </ContainedButton>
         </>
       }
     >
@@ -60,7 +60,7 @@ export const AddExpenseCollectionModal: React.FC<
             label="Name"
             placeholder="Groceries, Electricity, etc."
             error={!!errors.name}
-            defaultValue={defaultValues.name}
+            defaultValue={DEFAULT_VALUES.name}
             helperText={errors.name?.message}
             {...field}
           />
