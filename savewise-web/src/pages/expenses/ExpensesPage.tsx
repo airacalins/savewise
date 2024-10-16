@@ -17,9 +17,13 @@ import { useMemo, useState } from "react";
 import { mockExpensesCollectionData } from "../../api/expenses/mockExpensesCollection";
 import dayjs from "dayjs";
 import { mockTransactions } from "../../api/transactions/mockTransactions";
-import { TransactionType } from "../../api/transactions/type";
+import {
+  AddExpenseRequest,
+  TransactionType,
+} from "../../api/transactions/type";
 import { EmptyStateCard } from "../../components/cards/EmptyStateCard";
 import { mockFundsCollection } from "../../api/funds/mockFundsCollection";
+import { TCreateExpenseTransactionSchema } from "../../api/transactions/schema";
 
 const tableHeaders = [
   { key: "description", label: "Description" },
@@ -74,6 +78,20 @@ export const ExpensesPage = () => {
     return fundCollection?.name ?? "Unknown Fund Source";
   };
 
+  const handleExpenseTransaction = (data: TCreateExpenseTransactionSchema) => {
+    const input: AddExpenseRequest = {
+      transactionType: TransactionType.Credit,
+      expenseCollectionId: id ?? "",
+      // fundCollectionId: fundCollectionData?.id ?? "",
+      ...data,
+      date: dayjs(data.date).format("YYYY-MM-DDTHH:mm:ssZ"),
+    };
+
+    console.log("AddExpenseTransactionRequest: ", input);
+
+    addExpenseModal.hide();
+  };
+
   return (
     <PageContainer
       title={expenseCollectionData?.name ?? ""}
@@ -124,7 +142,7 @@ export const ExpensesPage = () => {
         expenseCollectionName={expenseCollectionData?.name ?? ""}
         onClose={addExpenseModal.hide}
         onCancel={addExpenseModal.hide}
-        onSubmit={addExpenseModal.hide}
+        onSubmit={handleExpenseTransaction}
       />
       <EditExpenseModal
         isVisible={editExpenseModal.isVisible}
@@ -152,7 +170,7 @@ export const ExpensesPage = () => {
             >
               Cancel
             </Button>
-            <Button onClick={deleteConfirmationExpenseModal.hide}>Yes</Button>
+            {/* <Button onClick={handleExpenseTransaction}>Yes</Button> */}
           </>
         }
       />

@@ -16,6 +16,7 @@ const DEFAULT_VALUES = {
   date: new Date(),
   description: "",
 };
+
 interface AddFundModalProps {
   fundCollectionName: string;
   isVisible: boolean;

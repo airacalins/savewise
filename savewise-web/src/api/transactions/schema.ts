@@ -9,6 +9,7 @@ export const createFundTransactionSchema = yup.object({
     .transform((value, originalValue) => (originalValue === "" ? null : value))
     .min(0, "Amount must be greater than or equal to zero")
     .typeError("Amount must be a number"),
+  fundCollectionId: yup.string().required("fundCollectionId is required field"),
 });
 
 export type TCreateFundTransactionSchema = yup.InferType<
@@ -24,6 +25,7 @@ export const createExpenseTransactionSchema = yup.object({
     .transform((value, originalValue) => (originalValue === "" ? null : value))
     .min(0, "Amount must be greater than or equal to zero")
     .typeError("Amount must be a number"),
+  fundCollectionId: yup.string().required("fundCollectionId is required field"),
 });
 
 export type TCreateExpenseTransactionSchema = yup.InferType<
