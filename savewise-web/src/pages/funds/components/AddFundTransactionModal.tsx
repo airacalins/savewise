@@ -40,33 +40,33 @@ export const AddFundTransactionModal: React.FC<
   });
 
   // Functions
+  const handleCloseModal = () => {
+    reset();
+    onClose();
+  };
+
+  const handleCancel = () => {
+    reset();
+    onCancel();
+  };
+
   const handleFormSubmit = (data: TCreateFundTransactionSchema) => {
     onSubmit(data);
     reset();
   };
 
-  console.log("isValid: ", isValid);
-  console.log("errors: ", errors);
-
   return (
     <ConfirmActionModal
       isVisible={isVisible}
       title={`Add ${fundCollectionName} Fund`}
-      onClose={() => {
-        reset();
-        onClose();
-      }}
+      onClose={handleCloseModal}
       actions={
         <>
-          <Button
-            onClick={() => {
-              reset();
-              onCancel();
-            }}
+          <Button onClick={handleCancel}>Cancel</Button>
+          <ContainedButton
+            disabled={!isValid}
+            onClick={handleSubmit(handleFormSubmit)}
           >
-            Cancel
-          </Button>
-          <ContainedButton onClick={handleSubmit(handleFormSubmit)}>
             Submit
           </ContainedButton>
         </>
