@@ -25,7 +25,7 @@ export const AddExpenseCollectionModal: React.FC<
 > = ({ isVisible, onClose, onCancel, onSubmit }) => {
   const {
     control,
-    formState: { errors },
+    formState: { errors, isValid },
     reset,
     handleSubmit,
   } = useForm<TCreateExpenseCollectionSchema>({
@@ -47,7 +47,10 @@ export const AddExpenseCollectionModal: React.FC<
       actions={
         <>
           <Button onClick={onCancel}>Cancel</Button>
-          <ContainedButton onClick={handleSubmit(handleFormSubmit)}>
+          <ContainedButton
+            disabled={!isValid}
+            onClick={handleSubmit(handleFormSubmit)}
+          >
             Submit
           </ContainedButton>
         </>

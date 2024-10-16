@@ -115,7 +115,8 @@ export const AddExpenseTransactionModal: React.FC<
           render={({ field }) => (
             <TextInput
               label="Amount"
-              placeholder="Enter amount"
+              placeholder="1000.00"
+              type="number"
               error={!!errors.amount}
               helperText={errors.amount?.message}
               {...field}
