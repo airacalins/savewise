@@ -67,6 +67,7 @@ export const FundsPage = () => {
   const handleFundTransaction = (data: TCreateFundTransactionSchema) => {
     const input: AddFundRequest = {
       transactionType: TransactionType.Debit,
+      fundCollectionId: id ?? "",
       ...data,
       date: newDateFormat(data.date),
     };

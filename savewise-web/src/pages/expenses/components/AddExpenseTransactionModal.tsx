@@ -15,7 +15,6 @@ import { mockFundsCollection } from "../../../api/funds/mockFundsCollection";
 import {
   createExpenseTransactionSchema,
   TCreateExpenseTransactionSchema,
-  TCreateFundTransactionSchema,
 } from "../../../api/transactions/schema";
 import { ContainedButton } from "../../../components/buttons/ContainedButton";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -52,7 +51,7 @@ export const AddExpenseTransactionModal: React.FC<
   });
 
   // Functions
-  const handleFormSubmit = (data: TCreateFundTransactionSchema) => {
+  const handleFormSubmit = (data: TCreateExpenseTransactionSchema) => {
     onSubmit(data);
     reset();
   };

@@ -30,12 +30,13 @@ export const AddFundTransactionModal: React.FC<
 > = ({ fundCollectionName, isVisible, onClose, onCancel, onSubmit }) => {
   const {
     control,
-    formState: { errors },
+    formState: { errors, isValid },
     reset,
     handleSubmit,
   } = useForm<TCreateFundTransactionSchema>({
     resolver: yupResolver(createFundTransactionSchema),
     defaultValues: DEFAULT_VALUES,
+    mode: "onChange",
   });
 
   // Functions
@@ -43,6 +44,9 @@ export const AddFundTransactionModal: React.FC<
     onSubmit(data);
     reset();
   };
+
+  console.log("isValid: ", isValid);
+  console.log("errors: ", errors);
 
   return (
     <ConfirmActionModal
@@ -62,7 +66,10 @@ export const AddFundTransactionModal: React.FC<
           >
             Cancel
           </Button>
-          <ContainedButton onClick={handleSubmit(handleFormSubmit)}>
+          <ContainedButton
+            disabled={!isValid}
+            onClick={handleSubmit(handleFormSubmit)}
+          >
             Submit
           </ContainedButton>
         </>
