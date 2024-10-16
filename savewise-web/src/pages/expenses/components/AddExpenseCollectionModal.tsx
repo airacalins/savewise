@@ -34,6 +34,17 @@ export const AddExpenseCollectionModal: React.FC<
     mode: "onChange",
   });
 
+  // Functions
+  const handleCloseModal = () => {
+    reset();
+    onClose();
+  };
+
+  const handleCancel = () => {
+    reset();
+    onCancel();
+  };
+
   const handleFormSubmit = (data: TCreateExpenseCollectionSchema) => {
     onSubmit(data);
     reset();
@@ -43,10 +54,10 @@ export const AddExpenseCollectionModal: React.FC<
     <ConfirmActionModal
       isVisible={isVisible}
       title="Create expense collection"
-      onClose={onClose}
+      onClose={handleCloseModal}
       actions={
         <>
-          <Button onClick={onCancel}>Cancel</Button>
+          <Button onClick={handleCancel}>Cancel</Button>
           <ContainedButton
             disabled={!isValid}
             onClick={handleSubmit(handleFormSubmit)}

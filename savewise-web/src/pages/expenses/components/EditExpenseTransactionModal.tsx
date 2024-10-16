@@ -52,12 +52,13 @@ export const EditExpenseTransactionModal: React.FC<
 
   const {
     control,
-    formState: { errors, isDirty },
+    formState: { errors, isDirty, isValid },
     reset,
     handleSubmit,
   } = useForm<TUpdateExpenseTransactionSchema>({
     resolver: yupResolver(updateExpenseTransactionSchema),
     defaultValues,
+    mode: "onChange",
   });
 
   useEffect(() => {
@@ -65,6 +66,11 @@ export const EditExpenseTransactionModal: React.FC<
   }, [expenseData, reset, defaultValues]);
 
   // Functions
+  const handleCloseModal = () => {
+    reset();
+    onClose();
+  };
+
   const handleFormSubmit = (data: TUpdateExpenseTransactionSchema) => {
     onUpdate(data);
     reset();
@@ -74,10 +80,7 @@ export const EditExpenseTransactionModal: React.FC<
     <ConfirmActionModal
       isVisible={isVisible}
       title="Update Expense"
-      onClose={() => {
-        reset();
-        onClose();
-      }}
+      onClose={handleCloseModal}
       actions={
         <>
           <Button
@@ -90,7 +93,7 @@ export const EditExpenseTransactionModal: React.FC<
           </Button>
           <ContainedButton
             startIcon={<Save sx={{ color: colors.primary }} />}
-            disabled={!isDirty}
+            disabled={!isDirty || !isValid}
             onClick={handleSubmit(handleFormSubmit)}
           >
             Update

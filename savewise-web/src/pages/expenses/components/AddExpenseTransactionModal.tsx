@@ -52,6 +52,16 @@ export const AddExpenseTransactionModal: React.FC<
   });
 
   // Functions
+  const handleCloseModal = () => {
+    reset();
+    onClose();
+  };
+
+  const handleCancel = () => {
+    reset();
+    onCancel();
+  };
+
   const handleFormSubmit = (data: TCreateExpenseTransactionSchema) => {
     onSubmit(data);
     reset();
@@ -61,20 +71,10 @@ export const AddExpenseTransactionModal: React.FC<
     <ConfirmActionModal
       isVisible={isVisible}
       title={`Add ${expenseCollectionName} Expense`}
-      onClose={() => {
-        reset();
-        onClose();
-      }}
+      onClose={handleCloseModal}
       actions={
         <>
-          <Button
-            onClick={() => {
-              reset();
-              onCancel();
-            }}
-          >
-            Cancel
-          </Button>
+          <Button onClick={handleCancel}>Cancel</Button>
           <ContainedButton
             disabled={!isValid}
             onClick={handleSubmit(handleFormSubmit)}
