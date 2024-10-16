@@ -29,7 +29,7 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
 }) => {
   const {
     control,
-    formState: { errors },
+    formState: { errors, isValid },
     reset,
     handleSubmit,
   } = useForm<TCreateFundCollectionSchema>({
@@ -37,6 +37,17 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
     defaultValues,
     mode: "onChange",
   });
+
+  // Functions
+  const handleOnCloseModal = () => {
+    reset();
+    onClose();
+  };
+
+  const handleOnCancel = () => {
+    reset();
+    onCancel();
+  };
 
   const handleFormSubmit = (data: TCreateFundCollectionSchema) => {
     onSubmit(data);
@@ -47,21 +58,14 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
     <ConfirmActionModal
       isVisible={isVisible}
       title="Add Fund Collection"
-      onClose={() => {
-        reset();
-        onClose();
-      }}
+      onClose={handleOnCloseModal}
       actions={
         <>
-          <Button
-            onClick={() => {
-              reset();
-              onCancel();
-            }}
+          <Button onClick={handleOnCancel}>Cancel</Button>
+          <ContainedButton
+            disabled={!isValid}
+            onClick={handleSubmit(handleFormSubmit)}
           >
-            Cancel
-          </Button>
-          <ContainedButton onClick={handleSubmit(handleFormSubmit)}>
             Submit
           </ContainedButton>
         </>
