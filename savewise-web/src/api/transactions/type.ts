@@ -15,4 +15,9 @@ export type Transaction = {
 
 export type AddFundRequest = Omit<Transaction, "id" | "expenseCollectionId">;
 
-export type AddExpenseRequest = Omit<Transaction, "id">;
+export type AddExpenseTransactionRequest = Omit<Transaction, "id">;
+
+export type UpdateExpenseTransactionRequest = Omit<
+  Transaction,
+  "id" | "expenseCollectionId" | "transactionType"
+>;

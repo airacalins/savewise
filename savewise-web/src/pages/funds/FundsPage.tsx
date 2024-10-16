@@ -20,9 +20,10 @@ import { EmptyStateCard } from "../../components/cards/EmptyStateCard";
 import { mockTransactions } from "../../api/transactions/mockTransactions";
 import { Text } from "../../components/texts/Text";
 import { AddFundRequest, TransactionType } from "../../api/transactions/type";
-import { AddFundModal } from "./components/AddFundModal";
 import { mockExpensesCollectionData } from "../../api/expenses/mockExpensesCollection";
 import { TCreateFundTransactionSchema } from "../../api/transactions/schema";
+import { newDateFormat } from "../../ultils/date";
+import { AddFundTransactionModal } from "./components/AddFundTransactionModal";
 
 const tableHeaders = [
   { key: "date", label: "Date" },
@@ -67,7 +68,7 @@ export const FundsPage = () => {
     const input: AddFundRequest = {
       transactionType: TransactionType.Debit,
       ...data,
-      date: dayjs(data.date).format("YYYY-MM-DDTHH:mm:ssZ"),
+      date: newDateFormat(data.date),
     };
 
     console.log("AddFundTransactionRequest: ", input);
@@ -143,7 +144,7 @@ export const FundsPage = () => {
           </Table>
         </TableContainer>
       )}
-      <AddFundModal
+      <AddFundTransactionModal
         isVisible={addFundModal.isVisible}
         fundCollectionName={fundCollectionData?.name ?? ""}
         onClose={addFundModal.hide}

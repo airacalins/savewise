@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import {
   Button,
   FormControl,
@@ -7,76 +7,93 @@ import {
   Select,
   Stack,
 } from "@mui/material";
-import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
+import { DeleteOutline, Save } from "@mui/icons-material";
+import { colors } from "../../../theme/colors";
 import { DatePicker } from "@mui/x-date-pickers";
-import dayjs from "dayjs";
 import { TextInput } from "../../../components/inputs/TextInput";
+import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
+import { mockTransactions } from "../../../api/transactions/mockTransactions";
 import { mockFundsCollection } from "../../../api/funds/mockFundsCollection";
 import {
-  createExpenseTransactionSchema,
-  TCreateExpenseTransactionSchema,
-  TCreateFundTransactionSchema,
+  TUpdateExpenseTransactionSchema,
+  updateExpenseTransactionSchema,
 } from "../../../api/transactions/schema";
-import { ContainedButton } from "../../../components/buttons/ContainedButton";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { ContainedButton } from "../../../components/buttons/ContainedButton";
+import dayjs from "dayjs";
 
-const DEFAULT_VALUES = {
-  date: new Date(),
-  description: "",
-};
-
-interface AddExpenseModalProps {
+interface EditExpenseTransactionModalProps {
   isVisible: boolean;
-  expenseCollectionName: string;
+  expenseId: string;
   onClose: () => void;
-  onCancel: () => void;
-  onSubmit: (data: TCreateExpenseTransactionSchema) => void;
+  onDelete: () => void;
+  onUpdate: (data: TUpdateExpenseTransactionSchema) => void;
 }
 
-export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
-  isVisible,
-  expenseCollectionName,
-  onClose,
-  onCancel,
-  onSubmit,
-}) => {
+export const EditExpenseTransactionModal: React.FC<
+  EditExpenseTransactionModalProps
+> = ({ isVisible, expenseId, onClose, onDelete, onUpdate }) => {
   // API
+  const expenseData = mockTransactions.find(
+    (expense) => expense.id === expenseId
+  );
   const fundsCollectionData = mockFundsCollection;
+
+  const defaultValues = useMemo(
+    () => ({
+      date: new Date(expenseData?.date ?? ""),
+      description: expenseData?.description ?? "",
+      amount: expenseData?.amount ?? 0,
+      fundCollectionId: expenseData?.fundCollectionId ?? "",
+    }),
+    [expenseData]
+  );
 
   const {
     control,
-    formState: { errors },
+    formState: { errors, isDirty },
     reset,
     handleSubmit,
-  } = useForm<TCreateExpenseTransactionSchema>({
-    resolver: yupResolver(createExpenseTransactionSchema),
-    defaultValues: DEFAULT_VALUES,
+  } = useForm<TUpdateExpenseTransactionSchema>({
+    resolver: yupResolver(updateExpenseTransactionSchema),
+    defaultValues,
   });
 
+  useEffect(() => {
+    reset(defaultValues);
+  }, [expenseData, reset, defaultValues]);
+
   // Functions
-  const handleFormSubmit = (data: TCreateFundTransactionSchema) => {
-    onSubmit(data);
+  const handleFormSubmit = (data: TUpdateExpenseTransactionSchema) => {
+    onUpdate(data);
     reset();
   };
 
   return (
     <ConfirmActionModal
       isVisible={isVisible}
-      title={`Add ${expenseCollectionName} Expense`}
-      onClose={onClose}
+      title="Update Expense"
+      onClose={() => {
+        reset();
+        onClose();
+      }}
       actions={
         <>
           <Button
-            onClick={() => {
-              reset();
-              onCancel();
-            }}
+            color="error"
+            startIcon={<DeleteOutline sx={{ color: "inherit" }} />}
+            disabled={isDirty}
+            onClick={onDelete}
           >
-            Cancel
+            Delete
           </Button>
-          <ContainedButton onClick={handleSubmit(handleFormSubmit)}>
-            Submit
+          <ContainedButton
+            startIcon={<Save sx={{ color: colors.primary }} />}
+            disabled={!isDirty}
+            onClick={handleSubmit(handleFormSubmit)}
+          >
+            Update
           </ContainedButton>
         </>
       }
@@ -86,10 +103,7 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
           name="date"
           control={control}
           render={() => (
-            <DatePicker
-              label="Date"
-              defaultValue={dayjs(DEFAULT_VALUES.date)}
-            />
+            <DatePicker label="Date" defaultValue={dayjs(defaultValues.date)} />
           )}
         />
         <Controller
@@ -100,7 +114,6 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
               label="Description"
               placeholder="e.g., Business lunch, office supplies, travel expenses"
               error={!!errors.description}
-              defaultValue={DEFAULT_VALUES.description}
               helperText={errors.description?.message}
               {...field}
             />

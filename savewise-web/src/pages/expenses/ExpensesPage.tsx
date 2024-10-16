@@ -10,20 +10,25 @@ import {
   Button,
 } from "@mui/material";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
-import { EditExpenseModal } from "./components/EditExpenseModal";
 import { ConfirmActionModal } from "../../components/modals/ConfirmActionModal";
-import { AddExpenseModal } from "./components/AddExpenseModal";
 import { useMemo, useState } from "react";
 import { mockExpensesCollectionData } from "../../api/expenses/mockExpensesCollection";
 import dayjs from "dayjs";
 import { mockTransactions } from "../../api/transactions/mockTransactions";
 import {
-  AddExpenseRequest,
+  AddExpenseTransactionRequest as CreateExpenseTransactionRequest,
   TransactionType,
+  UpdateExpenseTransactionRequest,
 } from "../../api/transactions/type";
 import { EmptyStateCard } from "../../components/cards/EmptyStateCard";
 import { mockFundsCollection } from "../../api/funds/mockFundsCollection";
-import { TCreateExpenseTransactionSchema } from "../../api/transactions/schema";
+import {
+  TCreateExpenseTransactionSchema,
+  TUpdateExpenseTransactionSchema,
+} from "../../api/transactions/schema";
+import { newDateFormat } from "../../ultils/date";
+import { EditExpenseTransactionModal } from "./components/EditExpenseTransactionModal";
+import { AddExpenseTransactionModal } from "./components/AddExpenseTransactionModal";
 
 const tableHeaders = [
   { key: "description", label: "Description" },
@@ -78,18 +83,32 @@ export const ExpensesPage = () => {
     return fundCollection?.name ?? "Unknown Fund Source";
   };
 
-  const handleExpenseTransaction = (data: TCreateExpenseTransactionSchema) => {
-    const input: AddExpenseRequest = {
+  const handleAddExpenseTransaction = (
+    data: TCreateExpenseTransactionSchema
+  ) => {
+    const input: CreateExpenseTransactionRequest = {
       transactionType: TransactionType.Credit,
       expenseCollectionId: id ?? "",
-      // fundCollectionId: fundCollectionData?.id ?? "",
       ...data,
-      date: dayjs(data.date).format("YYYY-MM-DDTHH:mm:ssZ"),
+      date: newDateFormat(data.date),
     };
 
     console.log("AddExpenseTransactionRequest: ", input);
 
     addExpenseModal.hide();
+  };
+
+  const handleUpdateExpenseTransaction = (
+    data: TUpdateExpenseTransactionSchema
+  ) => {
+    const input: UpdateExpenseTransactionRequest = {
+      ...data,
+      date: newDateFormat(data.date),
+    };
+
+    console.log("UpdateExpenseTransactionRequest: ", input);
+
+    editExpenseModal.hide();
   };
 
   return (
@@ -137,19 +156,19 @@ export const ExpensesPage = () => {
           </Table>
         </TableContainer>
       )}
-      <AddExpenseModal
+      <AddExpenseTransactionModal
         isVisible={addExpenseModal.isVisible}
         expenseCollectionName={expenseCollectionData?.name ?? ""}
         onClose={addExpenseModal.hide}
         onCancel={addExpenseModal.hide}
-        onSubmit={handleExpenseTransaction}
+        onSubmit={handleAddExpenseTransaction}
       />
-      <EditExpenseModal
+      <EditExpenseTransactionModal
         isVisible={editExpenseModal.isVisible}
         expenseId={selectedExpenseId ?? ""}
         onClose={editExpenseModal.hide}
         onDelete={handleShowConfirmDeleteModal}
-        onUpdate={editExpenseModal.hide}
+        onUpdate={handleUpdateExpenseTransaction}
       />
       <ConfirmActionModal
         isVisible={deleteConfirmationExpenseModal.isVisible}

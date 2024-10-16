@@ -17,7 +17,7 @@ const DEFAULT_VALUES = {
   description: "",
 };
 
-interface AddFundModalProps {
+interface AddFundTransactionModalProps {
   fundCollectionName: string;
   isVisible: boolean;
   onClose: () => void;
@@ -25,13 +25,9 @@ interface AddFundModalProps {
   onSubmit: (data: TCreateFundTransactionSchema) => void;
 }
 
-export const AddFundModal: React.FC<AddFundModalProps> = ({
-  fundCollectionName,
-  isVisible,
-  onClose,
-  onCancel,
-  onSubmit,
-}) => {
+export const AddFundTransactionModal: React.FC<
+  AddFundTransactionModalProps
+> = ({ fundCollectionName, isVisible, onClose, onCancel, onSubmit }) => {
   const {
     control,
     formState: { errors },
