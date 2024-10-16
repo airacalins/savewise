@@ -28,7 +28,7 @@ import { AddFundTransactionModal } from "./components/AddFundTransactionModal";
 import { Edit } from "@mui/icons-material";
 import { EditFundCollectionModal } from "./components/EditFundCollectionModal";
 import { TUpdateFundCollectionSchema } from "../../api/funds/schema";
-import { DeleteWarning } from "../../components/modals/DeleteWarningActionModal";
+import { DeleteWarningActionModal } from "../../components/modals/DeleteWarningActionModal";
 
 const tableHeaders = [
   { key: "date", label: "Date" },
@@ -175,17 +175,19 @@ export const FundsPage = () => {
         }}
         onUpdate={handleUpdateFundCollection}
       />
-      <DeleteWarning
+      <DeleteWarningActionModal
         isVisible={deleteFundCollectionWarningModal.isVisible}
         itemName={fundCollectionData?.name ?? ""}
-        onClose={deleteFundCollectionWarningModal.hide}
+        onClose={() => {
+          deleteFundCollectionWarningModal.hide();
+          editFundCollectionModal.hide();
+        }}
         onCancel={() => {
           deleteFundCollectionWarningModal.hide();
-          editFundCollectionModal.show();
+          editFundCollectionModal.hide();
         }}
         onConfirm={handleDeleteFundCollection}
       />
-
       <AddFundTransactionModal
         isVisible={addFundTransactionModal.isVisible}
         fundCollectionName={fundCollectionData?.name ?? ""}

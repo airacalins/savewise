@@ -11,7 +11,7 @@ import { colors } from "../../theme/colors";
 import { styles } from "../../theme/styles";
 import { Close, DeleteOutline } from "@mui/icons-material";
 
-interface DeleteWarningProps extends PropsWithChildren {
+interface DeleteWarningActionModalProps extends PropsWithChildren {
   isVisible: boolean;
   itemName: string;
   onClose: () => void;
@@ -19,14 +19,9 @@ interface DeleteWarningProps extends PropsWithChildren {
   onConfirm: () => void;
 }
 
-export const DeleteWarning: React.FC<DeleteWarningProps> = ({
-  isVisible,
-  itemName,
-  children,
-  onClose,
-  onConfirm,
-  onCancel,
-}) => {
+export const DeleteWarningActionModal: React.FC<
+  DeleteWarningActionModalProps
+> = ({ isVisible, itemName, children, onClose, onConfirm, onCancel }) => {
   return (
     <MuiModal
       open={isVisible}

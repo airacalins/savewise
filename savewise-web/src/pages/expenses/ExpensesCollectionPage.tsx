@@ -99,7 +99,6 @@ export const ExpensesCollectionPage = () => {
           </Box>
         </Stack>
       )}
-
       <AddExpenseCollectionModal
         isVisible={addExpenseCollectionModal.isVisible}
         onClose={addExpenseCollectionModal.hide}

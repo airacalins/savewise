@@ -10,7 +10,6 @@ import {
   Button,
 } from "@mui/material";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
-import { ConfirmActionModal } from "../../components/modals/ConfirmActionModal";
 import { useMemo, useState } from "react";
 import { mockExpensesCollectionData } from "../../api/expenses/mockExpensesCollection";
 import dayjs from "dayjs";
@@ -29,6 +28,7 @@ import {
 import { newDateFormat } from "../../ultils/date";
 import { EditExpenseTransactionModal } from "./components/EditExpenseTransactionModal";
 import { AddExpenseTransactionModal } from "./components/AddExpenseTransactionModal";
+import { DeleteWarningActionModal } from "../../components/modals/DeleteWarningActionModal";
 
 const tableHeaders = [
   { key: "description", label: "Description" },
@@ -41,7 +41,7 @@ export const ExpensesPage = () => {
   const { id } = useParams();
   const addExpenseModal = useVisibilityState();
   const editExpenseModal = useVisibilityState();
-  const deleteConfirmationExpenseModal = useVisibilityState();
+  const deleteExpenseCollectionWarningModal = useVisibilityState();
   const [selectedExpenseId, setSelectedExpenseId] = useState<null | string>();
 
   // API
@@ -58,7 +58,7 @@ export const ExpensesPage = () => {
   // Functions
   const handleShowConfirmDeleteModal = () => {
     editExpenseModal.hide();
-    deleteConfirmationExpenseModal.show();
+    deleteExpenseCollectionWarningModal.show();
   };
 
   const breadcrumbs = useMemo(() => {
@@ -81,6 +81,10 @@ export const ExpensesPage = () => {
       (fundCollection) => fundCollection.id === id
     );
     return fundCollection?.name ?? "Unknown Fund Source";
+  };
+
+  const handleDeleteExpenseCollection = () => {
+    deleteExpenseCollectionWarningModal.hide();
   };
 
   const handleAddExpenseTransaction = (
@@ -170,28 +174,18 @@ export const ExpensesPage = () => {
         onDelete={handleShowConfirmDeleteModal}
         onUpdate={handleUpdateExpenseTransaction}
       />
-      <ConfirmActionModal
-        isVisible={deleteConfirmationExpenseModal.isVisible}
-        title="Delete Expense"
-        description="Are you sure you want to delete the selected expenses"
+      <DeleteWarningActionModal
+        isVisible={deleteExpenseCollectionWarningModal.isVisible}
+        itemName={expenseCollectionData?.name ?? ""}
         onClose={() => {
           editExpenseModal.show();
-          deleteConfirmationExpenseModal.hide();
+          deleteExpenseCollectionWarningModal.hide();
         }}
-        actions={
-          <>
-            <Button
-              variant="contained"
-              onClick={() => {
-                editExpenseModal.show();
-                deleteConfirmationExpenseModal.hide();
-              }}
-            >
-              Cancel
-            </Button>
-            {/* <Button onClick={handleExpenseTransaction}>Yes</Button> */}
-          </>
-        }
+        onCancel={() => {
+          editExpenseModal.show();
+          deleteExpenseCollectionWarningModal.hide();
+        }}
+        onConfirm={handleDeleteExpenseCollection}
       />
     </PageContainer>
   );

@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { OutletPage } from "../components/containers/OutletPage";
 import { ExpensesCollectionPage } from "../pages/expenses/ExpensesCollectionPage";
 import { FundsCollectionPage } from "../pages/funds/FundsCollectionPage";
-import { ExpensesPage } from "../pages/expenses/ExpensesPage";
+import { ExpensesPage } from "../pages/expenses/ExpensesTransactionPage";
 import { FundsPage } from "../pages/funds/FundsTransactionPage";
 import { LoginPage } from "../pages/auth/LoginPage";
 import { HomePage } from "../pages/home/HomePage";
