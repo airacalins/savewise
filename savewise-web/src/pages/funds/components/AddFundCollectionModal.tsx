@@ -10,7 +10,7 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { ContainedButton } from "../../../components/buttons/ContainedButton";
 
-const defaultValues = {
+const DEFAULT_VALUES = {
   name: "",
 };
 
@@ -34,7 +34,7 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
     handleSubmit,
   } = useForm<TCreateFundCollectionSchema>({
     resolver: yupResolver(createFundCollectionSchema),
-    defaultValues,
+    defaultValues: DEFAULT_VALUES,
     mode: "onChange",
   });
 
@@ -79,7 +79,7 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
             label="Name"
             placeholder="Groceries, Electricity, etc."
             error={!!errors.name}
-            defaultValue={defaultValues.name}
+            defaultValue={DEFAULT_VALUES.name}
             helperText={errors.name?.message}
             {...field}
           />

@@ -11,6 +11,7 @@ interface Breadcrumb {
 
 interface PageContainerProps extends React.PropsWithChildren {
   title: string;
+  titleAction?: React.ReactNode;
   subtitle: string;
   breadcrumbs?: Breadcrumb[];
   actions?: React.ReactNode;
@@ -18,6 +19,7 @@ interface PageContainerProps extends React.PropsWithChildren {
 
 export const PageContainer: React.FC<PageContainerProps> = ({
   title,
+  titleAction,
   subtitle,
   breadcrumbs,
   actions,
@@ -35,7 +37,12 @@ export const PageContainer: React.FC<PageContainerProps> = ({
     >
       <Stack direction="row" spacing={2} justifyContent="space-between">
         <Box>
-          <Typography variant="h6">{title}</Typography>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <Typography variant="h5" fontWeight={500}>
+              {title}
+            </Typography>
+            {titleAction}
+          </Stack>
           <Typography variant="subtitle1">{subtitle}</Typography>
         </Box>
         <Box>{actions}</Box>

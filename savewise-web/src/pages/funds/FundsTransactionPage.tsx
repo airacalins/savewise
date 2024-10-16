@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Chip,
+  IconButton,
   Stack,
   Table,
   TableBody,
@@ -24,6 +25,10 @@ import { mockExpensesCollectionData } from "../../api/expenses/mockExpensesColle
 import { TCreateFundTransactionSchema } from "../../api/transactions/schema";
 import { newDateFormat } from "../../ultils/date";
 import { AddFundTransactionModal } from "./components/AddFundTransactionModal";
+import { Edit } from "@mui/icons-material";
+import { EditFundCollectionModal } from "./components/EditFundCollectionModal";
+import { TUpdateFundCollectionSchema } from "../../api/funds/schema";
+import { DeleteWarning } from "../../components/modals/DeleteWarningActionModal";
 
 const tableHeaders = [
   { key: "date", label: "Date" },
@@ -33,7 +38,9 @@ const tableHeaders = [
 
 export const FundsPage = () => {
   const { id } = useParams();
-  const addFundModal = useVisibilityState();
+  const addFundTransactionModal = useVisibilityState();
+  const editFundCollectionModal = useVisibilityState();
+  const deleteFundCollectionWarningModal = useVisibilityState();
 
   // Data
   const fundCollectionData = mockFundsCollection.find(
@@ -64,6 +71,14 @@ export const FundsPage = () => {
     return expense ? expense.name : "Unknown Expense";
   };
 
+  const handleUpdateFundCollection = (data: TUpdateFundCollectionSchema) => {
+    console.log(data);
+  };
+
+  const handleDeleteFundCollection = () => {
+    deleteFundCollectionWarningModal.hide();
+  };
+
   const handleFundTransaction = (data: TCreateFundTransactionSchema) => {
     const input: AddFundRequest = {
       transactionType: TransactionType.Debit,
@@ -74,15 +89,20 @@ export const FundsPage = () => {
 
     console.log("AddFundTransactionRequest: ", input);
 
-    addFundModal.hide();
+    addFundTransactionModal.hide();
   };
 
   return (
     <PageContainer
       title={fundCollectionData?.name ?? ""}
+      titleAction={
+        <IconButton size="small" onClick={() => editFundCollectionModal.show()}>
+          <Edit />
+        </IconButton>
+      }
       subtitle="View, create and manage fund collection."
       breadcrumbs={breadcrumbs}
-      actions={<Button onClick={addFundModal.show}>Add Fund</Button>}
+      actions={<Button onClick={addFundTransactionModal.show}>Add Fund</Button>}
     >
       {fundCollectionTransactionsData.length === 0 ? (
         <EmptyStateCard message="No transaction for this collection yet." />
@@ -145,11 +165,32 @@ export const FundsPage = () => {
           </Table>
         </TableContainer>
       )}
+      <EditFundCollectionModal
+        isVisible={editFundCollectionModal.isVisible}
+        fundCollectionId={fundCollectionData?.id ?? ""}
+        onClose={editFundCollectionModal.hide}
+        onDelete={() => {
+          editFundCollectionModal.hide();
+          deleteFundCollectionWarningModal.show();
+        }}
+        onUpdate={handleUpdateFundCollection}
+      />
+      <DeleteWarning
+        isVisible={deleteFundCollectionWarningModal.isVisible}
+        itemName={fundCollectionData?.name ?? ""}
+        onClose={deleteFundCollectionWarningModal.hide}
+        onCancel={() => {
+          deleteFundCollectionWarningModal.hide();
+          editFundCollectionModal.show();
+        }}
+        onConfirm={handleDeleteFundCollection}
+      />
+
       <AddFundTransactionModal
-        isVisible={addFundModal.isVisible}
+        isVisible={addFundTransactionModal.isVisible}
         fundCollectionName={fundCollectionData?.name ?? ""}
-        onClose={addFundModal.hide}
-        onCancel={addFundModal.hide}
+        onClose={addFundTransactionModal.hide}
+        onCancel={addFundTransactionModal.hide}
         onSubmit={handleFundTransaction}
       />
     </PageContainer>
