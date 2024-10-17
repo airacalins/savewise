@@ -3,12 +3,12 @@ import { Button } from "@mui/material";
 import { TextInput } from "../../../components/inputs/TextInput";
 import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {
-  createFundCollectionSchema,
-  TCreateFundCollectionSchema,
-} from "../../../api/funds/schema";
 import { Controller, useForm } from "react-hook-form";
 import { ContainedButton } from "../../../components/buttons/ContainedButton";
+import {
+  createCollectionSchema,
+  TCreateCollectionSchema,
+} from "../../../api/collection/schema";
 
 const DEFAULT_VALUES = {
   name: "",
@@ -18,7 +18,7 @@ interface AddFundCollectionModalProps {
   isVisible: boolean;
   onClose: () => void;
   onCancel: () => void;
-  onSubmit: (data: TCreateFundCollectionSchema) => void;
+  onSubmit: (data: TCreateCollectionSchema) => void;
 }
 
 export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
@@ -32,8 +32,8 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
     formState: { errors, isValid },
     reset,
     handleSubmit,
-  } = useForm<TCreateFundCollectionSchema>({
-    resolver: yupResolver(createFundCollectionSchema),
+  } = useForm<TCreateCollectionSchema>({
+    resolver: yupResolver(createCollectionSchema),
     defaultValues: DEFAULT_VALUES,
     mode: "onChange",
   });
@@ -49,7 +49,7 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
     onCancel();
   };
 
-  const handleFormSubmit = (data: TCreateFundCollectionSchema) => {
+  const handleFormSubmit = (data: TCreateCollectionSchema) => {
     onSubmit(data);
     reset();
   };

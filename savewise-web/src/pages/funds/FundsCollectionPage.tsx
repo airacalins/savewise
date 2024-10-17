@@ -10,8 +10,8 @@ import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { AddFundCollectionModal } from "./components/AddFundCollectionModal";
 import { FundsSummary } from "./components/FundsSummary";
 import { useNavigate } from "react-router-dom";
-import { mockFundsCollection } from "../../api/funds/mockFundsCollection";
-import { TCreateFundCollectionSchema } from "../../api/funds/schema";
+import { mockFundsCollection } from "../../api/collection/mockFundsCollection";
+import { TCreateCollectionSchema } from "../../api/collection/schema";
 
 const TABLE_HEADERS = [
   {
@@ -32,7 +32,7 @@ export const FundsCollectionPage = () => {
   const fundsCollectionData = mockFundsCollection;
 
   // Functions
-  const handleAddFundCollection = (data: TCreateFundCollectionSchema) => {
+  const handleAddFundCollection = (data: TCreateCollectionSchema) => {
     console.log(data);
     addFundCollectionModal.hide();
   };
@@ -72,7 +72,9 @@ export const FundsCollectionPage = () => {
                     <TableCell component="th" scope="row">
                       {fundCollection.name}
                     </TableCell>
-                    <TableCell>{fundCollection.balance.toFixed(2)}</TableCell>
+                    <TableCell>
+                      {fundCollection.currentMonthTotal.toFixed(2)}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

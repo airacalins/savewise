@@ -12,17 +12,16 @@ import {
 } from "@mui/material";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { useMemo, useState } from "react";
-import { mockExpensesCollectionData } from "../../api/expenses/mockExpensesCollection";
+import { mockExpensesCollectionData } from "../../api/collection/mockExpensesCollection";
 import dayjs from "dayjs";
 import { mockTransactions } from "../../api/transactions/mockTransactions";
 import {
   AddExpenseTransactionRequest as CreateExpenseTransactionRequest,
   Transaction,
-  TransactionType,
   UpdateExpenseTransactionRequest,
 } from "../../api/transactions/type";
 import { EmptyStateCard } from "../../components/cards/EmptyStateCard";
-import { mockFundsCollection } from "../../api/funds/mockFundsCollection";
+import { mockFundsCollection } from "../../api/collection/mockFundsCollection";
 import {
   TCreateExpenseTransactionSchema,
   TUpdateExpenseTransactionSchema,
@@ -33,7 +32,7 @@ import { AddExpenseTransactionModal } from "./components/AddExpenseTransactionMo
 import { DeleteWarningActionModal } from "../../components/modals/DeleteWarningActionModal";
 import { Edit } from "@mui/icons-material";
 import { EditExpenseCollectionModal } from "./components/EditExpenseCollectionModal";
-import { TUpdateExpenseCollectionSchema } from "../../api/expenses/schema";
+import { TUpdateCollectionSchema } from "../../api/collection/schema";
 
 const tableHeaders = [
   { key: "description", label: "Description" },
@@ -58,9 +57,7 @@ export const ExpensesPage = () => {
   );
   const fundCollectionData = mockFundsCollection;
   const transactionData = mockTransactions.filter(
-    (transaction) =>
-      transaction.expenseCollectionId === id &&
-      transaction.transactionType === TransactionType.Credit
+    (transaction) => transaction.expenseCollectionId === id
   );
 
   // Functions
@@ -91,9 +88,7 @@ export const ExpensesPage = () => {
     return fundCollection?.name ?? "Unknown Fund Source";
   };
 
-  const handleUpdateExpenseCollection = (
-    data: TUpdateExpenseCollectionSchema
-  ) => {
+  const handleUpdateExpenseCollection = (data: TUpdateCollectionSchema) => {
     console.log(data);
     editExpenseCollectionModal.hide();
   };
@@ -106,7 +101,6 @@ export const ExpensesPage = () => {
     data: TCreateExpenseTransactionSchema
   ) => {
     const input: CreateExpenseTransactionRequest = {
-      transactionType: TransactionType.Credit,
       expenseCollectionId: id ?? "",
       ...data,
       date: newDateFormat(data.date),

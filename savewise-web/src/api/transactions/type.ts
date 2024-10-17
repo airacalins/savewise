@@ -1,11 +1,5 @@
-export enum TransactionType {
-  Credit = "CREDIT",
-  Debit = "DEBIT",
-}
-
 export type Transaction = {
   id: string;
-  transactionType: TransactionType;
   date: string;
   amount: number;
   description: string;

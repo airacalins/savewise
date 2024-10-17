@@ -1,24 +1,24 @@
 import React, { useMemo } from "react";
 import { Button } from "@mui/material";
 import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
-import {
-  TUpdateExpenseCollectionSchema,
-  updateExpenseCollectionSchema,
-} from "../../../api/expenses/schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import { TextInput } from "../../../components/inputs/TextInput";
 import { ContainedButton } from "../../../components/buttons/ContainedButton";
-import { mockExpensesCollectionData } from "../../../api/expenses/mockExpensesCollection";
+import { mockExpensesCollectionData } from "../../../api/collection/mockExpensesCollection";
 import { DeleteOutline, Save } from "@mui/icons-material";
 import { colors } from "../../../theme/colors";
+import {
+  TUpdateCollectionSchema,
+  updateCollectionSchema,
+} from "../../../api/collection/schema";
 
 interface EditExpenseCollectionModalProps {
   isVisible: boolean;
   expenseCollectionId: string;
   onClose: () => void;
   onDelete: () => void;
-  onUpdate: (data: TUpdateExpenseCollectionSchema) => void;
+  onUpdate: (data: TUpdateCollectionSchema) => void;
 }
 
 export const EditExpenseCollectionModal: React.FC<
@@ -40,8 +40,8 @@ export const EditExpenseCollectionModal: React.FC<
     formState: { errors, isDirty, isValid },
     reset,
     handleSubmit,
-  } = useForm<TUpdateExpenseCollectionSchema>({
-    resolver: yupResolver(updateExpenseCollectionSchema),
+  } = useForm<TUpdateCollectionSchema>({
+    resolver: yupResolver(updateCollectionSchema),
     defaultValues,
     mode: "onChange",
   });
@@ -52,7 +52,7 @@ export const EditExpenseCollectionModal: React.FC<
     onClose();
   };
 
-  const handleFormSubmit = (data: TUpdateExpenseCollectionSchema) => {
+  const handleFormSubmit = (data: TUpdateCollectionSchema) => {
     onUpdate(data);
     reset();
   };

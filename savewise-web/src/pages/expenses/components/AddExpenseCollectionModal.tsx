@@ -1,14 +1,15 @@
 import React from "react";
 import { Button } from "@mui/material";
 import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
-import {
-  createExpenseCollectionSchema,
-  TCreateExpenseCollectionSchema,
-} from "../../../api/expenses/schema";
+
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import { TextInput } from "../../../components/inputs/TextInput";
 import { ContainedButton } from "../../../components/buttons/ContainedButton";
+import {
+  createCollectionSchema,
+  TCreateCollectionSchema,
+} from "../../../api/collection/schema";
 
 const DEFAULT_VALUES = {
   name: "",
@@ -17,7 +18,7 @@ interface AddExpenseCollectionModalProps {
   isVisible: boolean;
   onClose: () => void;
   onCancel: () => void;
-  onSubmit: (data: TCreateExpenseCollectionSchema) => void;
+  onSubmit: (data: TCreateCollectionSchema) => void;
 }
 
 export const AddExpenseCollectionModal: React.FC<
@@ -28,8 +29,8 @@ export const AddExpenseCollectionModal: React.FC<
     formState: { errors, isValid },
     reset,
     handleSubmit,
-  } = useForm<TCreateExpenseCollectionSchema>({
-    resolver: yupResolver(createExpenseCollectionSchema),
+  } = useForm<TCreateCollectionSchema>({
+    resolver: yupResolver(createCollectionSchema),
     defaultValues: DEFAULT_VALUES,
     mode: "onChange",
   });
@@ -45,7 +46,7 @@ export const AddExpenseCollectionModal: React.FC<
     onCancel();
   };
 
-  const handleFormSubmit = (data: TCreateExpenseCollectionSchema) => {
+  const handleFormSubmit = (data: TCreateCollectionSchema) => {
     onSubmit(data);
     reset();
   };

@@ -1,12 +1,19 @@
-export type ExpenseCollection = {
+export enum CollectionType {
+  Fund = "FUND",
+  Expense = "EXPENSE",
+}
+
+export type Collection = {
   id: string;
   name: string;
+  collectionType: CollectionType;
   currentMonthTotal: number;
   yearToDateTotal: number;
-  isHidden: boolean;
 };
 
-export type AddExpenseCollectionRequest = Pick<ExpenseCollection, "name">;
+export type FundCollectionRequest = Omit<Collection, "id">;
+
+export type AddExpenseCollectionRequest = Pick<Collection, "name">;
 
 export type Expense = {
   id: string;

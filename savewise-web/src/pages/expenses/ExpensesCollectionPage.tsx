@@ -12,11 +12,11 @@ import {
 import { PageContainer } from "../../components/containers/PageContainer";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { useNavigate } from "react-router-dom";
-import { mockExpensesCollectionData } from "../../api/expenses/mockExpensesCollection";
+import { mockExpensesCollectionData } from "../../api/collection/mockExpensesCollection";
 import { AddExpenseCollectionModal } from "./components/AddExpenseCollectionModal";
 import { EmptyStateCard } from "../../components/cards/EmptyStateCard";
 import { ExpensesSummary } from "./components/ExpensesSummary";
-import { TCreateExpenseCollectionSchema } from "../../api/expenses/schema";
+import { TCreateCollectionSchema } from "../../api/collection/schema";
 
 const TABLE_HEADERS = [
   {
@@ -41,7 +41,7 @@ export const ExpensesCollectionPage = () => {
   const expensesCollectionData = mockExpensesCollectionData;
 
   // Functions
-  const handleAddExpenseCollection = (data: TCreateExpenseCollectionSchema) => {
+  const handleAddExpenseCollection = (data: TCreateCollectionSchema) => {
     console.log(data);
     addExpenseCollectionModal.hide();
   };

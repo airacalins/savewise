@@ -3,22 +3,23 @@ import { Button } from "@mui/material";
 import { TextInput } from "../../../components/inputs/TextInput";
 import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {
-  TUpdateFundCollectionSchema,
-  updateFundCollectionSchema,
-} from "../../../api/funds/schema";
+
 import { Controller, useForm } from "react-hook-form";
 import { ContainedButton } from "../../../components/buttons/ContainedButton";
 import { DeleteOutline, Save } from "@mui/icons-material";
-import { mockFundsCollection } from "../../../api/funds/mockFundsCollection";
+import { mockFundsCollection } from "../../../api/collection/mockFundsCollection";
 import { colors } from "../../../theme/colors";
+import {
+  TUpdateCollectionSchema,
+  updateCollectionSchema,
+} from "../../../api/collection/schema";
 
 interface EditFundCollectionModalProps {
   isVisible: boolean;
   fundCollectionId: string;
   onClose: () => void;
   onDelete: () => void;
-  onUpdate: (data: TUpdateFundCollectionSchema) => void;
+  onUpdate: (data: TUpdateCollectionSchema) => void;
 }
 
 export const EditFundCollectionModal: React.FC<
@@ -40,8 +41,8 @@ export const EditFundCollectionModal: React.FC<
     formState: { errors, isDirty, isValid },
     reset,
     handleSubmit,
-  } = useForm<TUpdateFundCollectionSchema>({
-    resolver: yupResolver(updateFundCollectionSchema),
+  } = useForm<TUpdateCollectionSchema>({
+    resolver: yupResolver(updateCollectionSchema),
     defaultValues,
     mode: "onChange",
   });
@@ -52,7 +53,7 @@ export const EditFundCollectionModal: React.FC<
     onClose();
   };
 
-  const handleFormSubmit = (data: TUpdateFundCollectionSchema) => {
+  const handleFormSubmit = (data: TUpdateCollectionSchema) => {
     onUpdate(data);
     reset();
   };

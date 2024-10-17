@@ -14,18 +14,14 @@ import {
 } from "@mui/material";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { useParams } from "react-router-dom";
-import { mockFundsCollection } from "../../api/funds/mockFundsCollection";
+import { mockFundsCollection } from "../../api/collection/mockFundsCollection";
 import { useMemo, useState } from "react";
 import dayjs from "dayjs";
 import { EmptyStateCard } from "../../components/cards/EmptyStateCard";
 import { mockTransactions } from "../../api/transactions/mockTransactions";
 import { Text } from "../../components/texts/Text";
-import {
-  AddFundRequest,
-  Transaction,
-  TransactionType,
-} from "../../api/transactions/type";
-import { mockExpensesCollectionData } from "../../api/expenses/mockExpensesCollection";
+import { AddFundRequest, Transaction } from "../../api/transactions/type";
+import { mockExpensesCollectionData } from "../../api/collection/mockExpensesCollection";
 import {
   TCreateFundTransactionSchema,
   TUpdateFundTransactionSchema,
@@ -34,9 +30,9 @@ import { newDateFormat } from "../../ultils/date";
 import { AddFundTransactionModal } from "./components/AddFundTransactionModal";
 import { Edit } from "@mui/icons-material";
 import { EditFundCollectionModal } from "./components/EditFundCollectionModal";
-import { TUpdateFundCollectionSchema } from "../../api/funds/schema";
 import { DeleteWarningActionModal } from "../../components/modals/DeleteWarningActionModal";
 import { EditFundTransactionModal } from "./components/EditFundTransactionModal";
+import { TUpdateCollectionSchema } from "../../api/collection/schema";
 
 const tableHeaders = [
   { key: "date", label: "Date" },
@@ -83,7 +79,7 @@ export const FundsPage = () => {
     return expense ? expense.name : "Unknown Expense";
   };
 
-  const handleUpdateFundCollection = (data: TUpdateFundCollectionSchema) => {
+  const handleUpdateFundCollection = (data: TUpdateCollectionSchema) => {
     console.log(data);
   };
 
@@ -93,7 +89,6 @@ export const FundsPage = () => {
 
   const handleCreateFundTransaction = (data: TCreateFundTransactionSchema) => {
     const input: AddFundRequest = {
-      transactionType: TransactionType.Debit,
       fundCollectionId: id ?? "",
       ...data,
       date: newDateFormat(data.date),
@@ -151,26 +146,24 @@ export const FundsPage = () => {
                     <Stack direction="row" alignItems="center">
                       <Text>{fundTransaction.description}</Text>
                       <Box width="8px" />
-                      {fundTransaction.transactionType ===
-                        TransactionType.Credit && (
-                        <Chip
-                          label={getExpenseName(fundTransaction.id)}
-                          variant="outlined"
-                          color="error"
-                          size="small"
-                        />
-                      )}
+
+                      <Chip
+                        label={getExpenseName(fundTransaction.id)}
+                        variant="outlined"
+                        color="error"
+                        size="small"
+                      />
                     </Stack>
                   </TableCell>
                   <TableCell>
                     <Text
                       variant="body2"
-                      color={
-                        fundTransaction.transactionType ===
-                        TransactionType.Credit
-                          ? "error"
-                          : "info"
-                      }
+                      // color={
+                      //   fundTransaction.transactionType ===
+                      //   TransactionType.Credit
+                      //     ? "error"
+                      //     : "info"
+                      // }
                     >
                       {fundTransaction.amount.toFixed(2)}
                     </Text>

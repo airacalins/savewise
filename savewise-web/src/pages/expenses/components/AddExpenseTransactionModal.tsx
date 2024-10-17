@@ -11,7 +11,7 @@ import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModa
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { TextInput } from "../../../components/inputs/TextInput";
-import { mockFundsCollection } from "../../../api/funds/mockFundsCollection";
+import { mockFundsCollection } from "../../../api/collection/mockFundsCollection";
 import {
   createExpenseTransactionSchema,
   TCreateExpenseTransactionSchema,
