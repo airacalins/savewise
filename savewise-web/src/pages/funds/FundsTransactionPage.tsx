@@ -15,20 +15,28 @@ import {
 import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { useParams } from "react-router-dom";
 import { mockFundsCollection } from "../../api/funds/mockFundsCollection";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import dayjs from "dayjs";
 import { EmptyStateCard } from "../../components/cards/EmptyStateCard";
 import { mockTransactions } from "../../api/transactions/mockTransactions";
 import { Text } from "../../components/texts/Text";
-import { AddFundRequest, TransactionType } from "../../api/transactions/type";
+import {
+  AddFundRequest,
+  Transaction,
+  TransactionType,
+} from "../../api/transactions/type";
 import { mockExpensesCollectionData } from "../../api/expenses/mockExpensesCollection";
-import { TCreateFundTransactionSchema } from "../../api/transactions/schema";
+import {
+  TCreateFundTransactionSchema,
+  TUpdateFundTransactionSchema,
+} from "../../api/transactions/schema";
 import { newDateFormat } from "../../ultils/date";
 import { AddFundTransactionModal } from "./components/AddFundTransactionModal";
 import { Edit } from "@mui/icons-material";
 import { EditFundCollectionModal } from "./components/EditFundCollectionModal";
 import { TUpdateFundCollectionSchema } from "../../api/funds/schema";
 import { DeleteWarningActionModal } from "../../components/modals/DeleteWarningActionModal";
+import { EditFundTransactionModal } from "./components/EditFundTransactionModal";
 
 const tableHeaders = [
   { key: "date", label: "Date" },
@@ -38,9 +46,13 @@ const tableHeaders = [
 
 export const FundsPage = () => {
   const { id } = useParams();
-  const addFundTransactionModal = useVisibilityState();
   const editFundCollectionModal = useVisibilityState();
   const deleteFundCollectionWarningModal = useVisibilityState();
+  const addFundTransactionModal = useVisibilityState();
+  const editFundTransactionModal = useVisibilityState();
+  const deleteFundTransactionWarningModal = useVisibilityState();
+  const [selectedFundTransaction, setSelectedFundTransaction] =
+    useState<null | Transaction>();
 
   // Data
   const fundCollectionData = mockFundsCollection.find(
@@ -92,6 +104,10 @@ export const FundsPage = () => {
     addFundTransactionModal.hide();
   };
 
+  const handleUpdateFundTransaction = (data: TUpdateFundTransactionSchema) => {
+    console.log(data);
+  };
+
   return (
     <PageContainer
       title={fundCollectionData?.name ?? ""}
@@ -124,8 +140,8 @@ export const FundsPage = () => {
                   key={index}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   onClick={() => {
-                    // editExpenseModal.show();
-                    // setSelectedExpenseId(expense.id);
+                    editFundTransactionModal.show();
+                    setSelectedFundTransaction(fundTransaction);
                   }}
                 >
                   <TableCell>
@@ -194,6 +210,29 @@ export const FundsPage = () => {
         onClose={addFundTransactionModal.hide}
         onCancel={addFundTransactionModal.hide}
         onSubmit={handleCreateFundTransaction}
+      />
+      <EditFundTransactionModal
+        isVisible={editFundTransactionModal.isVisible}
+        fundTransactionId={selectedFundTransaction?.id ?? ""}
+        onClose={editFundTransactionModal.hide}
+        onDelete={() => {
+          editFundTransactionModal.hide();
+          deleteFundTransactionWarningModal.show();
+        }}
+        onUpdate={handleUpdateFundTransaction}
+      />
+      <DeleteWarningActionModal
+        isVisible={deleteFundTransactionWarningModal.isVisible}
+        itemName={selectedFundTransaction?.description ?? ""}
+        onClose={() => {
+          deleteFundTransactionWarningModal.hide();
+          editFundTransactionModal.show();
+        }}
+        onCancel={() => {
+          deleteFundTransactionWarningModal.hide();
+          editFundTransactionModal.show();
+        }}
+        onConfirm={handleDeleteFundCollection}
       />
     </PageContainer>
   );

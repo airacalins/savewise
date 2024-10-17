@@ -17,6 +17,7 @@ import dayjs from "dayjs";
 import { mockTransactions } from "../../api/transactions/mockTransactions";
 import {
   AddExpenseTransactionRequest as CreateExpenseTransactionRequest,
+  Transaction,
   TransactionType,
   UpdateExpenseTransactionRequest,
 } from "../../api/transactions/type";
@@ -47,7 +48,9 @@ export const ExpensesPage = () => {
   const addExpenseTransactionModal = useVisibilityState();
   const editExpenseTransactionModal = useVisibilityState();
   const deleteExpenseCollectionWarningModal = useVisibilityState();
-  const [selectedExpenseId, setSelectedExpenseId] = useState<null | string>();
+  const deleteExpenseTransactionWarningModal = useVisibilityState();
+  const [selectedExpenseTransaction, setSelectedExpenseTransaction] =
+    useState<null | Transaction>();
 
   // API
   const expenseCollectionData = mockExpensesCollectionData.find(
@@ -63,7 +66,7 @@ export const ExpensesPage = () => {
   // Functions
   const handleShowConfirmDeleteModal = () => {
     editExpenseTransactionModal.hide();
-    deleteExpenseCollectionWarningModal.show();
+    deleteExpenseTransactionWarningModal.show();
   };
 
   const breadcrumbs = useMemo(() => {
@@ -127,6 +130,10 @@ export const ExpensesPage = () => {
     editExpenseTransactionModal.hide();
   };
 
+  const handleDeleteExpenseTransaction = () => {
+    deleteExpenseTransactionWarningModal.hide();
+  };
+
   return (
     <PageContainer
       title={expenseCollectionData?.name ?? ""}
@@ -162,7 +169,7 @@ export const ExpensesPage = () => {
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   onClick={() => {
                     editExpenseTransactionModal.show();
-                    setSelectedExpenseId(expense.id);
+                    setSelectedExpenseTransaction(expense);
                   }}
                 >
                   <TableCell>{expense.description}</TableCell>
@@ -189,20 +196,6 @@ export const ExpensesPage = () => {
         }}
         onUpdate={handleUpdateExpenseCollection}
       />
-      <AddExpenseTransactionModal
-        isVisible={addExpenseTransactionModal.isVisible}
-        expenseCollectionName={expenseCollectionData?.name ?? ""}
-        onClose={addExpenseTransactionModal.hide}
-        onCancel={addExpenseTransactionModal.hide}
-        onSubmit={handleAddExpenseTransaction}
-      />
-      <EditExpenseTransactionModal
-        isVisible={editExpenseTransactionModal.isVisible}
-        expenseId={selectedExpenseId ?? ""}
-        onClose={editExpenseTransactionModal.hide}
-        onDelete={handleShowConfirmDeleteModal}
-        onUpdate={handleUpdateExpenseTransaction}
-      />
       <DeleteWarningActionModal
         isVisible={deleteExpenseCollectionWarningModal.isVisible}
         itemName={expenseCollectionData?.name ?? ""}
@@ -215,6 +208,33 @@ export const ExpensesPage = () => {
           editExpenseCollectionModal.show();
         }}
         onConfirm={handleDeleteExpenseCollection}
+      />
+      <AddExpenseTransactionModal
+        isVisible={addExpenseTransactionModal.isVisible}
+        expenseCollectionName={expenseCollectionData?.name ?? ""}
+        onClose={addExpenseTransactionModal.hide}
+        onCancel={addExpenseTransactionModal.hide}
+        onSubmit={handleAddExpenseTransaction}
+      />
+      <EditExpenseTransactionModal
+        isVisible={editExpenseTransactionModal.isVisible}
+        expenseTransactionId={selectedExpenseTransaction?.id ?? ""}
+        onClose={editExpenseTransactionModal.hide}
+        onDelete={handleShowConfirmDeleteModal}
+        onUpdate={handleUpdateExpenseTransaction}
+      />
+      <DeleteWarningActionModal
+        isVisible={deleteExpenseCollectionWarningModal.isVisible}
+        itemName={selectedExpenseTransaction?.description ?? ""}
+        onClose={() => {
+          deleteExpenseCollectionWarningModal.hide();
+          editExpenseCollectionModal.show();
+        }}
+        onCancel={() => {
+          deleteExpenseCollectionWarningModal.hide();
+          editExpenseCollectionModal.show();
+        }}
+        onConfirm={handleDeleteExpenseTransaction}
       />
     </PageContainer>
   );

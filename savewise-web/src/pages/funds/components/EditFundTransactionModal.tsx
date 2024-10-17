@@ -1,5 +1,15 @@
 import React, { useEffect, useMemo } from "react";
 import {
+  TUpdateExpenseTransactionSchema,
+  TUpdateFundTransactionSchema,
+  updateExpenseTransactionSchema,
+} from "../../../api/transactions/schema";
+import { mockTransactions } from "../../../api/transactions/mockTransactions";
+import { mockFundsCollection } from "../../../api/funds/mockFundsCollection";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Controller, useForm } from "react-hook-form";
+import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
+import {
   Button,
   FormControl,
   InputLabel,
@@ -8,47 +18,38 @@ import {
   Stack,
 } from "@mui/material";
 import { DeleteOutline, Save } from "@mui/icons-material";
-import { colors } from "../../../theme/colors";
-import { DatePicker } from "@mui/x-date-pickers";
-import { TextInput } from "../../../components/inputs/TextInput";
-import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
-import { mockTransactions } from "../../../api/transactions/mockTransactions";
-import { mockFundsCollection } from "../../../api/funds/mockFundsCollection";
-import {
-  TUpdateExpenseTransactionSchema,
-  updateExpenseTransactionSchema,
-} from "../../../api/transactions/schema";
-import { Controller, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { ContainedButton } from "../../../components/buttons/ContainedButton";
+import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
+import { TextInput } from "../../../components/inputs/TextInput";
+import { colors } from "../../../theme/colors";
+import { TransactionType } from "../../../api/transactions/type";
 
-interface EditExpenseTransactionModalProps {
+interface EditFundTransactionModalProps {
   isVisible: boolean;
-  expenseTransactionId: string;
+  fundTransactionId: string;
   onClose: () => void;
   onDelete: () => void;
-  onUpdate: (data: TUpdateExpenseTransactionSchema) => void;
+  onUpdate: (data: TUpdateFundTransactionSchema) => void;
 }
 
-export const EditExpenseTransactionModal: React.FC<
-  EditExpenseTransactionModalProps
-> = ({ isVisible, expenseTransactionId, onClose, onDelete, onUpdate }) => {
+export const EditFundTransactionModal: React.FC<
+  EditFundTransactionModalProps
+> = ({ isVisible, fundTransactionId, onClose, onDelete, onUpdate }) => {
   // API
-  const expenseTransactionData = mockTransactions.find(
-    (expense) => expense.id === expenseTransactionId
+  const fundTransactionData = mockTransactions.find(
+    (fundTransaction) => fundTransaction.id === fundTransactionId
   );
   const fundsCollectionData = mockFundsCollection;
 
-  const defaultValues = useMemo(
-    () => ({
-      date: new Date(expenseTransactionData?.date ?? ""),
-      description: expenseTransactionData?.description ?? "",
-      amount: expenseTransactionData?.amount ?? 0,
-      fundCollectionId: expenseTransactionData?.fundCollectionId ?? "",
-    }),
-    [expenseTransactionData]
-  );
+  const defaultValues = useMemo(() => {
+    return {
+      date: new Date(fundTransactionData?.date ?? ""),
+      description: fundTransactionData?.description ?? "",
+      amount: fundTransactionData?.amount ?? 0,
+      fundCollectionId: fundTransactionData?.fundCollectionId ?? "",
+    };
+  }, [fundTransactionData]);
 
   const {
     control,
@@ -63,7 +64,7 @@ export const EditExpenseTransactionModal: React.FC<
 
   useEffect(() => {
     reset(defaultValues);
-  }, [expenseTransactionData, reset, defaultValues]);
+  }, [fundTransactionData, reset, defaultValues]);
 
   // Functions
   const handleCloseModal = () => {
@@ -79,7 +80,7 @@ export const EditExpenseTransactionModal: React.FC<
   return (
     <ConfirmActionModal
       isVisible={isVisible}
-      title="Update Expense"
+      title="Update Fund"
       onClose={handleCloseModal}
       actions={
         <>
@@ -142,26 +143,28 @@ export const EditExpenseTransactionModal: React.FC<
             />
           )}
         />
-        <Controller
-          name="fundCollectionId"
-          control={control}
-          render={({ field }) => (
-            <FormControl fullWidth>
-              <InputLabel id="source-select-label">Source</InputLabel>
-              <Select
-                labelId="source-select-label"
-                label="Fund Source"
-                {...field}
-              >
-                {fundsCollectionData.map((fund) => (
-                  <MenuItem key={fund.id} value={fund.id}>
-                    {fund.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          )}
-        />
+        {fundTransactionData?.transactionType === TransactionType.Credit && (
+          <Controller
+            name="fundCollectionId"
+            control={control}
+            render={({ field }) => (
+              <FormControl fullWidth>
+                <InputLabel id="source-select-label">Move to</InputLabel>
+                <Select
+                  labelId="source-select-label"
+                  label="Fund Source"
+                  {...field}
+                >
+                  {fundsCollectionData.map((fund) => (
+                    <MenuItem key={fund.id} value={fund.id}>
+                      {fund.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
+          />
+        )}
       </Stack>
     </ConfirmActionModal>
   );

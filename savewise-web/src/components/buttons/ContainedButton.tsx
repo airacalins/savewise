@@ -15,7 +15,7 @@ export const ContainedButton: React.FC<ContainedButtonProps> = ({
       endIcon={isLoading && <CircularProgress size={16} color="inherit" />}
       {...props}
     >
-      Submit
+      {props.children}
     </Button>
   );
 };
