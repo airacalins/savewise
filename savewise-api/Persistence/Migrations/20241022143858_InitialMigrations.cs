@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Persistence.Migrations
 {
     /// <inheritdoc />
@@ -55,6 +57,15 @@ namespace Persistence.Migrations
                         principalTable: "Collections",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Collections",
+                columns: new[] { "Id", "CollectionType", "CreatedAt", "CurrentMonthTotal", "Date", "YearToDateTotal" },
+                values: new object[,]
+                {
+                    { new Guid("ac291e35-3876-4bb8-8c7e-01da4a2097f7"), 1, new DateTime(2024, 10, 22, 22, 38, 58, 489, DateTimeKind.Local).AddTicks(6050), 5000.0, new DateTime(2024, 10, 22, 22, 38, 58, 489, DateTimeKind.Local).AddTicks(6010), 30000.0 },
+                    { new Guid("ef60bdd3-1df8-446e-9ccb-997efb0952b2"), 0, new DateTime(2024, 9, 22, 22, 38, 58, 489, DateTimeKind.Local).AddTicks(6070), 10000.0, new DateTime(2024, 9, 22, 22, 38, 58, 489, DateTimeKind.Local).AddTicks(6070), 50000.0 }
                 });
 
             migrationBuilder.CreateIndex(

@@ -9,25 +9,22 @@ namespace API.Controllers
 
     public class CollectionController : ControllerBase
     {
-        private readonly IGetCollectionsCommand _getCollectionCommand;
+        private readonly IGetCollectionsCommand _getCollectionsCommand;
 
-        public CollectionController(IGetCollectionsCommand getCollectionCommand)
+        public CollectionController(
+            IGetCollectionsCommand getCollectionsCommand
+            )
         {
-            _getCollectionCommand = getCollectionCommand;
+            _getCollectionsCommand = getCollectionsCommand;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<CollectionViewModel>>> GetCollections()
         {
-            var result = await _getCollectionCommand.ExecuteCommand();
-
-            if (!result.IsSuccess)
-            {
-                return BadRequest(result.Error);
-            }
+            var result = await _getCollectionsCommand.ExecuteCommand();
+            if (!result.IsSuccess) return BadRequest(result.Error);
 
             var data = result.Value.Select(fund => new CollectionViewModel(fund)).ToList();
-
             return Ok(data);
         }
     }

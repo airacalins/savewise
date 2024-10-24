@@ -41,6 +41,26 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Collections");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("ac291e35-3876-4bb8-8c7e-01da4a2097f7"),
+                            CollectionType = 1,
+                            CreatedAt = new DateTime(2024, 10, 22, 22, 38, 58, 489, DateTimeKind.Local).AddTicks(6050),
+                            CurrentMonthTotal = 5000.0,
+                            Date = new DateTime(2024, 10, 22, 22, 38, 58, 489, DateTimeKind.Local).AddTicks(6010),
+                            YearToDateTotal = 30000.0
+                        },
+                        new
+                        {
+                            Id = new Guid("ef60bdd3-1df8-446e-9ccb-997efb0952b2"),
+                            CollectionType = 0,
+                            CreatedAt = new DateTime(2024, 9, 22, 22, 38, 58, 489, DateTimeKind.Local).AddTicks(6070),
+                            CurrentMonthTotal = 10000.0,
+                            Date = new DateTime(2024, 9, 22, 22, 38, 58, 489, DateTimeKind.Local).AddTicks(6070),
+                            YearToDateTotal = 50000.0
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Transaction", b =>
