@@ -8,6 +8,7 @@ namespace API.Extensions
         public static IServiceCollection AddCommandServices(this IServiceCollection services)
         {
             services.AddScoped<IGetCollectionsCommand, GetCollectionsCommand>();
+            services.AddScoped<IGetCollectionsByTypeCommand, GetCollectionsByTypeCommand>();
 
             return services;
         }
