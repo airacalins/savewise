@@ -13,3 +13,25 @@ export const useGetCollections = () => {
     queryKey,
   });
 };
+
+// GET - /api/Collections/funds
+export const useGetFundCollections = () => {
+  const url = "/collections/funds";
+  const queryKey = [QUERY_KEY, "funds"];
+
+  return useGet<Array<Collection>>({
+    url,
+    queryKey,
+  });
+};
+
+// GET - /api/Collections/expenses
+export const useGetExpensesCollections = () => {
+  const url = "/collections/expenses";
+  const queryKey = [QUERY_KEY, "expenses"];
+
+  return useGet<Array<Collection>>({
+    url,
+    queryKey,
+  });
+};

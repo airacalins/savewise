@@ -10,8 +10,9 @@ import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { AddFundCollectionModal } from "./components/AddFundCollectionModal";
 import { FundsSummary } from "./components/FundsSummary";
 import { useNavigate } from "react-router-dom";
-import { mockFundsCollection } from "../../api/collection/mockFundsCollection";
 import { TCreateCollectionSchema } from "../../api/collection/schema";
+import { useGetFundCollections } from "../../api/collection/hooks";
+import { formatNumberWithCommas } from "../../utils/number";
 
 const TABLE_HEADERS = [
   {
@@ -29,7 +30,8 @@ export const FundsCollectionPage = () => {
   const addFundCollectionModal = useVisibilityState();
 
   // API
-  const fundsCollectionData = mockFundsCollection;
+  // const fundsCollectionData = mockFundsCollection;
+  const { data: fundsCollectionData } = useGetFundCollections();
 
   // Functions
   const handleAddFundCollection = (data: TCreateCollectionSchema) => {
@@ -61,7 +63,7 @@ export const FundsCollectionPage = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {fundsCollectionData.map((fundCollection) => (
+                {fundsCollectionData?.map((fundCollection) => (
                   <TableRow
                     key={fundCollection.name}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -73,7 +75,7 @@ export const FundsCollectionPage = () => {
                       {fundCollection.name}
                     </TableCell>
                     <TableCell>
-                      {fundCollection.currentMonthTotal.toFixed(2)}
+                      {formatNumberWithCommas(fundCollection.currentMonthTotal)}
                     </TableCell>
                   </TableRow>
                 ))}
