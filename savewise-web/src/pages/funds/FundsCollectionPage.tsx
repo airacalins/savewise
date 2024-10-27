@@ -30,7 +30,6 @@ export const FundsCollectionPage = () => {
   const addFundCollectionModal = useVisibilityState();
 
   // API
-  // const fundsCollectionData = mockFundsCollection;
   const { data: fundsCollectionData } = useGetFundCollections();
 
   // Functions
