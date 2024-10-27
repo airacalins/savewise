@@ -9,6 +9,7 @@ namespace Application.Dtos
         {
             Id = collection.Id;
             Date = collection.Date;
+            Name = collection.Name;
             CollectionType = collection.CollectionType;
             CurrentMonthTotal = collection.CurrentMonthTotal;
             YearToDateTotal = collection.YearToDateTotal;
@@ -17,6 +18,7 @@ namespace Application.Dtos
 
         public Guid Id { get; set; }
         public DateTime Date { get; set; }
+        public string Name { get; set; } = string.Empty;
         public CollectionType CollectionType { get; set; }
         public double CurrentMonthTotal { get; set; }
         public double YearToDateTotal { get; set; }
