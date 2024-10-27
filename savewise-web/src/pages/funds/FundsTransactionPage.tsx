@@ -26,7 +26,7 @@ import {
   TCreateFundTransactionSchema,
   TUpdateFundTransactionSchema,
 } from "../../api/transactions/schema";
-import { newDateFormat } from "../../ultils/date";
+import { newDateFormat } from "../../utils/date";
 import { AddFundTransactionModal } from "./components/AddFundTransactionModal";
 import { Edit } from "@mui/icons-material";
 import { EditFundCollectionModal } from "./components/EditFundCollectionModal";

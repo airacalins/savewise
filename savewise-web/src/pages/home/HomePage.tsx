@@ -3,8 +3,14 @@ import { PageContainer } from "../../components/containers/PageContainer";
 import { FundsSummary } from "../funds/components/FundsSummary";
 import { ExpensesSummary } from "../expenses/components/ExpensesSummary";
 import { Text } from "../../components/texts/Text";
+import { useGetCollections } from "../../api/collection/hooks";
 
 export const HomePage = () => {
+  const { data, error } = useGetCollections();
+
+  console.log(JSON.stringify(data, null, 2));
+  if (error) return <div>Error: {error.message}</div>;
+
   return (
     <PageContainer
       title="Home"

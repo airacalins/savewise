@@ -7,11 +7,11 @@ namespace API.Controllers
     [ApiController]
     [Route("api/[controller]")]
 
-    public class CollectionController : ControllerBase
+    public class CollectionsController : ControllerBase
     {
         private readonly IGetCollectionsCommand _getCollectionsCommand;
 
-        public CollectionController(
+        public CollectionsController(
             IGetCollectionsCommand getCollectionsCommand
             )
         {

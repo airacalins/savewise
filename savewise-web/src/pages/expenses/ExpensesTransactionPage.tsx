@@ -26,7 +26,7 @@ import {
   TCreateExpenseTransactionSchema,
   TUpdateExpenseTransactionSchema,
 } from "../../api/transactions/schema";
-import { newDateFormat } from "../../ultils/date";
+import { newDateFormat } from "../../utils/date";
 import { EditExpenseTransactionModal } from "./components/EditExpenseTransactionModal";
 import { AddExpenseTransactionModal } from "./components/AddExpenseTransactionModal";
 import { DeleteWarningActionModal } from "../../components/modals/DeleteWarningActionModal";

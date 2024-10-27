@@ -1,6 +1,6 @@
 export enum CollectionType {
-  Fund = "FUND",
-  Expense = "EXPENSE",
+  Fund,
+  Expense,
 }
 
 export type Collection = {
