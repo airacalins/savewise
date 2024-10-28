@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { useParams } from "react-router-dom";
-import { mockFundsCollection } from "../../api/collection/mockFundsCollection";
+// import { mockFundsCollection } from "../../api/collection/mockFundsCollection";
 import { useMemo, useState } from "react";
 import dayjs from "dayjs";
 import { EmptyStateCard } from "../../components/cards/EmptyStateCard";

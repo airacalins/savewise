@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import { ContainedButton } from "../../../components/buttons/ContainedButton";
 import { DeleteOutline, Save } from "@mui/icons-material";
-import { mockFundsCollection } from "../../../api/collection/mockFundsCollection";
+// import { mockFundsCollection } from "../../../api/collection/mockFundsCollection";
 import { colors } from "../../../theme/colors";
 import {
   TUpdateCollectionSchema,

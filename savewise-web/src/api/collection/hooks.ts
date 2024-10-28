@@ -15,7 +15,7 @@ export const useGetCollections = () => {
 };
 
 // GET - /api/Collections/funds
-export const useGetFundCollections = () => {
+export const useGetFundsCollection = () => {
   const url = "/collections/funds";
   const queryKey = [QUERY_KEY, "funds"];
 
@@ -26,7 +26,7 @@ export const useGetFundCollections = () => {
 };
 
 // GET - /api/Collections/expenses
-export const useGetExpensesCollections = () => {
+export const useGetExpensesCollection = () => {
   const url = "/collections/expenses";
   const queryKey = [QUERY_KEY, "expenses"];
 

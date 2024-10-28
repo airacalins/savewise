@@ -5,7 +5,7 @@ import {
   updateExpenseTransactionSchema,
 } from "../../../api/transactions/schema";
 import { mockTransactions } from "../../../api/transactions/mockTransactions";
-import { mockFundsCollection } from "../../../api/collection/mockFundsCollection";
+// import { mockFundsCollection } from "../../../api/collection/mockFundsCollection";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
@@ -23,6 +23,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { TextInput } from "../../../components/inputs/TextInput";
 import { colors } from "../../../theme/colors";
+import { useGetFundsCollection } from "../../../api/collection/hooks";
 
 interface EditFundTransactionModalProps {
   isVisible: boolean;
@@ -39,7 +40,7 @@ export const EditFundTransactionModal: React.FC<
   const fundTransactionData = mockTransactions.find(
     (fundTransaction) => fundTransaction.id === fundTransactionId
   );
-  const fundsCollectionData = mockFundsCollection;
+  const { data: fundsCollectionData } = useGetFundsCollection();
 
   const defaultValues = useMemo(() => {
     return {
@@ -153,7 +154,7 @@ export const EditFundTransactionModal: React.FC<
                 label="Fund Source"
                 {...field}
               >
-                {fundsCollectionData.map((fund) => (
+                {fundsCollectionData?.map((fund) => (
                   <MenuItem key={fund.id} value={fund.id}>
                     {fund.name}
                   </MenuItem>

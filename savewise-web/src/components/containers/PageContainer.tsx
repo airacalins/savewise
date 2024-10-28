@@ -48,12 +48,12 @@ export const PageContainer: React.FC<PageContainerProps> = ({
         <Box>{actions}</Box>
       </Stack>
       <Box height="16px" />
-      <Breadcrumbs
-        separator={<NavigateNext fontSize="small" />}
-        aria-label="breadcrumb"
-      >
-        {breadcrumbs &&
-          breadcrumbs.map((breadcrumb, index) =>
+      {breadcrumbs && (
+        <Breadcrumbs
+          separator={<NavigateNext fontSize="small" />}
+          aria-label="breadcrumb"
+        >
+          {breadcrumbs.map((breadcrumb, index) =>
             !breadcrumb.link ? (
               <Link key={index}>
                 <Typography variant="subtitle2">{breadcrumb.name}</Typography>
@@ -67,7 +67,8 @@ export const PageContainer: React.FC<PageContainerProps> = ({
               </Link>
             )
           )}
-      </Breadcrumbs>
+        </Breadcrumbs>
+      )}
       <Box height="16px" />
       {children}
       <Box height="32px" />

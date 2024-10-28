@@ -21,7 +21,6 @@ import {
   UpdateExpenseTransactionRequest,
 } from "../../api/transactions/type";
 import { EmptyStateCard } from "../../components/cards/EmptyStateCard";
-import { mockFundsCollection } from "../../api/collection/mockFundsCollection";
 import {
   TCreateExpenseTransactionSchema,
   TUpdateExpenseTransactionSchema,
@@ -33,6 +32,7 @@ import { DeleteWarningActionModal } from "../../components/modals/DeleteWarningA
 import { Edit } from "@mui/icons-material";
 import { EditExpenseCollectionModal } from "./components/EditExpenseCollectionModal";
 import { TUpdateCollectionSchema } from "../../api/collection/schema";
+import { useGetFundsCollection } from "../../api/collection/hooks";
 
 const tableHeaders = [
   { key: "description", label: "Description" },
@@ -52,10 +52,10 @@ export const ExpensesPage = () => {
     useState<null | Transaction>();
 
   // API
-  const expenseCollectionData = mockExpensesCollectionData.find(
+  const expensesCollectionData = mockExpensesCollectionData.find(
     (expenseCollection) => expenseCollection.id === id
   );
-  const fundCollectionData = mockFundsCollection;
+  const { data: fundsCollectionData } = useGetFundsCollection();
   const transactionData = mockTransactions.filter(
     (transaction) => transaction.expenseCollectionId === id
   );
@@ -74,15 +74,15 @@ export const ExpensesPage = () => {
         link: "/expensesCollection",
       },
       {
-        key: expenseCollectionData?.name ?? "",
-        name: expenseCollectionData?.name ?? "",
+        key: expensesCollectionData?.name ?? "",
+        name: expensesCollectionData?.name ?? "",
       },
     ];
-  }, [expenseCollectionData]);
+  }, [expensesCollectionData]);
 
   // Functions
   const getFundSource = (id: string) => {
-    const fundCollection = fundCollectionData.find(
+    const fundCollection = fundsCollectionData?.find(
       (fundCollection) => fundCollection.id === id
     );
     return fundCollection?.name ?? "Unknown Fund Source";
@@ -130,7 +130,7 @@ export const ExpensesPage = () => {
 
   return (
     <PageContainer
-      title={expenseCollectionData?.name ?? ""}
+      title={expensesCollectionData?.name ?? ""}
       titleAction={
         <IconButton size="small" onClick={editExpenseCollectionModal.show}>
           <Edit />
@@ -182,7 +182,7 @@ export const ExpensesPage = () => {
       )}
       <EditExpenseCollectionModal
         isVisible={editExpenseCollectionModal.isVisible}
-        expenseCollectionId={expenseCollectionData?.id ?? ""}
+        expenseCollectionId={expensesCollectionData?.id ?? ""}
         onClose={editExpenseCollectionModal.hide}
         onDelete={() => {
           editExpenseCollectionModal.hide();
@@ -192,7 +192,7 @@ export const ExpensesPage = () => {
       />
       <DeleteWarningActionModal
         isVisible={deleteExpenseCollectionWarningModal.isVisible}
-        itemName={expenseCollectionData?.name ?? ""}
+        itemName={expensesCollectionData?.name ?? ""}
         onClose={() => {
           deleteExpenseCollectionWarningModal.hide();
           editExpenseCollectionModal.show();
@@ -205,7 +205,7 @@ export const ExpensesPage = () => {
       />
       <AddExpenseTransactionModal
         isVisible={addExpenseTransactionModal.isVisible}
-        expenseCollectionName={expenseCollectionData?.name ?? ""}
+        expenseCollectionName={expensesCollectionData?.name ?? ""}
         onClose={addExpenseTransactionModal.hide}
         onCancel={addExpenseTransactionModal.hide}
         onSubmit={handleAddExpenseTransaction}

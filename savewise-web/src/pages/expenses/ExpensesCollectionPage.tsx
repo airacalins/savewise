@@ -12,11 +12,12 @@ import {
 import { PageContainer } from "../../components/containers/PageContainer";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { useNavigate } from "react-router-dom";
-import { mockExpensesCollectionData } from "../../api/collection/mockExpensesCollection";
 import { AddExpenseCollectionModal } from "./components/AddExpenseCollectionModal";
 import { EmptyStateCard } from "../../components/cards/EmptyStateCard";
 import { ExpensesSummary } from "./components/ExpensesSummary";
 import { TCreateCollectionSchema } from "../../api/collection/schema";
+import { useGetExpensesCollection } from "../../api/collection/hooks";
+import { formatNumberWithCommas } from "../../utils/number";
 
 const TABLE_HEADERS = [
   {
@@ -38,7 +39,8 @@ export const ExpensesCollectionPage = () => {
   const addExpenseCollectionModal = useVisibilityState();
 
   // API
-  const expensesCollectionData = mockExpensesCollectionData;
+  const { data: expensesCollectionData } = useGetExpensesCollection();
+  // const expensesCollectionData = mockExpensesCollectionData;
 
   // Functions
   const handleAddExpenseCollection = (data: TCreateCollectionSchema) => {
@@ -56,7 +58,7 @@ export const ExpensesCollectionPage = () => {
         </Button>
       }
     >
-      {expensesCollectionData.length === 0 ? (
+      {expensesCollectionData?.length === 0 ? (
         <EmptyStateCard message="No expenses collections yet." />
       ) : (
         <Stack direction="row" spacing={4}>
@@ -65,13 +67,18 @@ export const ExpensesCollectionPage = () => {
               <Table aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    {TABLE_HEADERS.map((header) => (
-                      <TableCell key={header.key}>{header.label}</TableCell>
+                    {TABLE_HEADERS.map((header, index) => (
+                      <TableCell
+                        key={header.key}
+                        align={index === 0 ? "left" : "right"}
+                      >
+                        {header.label}
+                      </TableCell>
                     ))}
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {expensesCollectionData.map((expenseCollection) => (
+                  {expensesCollectionData?.map((expenseCollection) => (
                     <TableRow
                       key={expenseCollection.name}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -82,11 +89,15 @@ export const ExpensesCollectionPage = () => {
                       <TableCell component="th" scope="row">
                         {expenseCollection.name}
                       </TableCell>
-                      <TableCell component="th" scope="row">
-                        {expenseCollection.currentMonthTotal.toFixed(2)}
+                      <TableCell component="th" scope="row" align="right">
+                        {formatNumberWithCommas(
+                          expenseCollection.currentMonthTotal
+                        )}
                       </TableCell>
-                      <TableCell component="th" scope="row">
-                        {expenseCollection.yearToDateTotal.toFixed(2)}
+                      <TableCell component="th" scope="row" align="right">
+                        {formatNumberWithCommas(
+                          expenseCollection.yearToDateTotal
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}
