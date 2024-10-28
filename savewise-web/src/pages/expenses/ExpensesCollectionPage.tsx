@@ -13,7 +13,6 @@ import { PageContainer } from "../../components/containers/PageContainer";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { useNavigate } from "react-router-dom";
 import { AddExpenseCollectionModal } from "./components/AddExpenseCollectionModal";
-import { EmptyStateCard } from "../../components/cards/EmptyStateCard";
 import { ExpensesSummary } from "./components/ExpensesSummary";
 import { TCreateCollectionSchema } from "../../api/collection/schema";
 import { useGetExpensesCollection } from "../../api/collection/hooks";
@@ -39,7 +38,10 @@ export const ExpensesCollectionPage = () => {
   const addExpenseCollectionModal = useVisibilityState();
 
   // API
-  const { data: expensesCollectionData } = useGetExpensesCollection();
+  const {
+    data: expensesCollectionData,
+    isLoading: isLoadingExpensesCollection,
+  } = useGetExpensesCollection();
   // const expensesCollectionData = mockExpensesCollectionData;
 
   // Functions
@@ -57,59 +59,59 @@ export const ExpensesCollectionPage = () => {
           Add Expense Collection
         </Button>
       }
+      isLoading={isLoadingExpensesCollection}
+      loadingMessage="Loading expenses collection..."
+      isEmptyPage={expensesCollectionData?.length === 0}
+      emptyPageMessage="No expenses collection yet."
     >
-      {expensesCollectionData?.length === 0 ? (
-        <EmptyStateCard message="No expenses collections yet." />
-      ) : (
-        <Stack direction="row" spacing={4}>
-          <Box flex={2}>
-            <TableContainer>
-              <Table aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    {TABLE_HEADERS.map((header, index) => (
-                      <TableCell
-                        key={header.key}
-                        align={index === 0 ? "left" : "right"}
-                      >
-                        {header.label}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {expensesCollectionData?.map((expenseCollection) => (
-                    <TableRow
-                      key={expenseCollection.name}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                      onClick={() =>
-                        navigate(`/expensesCollection/${expenseCollection.id}`)
-                      }
+      <Stack direction="row" spacing={4}>
+        <Box flex={2}>
+          <TableContainer>
+            <Table aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  {TABLE_HEADERS.map((header, index) => (
+                    <TableCell
+                      key={header.key}
+                      align={index === 0 ? "left" : "right"}
                     >
-                      <TableCell component="th" scope="row">
-                        {expenseCollection.name}
-                      </TableCell>
-                      <TableCell component="th" scope="row" align="right">
-                        {formatNumberWithCommas(
-                          expenseCollection.currentMonthTotal
-                        )}
-                      </TableCell>
-                      <TableCell component="th" scope="row" align="right">
-                        {formatNumberWithCommas(
-                          expenseCollection.yearToDateTotal
-                        )}
-                      </TableCell>
-                    </TableRow>
+                      {header.label}
+                    </TableCell>
                   ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Box>
-          <Box flex={1}>
-            <ExpensesSummary />
-          </Box>
-        </Stack>
-      )}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {expensesCollectionData?.map((expenseCollection) => (
+                  <TableRow
+                    key={expenseCollection.name}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    onClick={() =>
+                      navigate(`/expensesCollection/${expenseCollection.id}`)
+                    }
+                  >
+                    <TableCell component="th" scope="row">
+                      {expenseCollection.name}
+                    </TableCell>
+                    <TableCell component="th" scope="row" align="right">
+                      {formatNumberWithCommas(
+                        expenseCollection.currentMonthTotal
+                      )}
+                    </TableCell>
+                    <TableCell component="th" scope="row" align="right">
+                      {formatNumberWithCommas(
+                        expenseCollection.yearToDateTotal
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+        <Box flex={1}>
+          <ExpensesSummary />
+        </Box>
+      </Stack>
       <AddExpenseCollectionModal
         isVisible={addExpenseCollectionModal.isVisible}
         onClose={addExpenseCollectionModal.hide}

@@ -13,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 import { TCreateCollectionSchema } from "../../api/collection/schema";
 import { useGetFundsCollection } from "../../api/collection/hooks";
 import { formatNumberWithCommas } from "../../utils/number";
-import Loading from "../../components/spinners/Loading";
 
 const TABLE_HEADERS = [
   {
@@ -53,57 +52,55 @@ export const FundsCollectionPage = () => {
           Add Fund Collection
         </Button>
       }
+      isLoading={isLoadingFundsCollectionData}
+      loadingMessage="Loading funds collection..."
+      isEmptyPage={fundsCollectionData?.length === 0}
+      emptyPageMessage="No funds collection yet."
     >
-      {isLoadingFundsCollectionData ? (
-        <Loading title="Loading funds collection..." />
-      ) : (
-        <Stack direction="row" spacing={4}>
-          <Box flex={2}>
-            <TableContainer>
-              <Table aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    {TABLE_HEADERS.map((tableHeader, index) => (
-                      <TableCell
-                        key={tableHeader.key}
-                        align={index === 0 ? "left" : "right"}
-                      >
-                        {tableHeader.label}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {fundsCollectionData?.map((fundCollection) => (
-                    <TableRow
-                      key={fundCollection.name}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                      onClick={() =>
-                        navigate(`/fundsCollection/${fundCollection.id}`)
-                      }
+      <Stack direction="row" spacing={4}>
+        <Box flex={2}>
+          <TableContainer>
+            <Table aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  {TABLE_HEADERS.map((tableHeader, index) => (
+                    <TableCell
+                      key={tableHeader.key}
+                      align={index === 0 ? "left" : "right"}
                     >
-                      <TableCell component="th" scope="row">
-                        {fundCollection.name}
-                      </TableCell>
-                      <TableCell align="right">
-                        {formatNumberWithCommas(
-                          fundCollection.currentMonthTotal
-                        )}
-                      </TableCell>
-                      <TableCell align="right">
-                        {formatNumberWithCommas(fundCollection.yearToDateTotal)}
-                      </TableCell>
-                    </TableRow>
+                      {tableHeader.label}
+                    </TableCell>
                   ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Box>
-          <Box flex={1}>
-            <FundsSummary />
-          </Box>
-        </Stack>
-      )}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {fundsCollectionData?.map((fundCollection) => (
+                  <TableRow
+                    key={fundCollection.name}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    onClick={() =>
+                      navigate(`/fundsCollection/${fundCollection.id}`)
+                    }
+                  >
+                    <TableCell component="th" scope="row">
+                      {fundCollection.name}
+                    </TableCell>
+                    <TableCell align="right">
+                      {formatNumberWithCommas(fundCollection.currentMonthTotal)}
+                    </TableCell>
+                    <TableCell align="right">
+                      {formatNumberWithCommas(fundCollection.yearToDateTotal)}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+        <Box flex={1}>
+          <FundsSummary />
+        </Box>
+      </Stack>
       <AddFundCollectionModal
         isVisible={addFundCollectionModal.isVisible}
         onClose={addFundCollectionModal.hide}

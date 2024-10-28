@@ -2,6 +2,8 @@ import { NavigateNext } from "@mui/icons-material";
 import { Stack, Box, Typography, Link, Breadcrumbs } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Loading from "../spinners/Loading";
+import { EmptyStateCard } from "../cards/EmptyStateCard";
 
 interface Breadcrumb {
   key: string;
@@ -15,6 +17,10 @@ interface PageContainerProps extends React.PropsWithChildren {
   subtitle: string;
   breadcrumbs?: Breadcrumb[];
   actions?: React.ReactNode;
+  isLoading?: boolean;
+  loadingMessage?: string;
+  isEmptyPage?: boolean;
+  emptyPageMessage?: string;
 }
 
 export const PageContainer: React.FC<PageContainerProps> = ({
@@ -23,9 +29,25 @@ export const PageContainer: React.FC<PageContainerProps> = ({
   subtitle,
   breadcrumbs,
   actions,
+  isLoading,
+  loadingMessage,
+  isEmptyPage,
+  emptyPageMessage,
   children,
 }) => {
   const navigate = useNavigate();
+
+  const renderContents = () => {
+    if (isLoading) {
+      return <Loading title={loadingMessage} />;
+    }
+
+    if (isEmptyPage) {
+      return <EmptyStateCard message={emptyPageMessage} />;
+    }
+
+    return <>{children}</>;
+  };
 
   return (
     <Box
@@ -70,7 +92,7 @@ export const PageContainer: React.FC<PageContainerProps> = ({
         </Breadcrumbs>
       )}
       <Box height="16px" />
-      {children}
+      {renderContents()}
       <Box height="32px" />
     </Box>
   );
