@@ -1,4 +1,4 @@
-using Application.Commands.Interfaces;
+using Application.Interfaces;
 using Application.Dtos;
 using Application.Repositories;
 using Application.Repositories.Interfaces;

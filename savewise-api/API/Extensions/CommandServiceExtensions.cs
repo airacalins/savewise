@@ -1,5 +1,5 @@
 using Application.Commands;
-using Application.Commands.Interfaces;
+using Application.Interfaces;
 
 namespace API.Extensions
 {
@@ -10,6 +10,7 @@ namespace API.Extensions
             services.AddScoped<IGetCollectionsCommand, GetCollectionsCommand>();
             services.AddScoped<IGetCollectionsByTypeCommand, GetCollectionsByTypeCommand>();
             services.AddScoped<IGetCollectionByIdCommand, GetCollectionByIdCommand>();
+            services.AddScoped<ICreateCollectionCommand, CreateCollectionCommand>();
 
             return services;
         }

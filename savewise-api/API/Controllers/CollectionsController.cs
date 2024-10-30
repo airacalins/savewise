@@ -1,5 +1,6 @@
+using API.InputModels;
 using API.ViewModels;
-using Application.Commands.Interfaces;
+using Application.Interfaces;
 using Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,16 +14,20 @@ namespace API.Controllers
         private readonly IGetCollectionsCommand _getCollectionsCommand;
         private readonly IGetCollectionsByTypeCommand _getCollectionsByTypeCommand;
         private readonly IGetCollectionByIdCommand _getCollectionByIdCommand;
+        private readonly ICreateCollectionCommand _createCollectionCommand;
+
 
         public CollectionsController(
             IGetCollectionsCommand getCollectionsCommand,
             IGetCollectionsByTypeCommand getCollectionsByTypeCommand,
-            IGetCollectionByIdCommand getCollectionByIdCommand
+            IGetCollectionByIdCommand getCollectionByIdCommand,
+            ICreateCollectionCommand createCollectionCommand
             )
         {
             _getCollectionsCommand = getCollectionsCommand;
             _getCollectionsByTypeCommand = getCollectionsByTypeCommand;
             _getCollectionByIdCommand = getCollectionByIdCommand;
+            _createCollectionCommand = createCollectionCommand;
         }
 
         [HttpGet]
@@ -65,5 +70,13 @@ namespace API.Controllers
             return Ok(data);
         }
 
+        [HttpPost]
+        public async Task<ActionResult<bool>> CreateCollection([FromBody] CreateCollectionInputModel input)
+        {
+            var result = await _createCollectionCommand.ExecuteCommand(input.ToCreateCollectionDto());
+            if (!result.IsSuccess) return BadRequest(result.Error);
+
+            return Ok(result.Value);
+        }
     }
 }

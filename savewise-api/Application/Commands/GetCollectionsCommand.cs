@@ -1,5 +1,5 @@
-using Application.Commands.Interfaces;
 using Application.Dtos;
+using Application.Interfaces;
 using Application.Repositories.Interfaces;
 
 namespace Application.Commands

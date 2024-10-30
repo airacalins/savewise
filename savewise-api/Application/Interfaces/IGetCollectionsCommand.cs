@@ -1,6 +1,6 @@
 using Application.Dtos;
 
-namespace Application.Commands.Interfaces
+namespace Application.Interfaces
 {
     public interface IGetCollectionsCommand
     {
