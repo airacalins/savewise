@@ -10,7 +10,6 @@ import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { AddFundCollectionModal } from "./components/AddFundCollectionModal";
 import { FundsSummary } from "./components/FundsSummary";
 import { useNavigate } from "react-router-dom";
-import { TCreateCollectionSchema } from "../../api/collection/schema";
 import { useGetFundsCollection } from "../../api/collection/hooks";
 import { formatNumberWithCommas } from "../../utils/number";
 
@@ -36,12 +35,6 @@ export const FundsCollectionPage = () => {
   // API
   const { data: fundsCollectionData, isLoading: isLoadingFundsCollectionData } =
     useGetFundsCollection();
-
-  // Functions
-  const handleAddFundCollection = (data: TCreateCollectionSchema) => {
-    console.log(data);
-    addFundCollectionModal.hide();
-  };
 
   return (
     <PageContainer
@@ -105,7 +98,6 @@ export const FundsCollectionPage = () => {
         isVisible={addFundCollectionModal.isVisible}
         onClose={addFundCollectionModal.hide}
         onCancel={addFundCollectionModal.hide}
-        onSubmit={handleAddFundCollection}
       />
     </PageContainer>
   );

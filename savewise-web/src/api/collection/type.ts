@@ -1,6 +1,6 @@
 export enum CollectionType {
-  Fund,
-  Expense,
+  Fund = "Fund",
+  Expense = "Expense",
 }
 
 export type Collection = {
@@ -9,4 +9,9 @@ export type Collection = {
   collectionType: CollectionType;
   currentMonthTotal: number;
   yearToDateTotal: number;
+};
+
+export type CreateCollectionRequest = {
+  name: string;
+  collectionType: CollectionType;
 };

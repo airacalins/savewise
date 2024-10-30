@@ -9,23 +9,24 @@ import {
   createCollectionSchema,
   TCreateCollectionSchema,
 } from "../../../api/collection/schema";
+import { CollectionType } from "../../../api/collection/type";
+import { useCreateCollection } from "../../../api/collection/hooks";
 
-const DEFAULT_VALUES = {
+const defaultValues = {
   name: "",
+  collectionType: CollectionType.Fund,
 };
 
 interface AddFundCollectionModalProps {
   isVisible: boolean;
   onClose: () => void;
   onCancel: () => void;
-  onSubmit: (data: TCreateCollectionSchema) => void;
 }
 
 export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
   isVisible,
   onClose,
   onCancel,
-  onSubmit,
 }) => {
   const {
     control,
@@ -34,9 +35,11 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
     handleSubmit,
   } = useForm<TCreateCollectionSchema>({
     resolver: yupResolver(createCollectionSchema),
-    defaultValues: DEFAULT_VALUES,
+    defaultValues: defaultValues,
     mode: "onChange",
   });
+
+  const createFundCollection = useCreateCollection();
 
   // Functions
   const handleOnCloseModal = () => {
@@ -49,9 +52,18 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
     onCancel();
   };
 
-  const handleFormSubmit = (data: TCreateCollectionSchema) => {
-    onSubmit(data);
-    reset();
+  // Functions
+  const handleAddFundCollection = async (data: TCreateCollectionSchema) => {
+    try {
+      await createFundCollection.mutateAsync({
+        name: data.name,
+        collectionType: CollectionType.Fund,
+      });
+    } finally {
+      reset();
+      onClose();
+      // TODO: Navigate to the created collection
+    }
   };
 
   return (
@@ -63,8 +75,9 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
         <>
           <Button onClick={handleOnCancel}>Cancel</Button>
           <ContainedButton
-            disabled={!isValid}
-            onClick={handleSubmit(handleFormSubmit)}
+            disabled={!isValid || createFundCollection.isLoading}
+            onClick={handleSubmit(handleAddFundCollection)}
+            isLoading={createFundCollection.isLoading}
           >
             Submit
           </ContainedButton>
@@ -79,7 +92,7 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
             label="Name"
             placeholder="Income, Business, etc."
             error={!!errors.name}
-            defaultValue={DEFAULT_VALUES.name}
+            defaultValue={defaultValues.name}
             helperText={errors.name?.message}
             {...field}
           />

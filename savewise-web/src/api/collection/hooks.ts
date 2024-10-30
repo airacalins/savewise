@@ -1,5 +1,5 @@
-import { useGet } from "../reactQueryUtils";
-import { Collection } from "./type";
+import { useGet, usePost } from "../reactQueryUtils";
+import { Collection, CreateCollectionRequest } from "./type";
 
 const QUERY_KEY = "collections";
 
@@ -12,6 +12,14 @@ export const useGetCollections = () => {
     url,
     queryKey,
   });
+};
+
+// POST - /api/Collections
+export const useCreateCollection = () => {
+  const url = "/collections";
+  const cacheKey = [QUERY_KEY, "create"];
+
+  return usePost<boolean, CreateCollectionRequest>({ url, cacheKey });
 };
 
 // GET - /api/Collections/funds
