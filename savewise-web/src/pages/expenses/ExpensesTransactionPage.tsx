@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { useMemo, useState } from "react";
-import { mockExpensesCollectionData } from "../../api/collection/mockExpensesCollection";
 import dayjs from "dayjs";
 import { mockTransactions } from "../../api/transactions/mockTransactions";
 import {
@@ -32,7 +31,10 @@ import { DeleteWarningActionModal } from "../../components/modals/DeleteWarningA
 import { Edit } from "@mui/icons-material";
 import { EditExpenseCollectionModal } from "./components/EditExpenseCollectionModal";
 import { TUpdateCollectionSchema } from "../../api/collection/schema";
-import { useGetFundsCollection } from "../../api/collection/hooks";
+import {
+  useGetCollectionById,
+  useGetFundsCollection,
+} from "../../api/collection/hooks";
 
 const tableHeaders = [
   { key: "description", label: "Description" },
@@ -42,7 +44,7 @@ const tableHeaders = [
 ];
 
 export const ExpensesPage = () => {
-  const { id } = useParams();
+  const { collectionId } = useParams();
   const editExpenseCollectionModal = useVisibilityState();
   const addExpenseTransactionModal = useVisibilityState();
   const editExpenseTransactionModal = useVisibilityState();
@@ -52,12 +54,12 @@ export const ExpensesPage = () => {
     useState<null | Transaction>();
 
   // API
-  const expensesCollectionData = mockExpensesCollectionData.find(
-    (expenseCollection) => expenseCollection.id === id
+  const { data: expensesCollectionData } = useGetCollectionById(
+    collectionId ?? ""
   );
   const { data: fundsCollectionData } = useGetFundsCollection();
   const transactionData = mockTransactions.filter(
-    (transaction) => transaction.expenseCollectionId === id
+    (transaction) => transaction.expenseCollectionId === collectionId
   );
 
   // Functions
@@ -101,7 +103,7 @@ export const ExpensesPage = () => {
     data: TCreateExpenseTransactionSchema
   ) => {
     const input: CreateExpenseTransactionRequest = {
-      expenseCollectionId: id ?? "",
+      expenseCollectionId: collectionId ?? "",
       ...data,
       date: newDateFormat(data.date),
     };

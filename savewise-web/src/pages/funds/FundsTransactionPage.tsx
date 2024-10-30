@@ -33,6 +33,7 @@ import { EditFundCollectionModal } from "./components/EditFundCollectionModal";
 import { DeleteWarningActionModal } from "../../components/modals/DeleteWarningActionModal";
 import { EditFundTransactionModal } from "./components/EditFundTransactionModal";
 import { TUpdateCollectionSchema } from "../../api/collection/schema";
+import { useGetCollectionById } from "../../api/collection/hooks";
 
 const tableHeaders = [
   { key: "date", label: "Date" },
@@ -41,7 +42,7 @@ const tableHeaders = [
 ];
 
 export const FundsPage = () => {
-  const { id } = useParams();
+  const { collectionId } = useParams();
   const editFundCollectionModal = useVisibilityState();
   const deleteFundCollectionWarningModal = useVisibilityState();
   const addFundTransactionModal = useVisibilityState();
@@ -51,12 +52,11 @@ export const FundsPage = () => {
     useState<null | Transaction>();
 
   // Data
-  const fundCollectionData = mockFundsCollection.find(
-    (fundCollection) => fundCollection.id === id
-  );
+  const { data: fundCollectionData, isLoading: isLoadingFundCollectionData } =
+    useGetCollectionById(collectionId ?? "");
   const expenseCollectionData = mockExpensesCollectionData;
   const fundCollectionTransactionsData = mockTransactions.filter(
-    (transaction) => transaction.fundCollectionId === id
+    (transaction) => transaction.fundCollectionId === collectionId
   );
 
   const breadcrumbs = useMemo(() => {
@@ -89,7 +89,7 @@ export const FundsPage = () => {
 
   const handleCreateFundTransaction = (data: TCreateFundTransactionSchema) => {
     const input: AddFundRequest = {
-      fundCollectionId: id ?? "",
+      fundCollectionId: collectionId ?? "",
       ...data,
       date: newDateFormat(data.date),
     };
@@ -114,6 +114,10 @@ export const FundsPage = () => {
       subtitle="View, create and manage fund collection."
       breadcrumbs={breadcrumbs}
       actions={<Button onClick={addFundTransactionModal.show}>Add Fund</Button>}
+      isLoading={isLoadingFundCollectionData}
+      loadingMessage="Loading fund collection..."
+      isEmptyPage={fundCollectionTransactionsData.length === 0}
+      emptyPageMessage="No transactions yet."
     >
       {fundCollectionTransactionsData.length === 0 ? (
         <EmptyStateCard message="No transaction for this collection yet." />

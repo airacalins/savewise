@@ -11,7 +11,6 @@ import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModa
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { TextInput } from "../../../components/inputs/TextInput";
-// import { mockFundsCollection } from "../../../api/collection/mockFundsCollection";
 import {
   createExpenseTransactionSchema,
   TCreateExpenseTransactionSchema,
@@ -19,6 +18,7 @@ import {
 import { ContainedButton } from "../../../components/buttons/ContainedButton";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
+import { useGetFundsCollection } from "../../../api/collection/hooks";
 
 const DEFAULT_VALUES = {
   date: new Date(),
@@ -38,7 +38,7 @@ export const AddExpenseTransactionModal: React.FC<
   AddExpenseTransactionModalProps
 > = ({ isVisible, expenseCollectionName, onClose, onCancel, onSubmit }) => {
   // API
-  const fundsCollectionData = mockFundsCollection;
+  const { data: fundsCollectionData } = useGetFundsCollection();
 
   const {
     control,
@@ -142,7 +142,7 @@ export const AddExpenseTransactionModal: React.FC<
                 defaultValue={DEFAULT_VALUES.fundCollectionId}
                 {...field}
               >
-                {fundsCollectionData.map((fund) => (
+                {fundsCollectionData?.map((fund) => (
                   <MenuItem key={fund.id} value={fund.id}>
                     {fund.name}
                   </MenuItem>

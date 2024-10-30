@@ -35,3 +35,14 @@ export const useGetExpensesCollection = () => {
     queryKey,
   });
 };
+
+// GET - /api/Collections/{id}
+export const useGetCollectionById = (id: string) => {
+  const url = `/collections/${id}`;
+  const queryKey = [QUERY_KEY, id];
+
+  return useGet<Collection>({
+    url,
+    queryKey,
+  });
+};

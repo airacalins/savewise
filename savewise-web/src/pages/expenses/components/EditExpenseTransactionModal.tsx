@@ -22,6 +22,7 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ContainedButton } from "../../../components/buttons/ContainedButton";
 import dayjs from "dayjs";
+import { useGetFundsCollection } from "../../../api/collection/hooks";
 
 interface EditExpenseTransactionModalProps {
   isVisible: boolean;
@@ -35,10 +36,10 @@ export const EditExpenseTransactionModal: React.FC<
   EditExpenseTransactionModalProps
 > = ({ isVisible, expenseTransactionId, onClose, onDelete, onUpdate }) => {
   // API
+  const { data: fundsCollectionData } = useGetFundsCollection();
   const expenseTransactionData = mockTransactions.find(
     (expense) => expense.id === expenseTransactionId
   );
-  const fundsCollectionData = mockFundsCollection;
 
   const defaultValues = useMemo(
     () => ({
@@ -153,7 +154,7 @@ export const EditExpenseTransactionModal: React.FC<
                 label="Fund Source"
                 {...field}
               >
-                {fundsCollectionData.map((fund) => (
+                {fundsCollectionData?.map((fund) => (
                   <MenuItem key={fund.id} value={fund.id}>
                     {fund.name}
                   </MenuItem>

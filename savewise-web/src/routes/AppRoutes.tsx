@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
         element: <FundsCollectionPage />,
       },
       {
-        path: "/fundsCollection/:id",
+        path: "/fundsCollection/:collectionId",
         element: <FundsPage />,
       },
       {
@@ -38,7 +38,7 @@ export const router = createBrowserRouter([
         element: <ExpensesCollectionPage />,
       },
       {
-        path: "/expensesCollection/:id",
+        path: "/expensesCollection/:collectionId",
         element: <ExpensesPage />,
       },
     ],
