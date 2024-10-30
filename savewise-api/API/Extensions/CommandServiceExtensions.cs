@@ -9,6 +9,7 @@ namespace API.Extensions
         {
             services.AddScoped<IGetCollectionsCommand, GetCollectionsCommand>();
             services.AddScoped<IGetCollectionsByTypeCommand, GetCollectionsByTypeCommand>();
+            services.AddScoped<IGetCollectionByIdCommand, GetCollectionByIdCommand>();
 
             return services;
         }

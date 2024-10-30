@@ -12,14 +12,17 @@ namespace API.Controllers
     {
         private readonly IGetCollectionsCommand _getCollectionsCommand;
         private readonly IGetCollectionsByTypeCommand _getCollectionsByTypeCommand;
+        private readonly IGetCollectionByIdCommand _getCollectionByIdCommand;
 
         public CollectionsController(
             IGetCollectionsCommand getCollectionsCommand,
-            IGetCollectionsByTypeCommand getCollectionsByTypeCommand
+            IGetCollectionsByTypeCommand getCollectionsByTypeCommand,
+            IGetCollectionByIdCommand getCollectionByIdCommand
             )
         {
             _getCollectionsCommand = getCollectionsCommand;
             _getCollectionsByTypeCommand = getCollectionsByTypeCommand;
+            _getCollectionByIdCommand = getCollectionByIdCommand;
         }
 
         [HttpGet]
@@ -49,6 +52,16 @@ namespace API.Controllers
             if (!result.IsSuccess) return BadRequest(result.Error);
 
             var data = result.Value.Select(fund => new CollectionViewModel(fund)).ToList();
+            return Ok(data);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CollectionViewModel>> GetFundCollectionById([FromRoute] Guid id)
+        {
+            var result = await _getCollectionByIdCommand.ExecuteCommand(id);
+            if (!result.IsSuccess) return BadRequest(result.Error);
+
+            var data = new CollectionViewModel(result.Value);
             return Ok(data);
         }
 

@@ -3,10 +3,10 @@ namespace Application.Repositories
     public interface IBaseRepository<T> where T : class
     {
         Task<List<T>> GetAll();
-        Task<T> Get(Guid id);
+        Task<T> GetById(Guid id);
         void Add(T item);
-        Task Update(Guid id, T item);
-        Task Delete(Guid id);
-        Task SaveChangesAsync();
+        void Update(Guid id, T item);
+        void Delete(Guid id);
+        void SaveChangesAsync();
     }
 }

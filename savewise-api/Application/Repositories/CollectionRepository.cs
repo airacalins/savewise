@@ -19,30 +19,32 @@ namespace Application.Repositories
             return await _context.Collections.ToListAsync();
         }
 
+        public async Task<Collection> GetById(Guid id)
+        {
+            var collection = await _context.Collections.FindAsync(id) ?? throw new KeyNotFoundException($"Collection with ID '{id}' not found.");
+            return collection;
+        }
+
         public void Add(Collection item)
         {
-            throw new NotImplementedException();
+            _context.Collections.Add(item);
         }
 
-        public Task Delete(Guid id)
+        public void Delete(Guid id)
+        {
+            var collection = _context.Collections.Find(id) ?? throw new KeyNotFoundException($"Collection with ID '{id}' not found.");
+            _context.Collections.Remove(collection);
+        }
+
+        public void Update(Guid id, Collection item)
         {
             throw new NotImplementedException();
         }
 
-
-        public Task<Collection> Get(Guid id)
+        public void SaveChangesAsync()
         {
-            throw new NotImplementedException();
+            _context.SaveChangesAsync();
         }
 
-        public Task Update(Guid id, Collection item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task SaveChangesAsync()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
