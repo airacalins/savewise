@@ -54,9 +54,10 @@ export const ExpensesPage = () => {
     useState<null | Transaction>();
 
   // API
-  const { data: expensesCollectionData } = useGetCollectionById(
-    collectionId ?? ""
-  );
+  const {
+    data: expensesCollectionData,
+    isLoading: isLoadingExpensesCollection,
+  } = useGetCollectionById(collectionId ?? "");
   const { data: fundsCollectionData } = useGetFundsCollection();
   const transactionData = mockTransactions.filter(
     (transaction) => transaction.expenseCollectionId === collectionId
@@ -132,7 +133,7 @@ export const ExpensesPage = () => {
 
   return (
     <PageContainer
-      title={expensesCollectionData?.name ?? ""}
+      title={expensesCollectionData?.name ?? "..."}
       titleAction={
         <IconButton size="small" onClick={editExpenseCollectionModal.show}>
           <Edit />
@@ -143,6 +144,10 @@ export const ExpensesPage = () => {
       actions={
         <Button onClick={addExpenseTransactionModal.show}>Add Expense</Button>
       }
+      isLoading={isLoadingExpensesCollection}
+      loadingMessage="Loading transactions..."
+      isEmptyPage={transactionData.length === 0}
+      emptyPageMessage="No transaction for this expense yet."
     >
       {transactionData.length === 0 ? (
         <EmptyStateCard message="No expenses for this collection yet." />
