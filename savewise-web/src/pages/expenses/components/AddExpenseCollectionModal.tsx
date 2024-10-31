@@ -10,20 +10,24 @@ import {
   createCollectionSchema,
   TCreateCollectionSchema,
 } from "../../../api/collection/schema";
+import { CollectionType } from "../../../api/collection/type";
+import { useCreateCollection } from "../../../api/collection/hooks";
+import { toast } from "react-toastify";
 
-const DEFAULT_VALUES = {
+const defaultValues = {
   name: "",
+  collectionType: CollectionType.Expense,
 };
+
 interface AddExpenseCollectionModalProps {
   isVisible: boolean;
   onClose: () => void;
   onCancel: () => void;
-  onSubmit: (data: TCreateCollectionSchema) => void;
 }
 
 export const AddExpenseCollectionModal: React.FC<
   AddExpenseCollectionModalProps
-> = ({ isVisible, onClose, onCancel, onSubmit }) => {
+> = ({ isVisible, onClose, onCancel }) => {
   const {
     control,
     formState: { errors, isValid },
@@ -31,9 +35,12 @@ export const AddExpenseCollectionModal: React.FC<
     handleSubmit,
   } = useForm<TCreateCollectionSchema>({
     resolver: yupResolver(createCollectionSchema),
-    defaultValues: DEFAULT_VALUES,
+    defaultValues,
     mode: "onChange",
   });
+
+  // API
+  const createExpenseCollection = useCreateCollection();
 
   // Functions
   const handleCloseModal = () => {
@@ -46,9 +53,26 @@ export const AddExpenseCollectionModal: React.FC<
     onCancel();
   };
 
-  const handleFormSubmit = (data: TCreateCollectionSchema) => {
-    onSubmit(data);
-    reset();
+  // Functions
+  const handleAddExpenseCollection = async (
+    formData: TCreateCollectionSchema
+  ) => {
+    console.log(JSON.stringify(formData, null, 2));
+
+    try {
+      await createExpenseCollection.mutateAsync({
+        name: formData.name,
+        collectionType: CollectionType.Expense,
+      });
+
+      toast.success("Expense collection created successfully");
+    } catch {
+      toast.error("Failed to create expense collection");
+    } finally {
+      reset();
+      onClose();
+      // TODO: Navigate to the created collection
+    }
   };
 
   return (
@@ -61,7 +85,8 @@ export const AddExpenseCollectionModal: React.FC<
           <Button onClick={handleCancel}>Cancel</Button>
           <ContainedButton
             disabled={!isValid}
-            onClick={handleSubmit(handleFormSubmit)}
+            onClick={handleSubmit(handleAddExpenseCollection)}
+            isLoading={createExpenseCollection.isLoading}
           >
             Submit
           </ContainedButton>
@@ -76,7 +101,7 @@ export const AddExpenseCollectionModal: React.FC<
             label="Name"
             placeholder="Groceries, Electricity, etc."
             error={!!errors.name}
-            defaultValue={DEFAULT_VALUES.name}
+            defaultValue={defaultValues.name}
             helperText={errors.name?.message}
             {...field}
           />

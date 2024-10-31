@@ -11,6 +11,7 @@ import {
 } from "../../../api/collection/schema";
 import { CollectionType } from "../../../api/collection/type";
 import { useCreateCollection } from "../../../api/collection/hooks";
+import { toast } from "react-toastify";
 
 const defaultValues = {
   name: "",
@@ -39,6 +40,7 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
     mode: "onChange",
   });
 
+  // API
   const createFundCollection = useCreateCollection();
 
   // Functions
@@ -53,12 +55,16 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
   };
 
   // Functions
-  const handleAddFundCollection = async (data: TCreateCollectionSchema) => {
+  const handleAddFundCollection = async (formData: TCreateCollectionSchema) => {
     try {
       await createFundCollection.mutateAsync({
-        name: data.name,
+        name: formData.name,
         collectionType: CollectionType.Fund,
       });
+
+      toast.success("Expense collection created successfully");
+    } catch {
+      toast.error("Failed to create expense collection");
     } finally {
       reset();
       onClose();

@@ -14,7 +14,6 @@ import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { useNavigate } from "react-router-dom";
 import { AddExpenseCollectionModal } from "./components/AddExpenseCollectionModal";
 import { ExpensesSummary } from "./components/ExpensesSummary";
-import { TCreateCollectionSchema } from "../../api/collection/schema";
 import { useGetExpensesCollection } from "../../api/collection/hooks";
 import { formatNumberWithCommas } from "../../utils/number";
 
@@ -42,13 +41,6 @@ export const ExpensesCollectionPage = () => {
     data: expensesCollectionData,
     isLoading: isLoadingExpensesCollection,
   } = useGetExpensesCollection();
-  // const expensesCollectionData = mockExpensesCollectionData;
-
-  // Functions
-  const handleAddExpenseCollection = (data: TCreateCollectionSchema) => {
-    console.log(data);
-    addExpenseCollectionModal.hide();
-  };
 
   return (
     <PageContainer
@@ -116,7 +108,6 @@ export const ExpensesCollectionPage = () => {
         isVisible={addExpenseCollectionModal.isVisible}
         onClose={addExpenseCollectionModal.hide}
         onCancel={addExpenseCollectionModal.hide}
-        onSubmit={handleAddExpenseCollection}
       />
     </PageContainer>
   );
