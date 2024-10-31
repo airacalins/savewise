@@ -1,5 +1,6 @@
 using API.InputModels;
 using API.ViewModels;
+using Application.Dtos;
 using Application.Interfaces;
 using Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
@@ -71,12 +72,16 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<bool>> CreateCollection([FromBody] CreateCollectionInputModel input)
+        public async Task<ActionResult<CollectionViewModel>> CreateCollection([FromBody] CreateCollectionInputModel input)
         {
-            var result = await _createCollectionCommand.ExecuteCommand(input.ToCreateCollectionDto());
+            var collectionDto = input.ToCreateCollectionDto();
+
+            var result = await _createCollectionCommand.ExecuteCommand(collectionDto);
             if (!result.IsSuccess) return BadRequest(result.Error);
 
-            return Ok(result.Value);
+            var data = new CollectionDto(result.Value);
+
+            return Ok(data);
         }
     }
 }

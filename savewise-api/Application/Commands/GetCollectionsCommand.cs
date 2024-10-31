@@ -1,29 +1,25 @@
 using Application.Dtos;
 using Application.Interfaces;
-using Application.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Commands
 {
-    public class GetCollectionsCommand : IGetCollectionsCommand
+    public class GetCollectionsCommand(IDataContext context) : IGetCollectionsCommand
     {
-        private readonly ICollectionRepository _collectionRepository;
-        public GetCollectionsCommand(ICollectionRepository collectionRepository)
-        {
-            _collectionRepository = collectionRepository;
-        }
+        private readonly IDataContext _context = context;
 
         public async Task<Result<List<CollectionDto>>> ExecuteCommand()
         {
-            var result = await _collectionRepository.GetAll();
+            var collections = await _context.Collections.ToListAsync();
 
-            if (result.Count == 0)
+            if (collections.Count == 0)
             {
                 return Result<List<CollectionDto>>.Failure("No collections found");
             }
 
-            var data = result.Select(item => new CollectionDto(item)).ToList();
+            var collectionDtos = collections.Select(item => new CollectionDto(item)).ToList();
 
-            return Result<List<CollectionDto>>.Success(data);
+            return Result<List<CollectionDto>>.Success(collectionDtos);
         }
     }
 }

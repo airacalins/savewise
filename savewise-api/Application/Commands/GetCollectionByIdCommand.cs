@@ -1,28 +1,24 @@
 using Application.Interfaces;
 using Application.Dtos;
-using Application.Repositories;
-using Application.Repositories.Interfaces;
+
 
 namespace Application.Commands
 {
-    public class GetCollectionByIdCommand : IGetCollectionByIdCommand
+    public class GetCollectionByIdCommand(IDataContext context) : IGetCollectionByIdCommand
     {
-        private readonly ICollectionRepository _collectionRepository;
-        public GetCollectionByIdCommand(ICollectionRepository collectionRepository)
-        {
-            _collectionRepository = collectionRepository;
-        }
+        private readonly IDataContext _context = context;
+
 
         public async Task<Result<CollectionDto>> ExecuteCommand(Guid id)
         {
-            var result = await _collectionRepository.GetById(id);
+            var collection = await _context.Collections.FindAsync(id) ?? throw new KeyNotFoundException($"Collection with ID '{id}' not found.");
 
-            if (result == null)
+            if (collection == null)
             {
                 return Result<CollectionDto>.Failure("Collection not found");
             }
 
-            return Result<CollectionDto>.Success(new CollectionDto(result));
+            return Result<CollectionDto>.Success(new CollectionDto(collection));
         }
     }
 }

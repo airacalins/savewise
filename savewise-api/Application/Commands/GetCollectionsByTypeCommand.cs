@@ -1,22 +1,17 @@
 using Application.Interfaces;
 using Application.Dtos;
-using Application.Repositories.Interfaces;
 using Domain.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Commands
 {
-    public class GetCollectionsByTypeCommand : IGetCollectionsByTypeCommand
+    public class GetCollectionsByTypeCommand(IDataContext context) : IGetCollectionsByTypeCommand
     {
-        private readonly ICollectionRepository _collectionRepository;
+        private readonly IDataContext _context = context;
 
-        public GetCollectionsByTypeCommand(ICollectionRepository collectionRepository)
-        {
-            _collectionRepository = collectionRepository;
-
-        }
         public async Task<Result<List<CollectionDto>>> ExecuteCommand(CollectionType collectionType)
         {
-            var result = await _collectionRepository.GetAll();
+            var result = await _context.Collections.ToListAsync();
 
             if (result.Count == 0)
             {

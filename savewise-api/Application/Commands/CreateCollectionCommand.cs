@@ -1,23 +1,21 @@
 using Application.Dtos;
 using Application.Interfaces;
-using Application.Repositories.Interfaces;
+using Domain.Entities;
 
 namespace Application.Commands
 {
-    public class CreateCollectionCommand : ICreateCollectionCommand
+    public class CreateCollectionCommand(IDataContext context) : ICreateCollectionCommand
     {
-        private readonly ICollectionRepository _collectionRepository;
-        public CreateCollectionCommand(ICollectionRepository collectionRepository)
-        {
-            _collectionRepository = collectionRepository;
+        private readonly IDataContext _context = context;
 
-        }
-        public Task<Result<bool>> ExecuteCommand(CreateCollectionDto input)
+        public Task<Result<Collection>> ExecuteCommand(CreateCollectionDto input)
         {
-            _collectionRepository.Add(input.ToCollection());
-            _collectionRepository.SaveChangesAsync();
+            var collection = input.ToCollection();
 
-            return Task.FromResult(Result<bool>.Success(true));
+            _context.Collections.Add(collection);
+            _context.SaveChangesAsync();
+
+            return Task.FromResult(Result<Collection>.Success(collection));
         }
     }
 }
