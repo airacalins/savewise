@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@mui/material";
+import { Button, Snackbar } from "@mui/material";
 import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
 
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,6 +13,8 @@ import {
 import { CollectionType } from "../../../api/collection/type";
 import { useCreateCollection } from "../../../api/collection/hooks";
 import { toast } from "react-toastify";
+import { useVisibilityState } from "../../../hooks/useVisibilityState";
+import { useNavigate } from "react-router-dom";
 
 const defaultValues = {
   name: "",
@@ -28,6 +30,9 @@ interface AddExpenseCollectionModalProps {
 export const AddExpenseCollectionModal: React.FC<
   AddExpenseCollectionModalProps
 > = ({ isVisible, onClose, onCancel }) => {
+  const navigate = useNavigate();
+  const successSnackbar = useVisibilityState();
+
   const {
     control,
     formState: { errors, isValid },
@@ -60,53 +65,65 @@ export const AddExpenseCollectionModal: React.FC<
     console.log(JSON.stringify(formData, null, 2));
 
     try {
-      await createExpenseCollection.mutateAsync({
+      const result = await createExpenseCollection.mutateAsync({
         name: formData.name,
         collectionType: CollectionType.Expense,
       });
 
-      toast.success("Expense collection created successfully");
+      successSnackbar.show();
+      setTimeout(() => {
+        navigate(`/expensesCollection/${result.id}`);
+      }, 2000);
     } catch {
       toast.error("Failed to create expense collection");
     } finally {
       reset();
       onClose();
-      // TODO: Navigate to the created collection
     }
   };
 
   return (
-    <ConfirmActionModal
-      isVisible={isVisible}
-      title="Create expense collection"
-      onClose={handleCloseModal}
-      actions={
-        <>
-          <Button onClick={handleCancel}>Cancel</Button>
-          <ContainedButton
-            disabled={!isValid}
-            onClick={handleSubmit(handleAddExpenseCollection)}
-            isLoading={createExpenseCollection.isLoading}
-          >
-            Submit
-          </ContainedButton>
-        </>
-      }
-    >
-      <Controller
-        name="name"
-        control={control}
-        render={({ field }) => (
-          <TextInput
-            label="Name"
-            placeholder="Groceries, Electricity, etc."
-            error={!!errors.name}
-            defaultValue={defaultValues.name}
-            helperText={errors.name?.message}
-            {...field}
-          />
-        )}
+    <>
+      <ConfirmActionModal
+        isVisible={isVisible}
+        title="Create expense collection"
+        onClose={handleCloseModal}
+        actions={
+          <>
+            <Button onClick={handleCancel}>Cancel</Button>
+            <ContainedButton
+              disabled={!isValid}
+              onClick={handleSubmit(handleAddExpenseCollection)}
+              isLoading={createExpenseCollection.isLoading}
+            >
+              Submit
+            </ContainedButton>
+          </>
+        }
+      >
+        <Controller
+          name="name"
+          control={control}
+          render={({ field }) => (
+            <TextInput
+              label="Name"
+              placeholder="Groceries, Electricity, etc."
+              error={!!errors.name}
+              defaultValue={defaultValues.name}
+              helperText={errors.name?.message}
+              {...field}
+            />
+          )}
+        />
+      </ConfirmActionModal>
+      <Snackbar
+        open={successSnackbar.isVisible}
+        message="Expense collection added successfully."
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
       />
-    </ConfirmActionModal>
+    </>
   );
 };

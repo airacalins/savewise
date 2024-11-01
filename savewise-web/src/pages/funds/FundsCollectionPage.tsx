@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useGetFundsCollection } from "../../api/collection/hooks";
 import { formatNumberWithCommas } from "../../utils/number";
 
-const TABLE_HEADERS = [
+const tableHeaders = [
   {
     key: "name",
     label: "Name",
@@ -56,7 +56,7 @@ export const FundsCollectionPage = () => {
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  {TABLE_HEADERS.map((tableHeader, index) => (
+                  {tableHeaders.map((tableHeader, index) => (
                     <TableCell
                       key={tableHeader.key}
                       align={index === 0 ? "left" : "right"}

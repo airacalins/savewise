@@ -19,7 +19,7 @@ export const useCreateCollection = () => {
   const url = "/collections";
   const cacheKey = [QUERY_KEY, "create"];
 
-  return usePost<boolean, CreateCollectionRequest>({ url, cacheKey });
+  return usePost<Collection, CreateCollectionRequest>({ url, cacheKey });
 };
 
 // GET - /api/Collections/funds

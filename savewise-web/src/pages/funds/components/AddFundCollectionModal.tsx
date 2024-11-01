@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@mui/material";
+import { Button, Snackbar } from "@mui/material";
 import { TextInput } from "../../../components/inputs/TextInput";
 import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -12,6 +12,8 @@ import {
 import { CollectionType } from "../../../api/collection/type";
 import { useCreateCollection } from "../../../api/collection/hooks";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useVisibilityState } from "../../../hooks/useVisibilityState";
 
 const defaultValues = {
   name: "",
@@ -29,6 +31,9 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
   onClose,
   onCancel,
 }) => {
+  const navigate = useNavigate();
+  const successSnackbar = useVisibilityState();
+
   const {
     control,
     formState: { errors, isValid },
@@ -57,53 +62,65 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
   // Functions
   const handleAddFundCollection = async (formData: TCreateCollectionSchema) => {
     try {
-      await createFundCollection.mutateAsync({
+      const result = await createFundCollection.mutateAsync({
         name: formData.name,
         collectionType: CollectionType.Fund,
       });
 
-      toast.success("Expense collection created successfully");
+      successSnackbar.show();
+      setTimeout(() => {
+        navigate(`/fundsCollection/${result.id}`);
+      }, 2000);
     } catch {
       toast.error("Failed to create expense collection");
     } finally {
       reset();
       onClose();
-      // TODO: Navigate to the created collection
     }
   };
 
   return (
-    <ConfirmActionModal
-      isVisible={isVisible}
-      title="Add Fund Collection"
-      onClose={handleOnCloseModal}
-      actions={
-        <>
-          <Button onClick={handleOnCancel}>Cancel</Button>
-          <ContainedButton
-            disabled={!isValid || createFundCollection.isLoading}
-            onClick={handleSubmit(handleAddFundCollection)}
-            isLoading={createFundCollection.isLoading}
-          >
-            Submit
-          </ContainedButton>
-        </>
-      }
-    >
-      <Controller
-        name="name"
-        control={control}
-        render={({ field }) => (
-          <TextInput
-            label="Name"
-            placeholder="Income, Business, etc."
-            error={!!errors.name}
-            defaultValue={defaultValues.name}
-            helperText={errors.name?.message}
-            {...field}
-          />
-        )}
+    <>
+      <ConfirmActionModal
+        isVisible={isVisible}
+        title="Add Fund Collection"
+        onClose={handleOnCloseModal}
+        actions={
+          <>
+            <Button onClick={handleOnCancel}>Cancel</Button>
+            <ContainedButton
+              disabled={!isValid || createFundCollection.isLoading}
+              onClick={handleSubmit(handleAddFundCollection)}
+              isLoading={createFundCollection.isLoading}
+            >
+              Submit
+            </ContainedButton>
+          </>
+        }
+      >
+        <Controller
+          name="name"
+          control={control}
+          render={({ field }) => (
+            <TextInput
+              label="Name"
+              placeholder="Income, Business, etc."
+              error={!!errors.name}
+              defaultValue={defaultValues.name}
+              helperText={errors.name?.message}
+              {...field}
+            />
+          )}
+        />
+      </ConfirmActionModal>
+      <Snackbar
+        open={successSnackbar.isVisible}
+        message="Fund collection added successfully."
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
       />
-    </ConfirmActionModal>
+    </>
   );
 };
