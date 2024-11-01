@@ -16,19 +16,22 @@ namespace API.Controllers
         private readonly IGetCollectionsByTypeCommand _getCollectionsByTypeCommand;
         private readonly IGetCollectionByIdCommand _getCollectionByIdCommand;
         private readonly ICreateCollectionCommand _createCollectionCommand;
+        private readonly IDeleteCollectionCommand _deleteCollectionCommand;
 
 
         public CollectionsController(
             IGetCollectionsCommand getCollectionsCommand,
             IGetCollectionsByTypeCommand getCollectionsByTypeCommand,
             IGetCollectionByIdCommand getCollectionByIdCommand,
-            ICreateCollectionCommand createCollectionCommand
+            ICreateCollectionCommand createCollectionCommand,
+            IDeleteCollectionCommand deleteCollectionCommand
             )
         {
             _getCollectionsCommand = getCollectionsCommand;
             _getCollectionsByTypeCommand = getCollectionsByTypeCommand;
             _getCollectionByIdCommand = getCollectionByIdCommand;
             _createCollectionCommand = createCollectionCommand;
+            _deleteCollectionCommand = deleteCollectionCommand;
         }
 
         [HttpGet]
@@ -82,6 +85,15 @@ namespace API.Controllers
             var data = new CollectionDto(result.Value);
 
             return Ok(data);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<bool>> DeleteCollection([FromRoute] Guid id)
+        {
+            var result = await _deleteCollectionCommand.ExecuteCommand(id);
+            if (!result.IsSuccess) return BadRequest(result.Error);
+
+            return Ok(result.Value);
         }
     }
 }

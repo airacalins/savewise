@@ -62,8 +62,6 @@ export const AddExpenseCollectionModal: React.FC<
   const handleAddExpenseCollection = async (
     formData: TCreateCollectionSchema
   ) => {
-    console.log(JSON.stringify(formData, null, 2));
-
     try {
       const result = await createExpenseCollection.mutateAsync({
         name: formData.name,

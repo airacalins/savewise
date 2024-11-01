@@ -11,6 +11,7 @@ namespace API.Extensions
             services.AddScoped<IGetCollectionsByTypeCommand, GetCollectionsByTypeCommand>();
             services.AddScoped<IGetCollectionByIdCommand, GetCollectionByIdCommand>();
             services.AddScoped<ICreateCollectionCommand, CreateCollectionCommand>();
+            services.AddScoped<IDeleteCollectionCommand, DeleteCollectionCommand>();
 
             return services;
         }
