@@ -1,7 +1,6 @@
 import React, { PropsWithChildren } from "react";
 import {
   Box,
-  Button,
   IconButton,
   Modal as MuiModal,
   Stack,
@@ -10,9 +9,12 @@ import {
 import { colors } from "../../theme/colors";
 import { styles } from "../../theme/styles";
 import { Close, DeleteOutline } from "@mui/icons-material";
+import { ContainedButton } from "../buttons/ContainedButton";
+import { OutlinedButton } from "../buttons/OutlinedButton";
 
 interface DeleteWarningActionModalProps extends PropsWithChildren {
   isVisible: boolean;
+  isDeleting: boolean;
   itemName: string;
   onClose: () => void;
   onCancel: () => void;
@@ -21,7 +23,15 @@ interface DeleteWarningActionModalProps extends PropsWithChildren {
 
 export const DeleteWarningActionModal: React.FC<
   DeleteWarningActionModalProps
-> = ({ isVisible, itemName, children, onClose, onConfirm, onCancel }) => {
+> = ({
+  isVisible,
+  isDeleting,
+  itemName,
+  children,
+  onClose,
+  onConfirm,
+  onCancel,
+}) => {
   return (
     <MuiModal
       open={isVisible}
@@ -62,16 +72,18 @@ export const DeleteWarningActionModal: React.FC<
         {children}
         <Box height="32px" />
         <Stack direction="row" spacing={2} justifyContent="flex-end">
-          <Button
+          <OutlinedButton
             color="error"
+            disabled={isDeleting}
+            isLoading={isDeleting}
             startIcon={<DeleteOutline sx={{ color: "inherit" }} />}
             onClick={onConfirm}
           >
             Yes, I am sure
-          </Button>
-          <Button variant="contained" onClick={onCancel}>
+          </OutlinedButton>
+          <ContainedButton variant="contained" onClick={onCancel}>
             Do not delete
-          </Button>
+          </ContainedButton>
         </Stack>
       </Box>
     </MuiModal>

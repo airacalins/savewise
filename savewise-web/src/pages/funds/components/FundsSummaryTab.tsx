@@ -2,9 +2,9 @@ import { CalendarMonth } from "@mui/icons-material";
 import { Card } from "@mui/material";
 import { InfoDisplay } from "../../../components/displays/InfoDisplay";
 import { Divider } from "../../../components/dividers/Divider";
-import { Text } from "../../../components/texts/Text";
+import React from "react";
 
-export const FundsSummary = () => {
+export const FundsSummaryTab = () => {
   const summaries = [
     { displayName: "Current month total", details: "Php 10,000" },
     {
@@ -18,20 +18,15 @@ export const FundsSummary = () => {
 
   return (
     <Card style={{ padding: "32px", width: "100%" }}>
-      <Text variant="body2" fontWeight={500}>
-        Funds Summary
-      </Text>
-      <Divider />
       {summaries.map((summary, index) => (
-        <>
+        <React.Fragment key={index}>
           <InfoDisplay
-            key={index}
             label={summary.displayName}
             details={summary.details}
             EndIconComponent={summary.endIconComponent}
           />
           {summaries.length - 1 !== index && <Divider />}
-        </>
+        </React.Fragment>
       ))}
     </Card>
   );

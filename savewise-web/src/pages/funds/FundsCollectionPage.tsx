@@ -1,40 +1,42 @@
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import { Box, Button, Stack } from "@mui/material";
+import { Button, Tab, Tabs } from "@mui/material";
 import { PageContainer } from "../../components/containers/PageContainer";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { AddFundCollectionModal } from "./components/AddFundCollectionModal";
-import { FundsSummary } from "./components/FundsSummary";
-import { useNavigate } from "react-router-dom";
 import { useGetFundsCollection } from "../../api/collection/hooks";
-import { formatNumberWithCommas } from "../../utils/number";
+import { useState } from "react";
+import { FundsSummaryTab } from "./components/FundsSummaryTab";
+import { FundsCollectionTableTabs } from "./components/FundsCollectionTableTabs";
 
-const tableHeaders = [
+const tabs = [
   {
-    key: "name",
-    label: "Name",
+    value: "overview",
+    label: "Overview",
   },
   {
-    key: "balance",
-    label: "Balance",
-  },
-  {
-    key: "yearToDate",
-    label: "Year-to-Date",
+    value: "summary",
+    label: "Summary",
   },
 ];
 
 export const FundsCollectionPage = () => {
-  const navigate = useNavigate();
   const addFundCollectionModal = useVisibilityState();
+  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
   // API
   const { data: fundsCollectionData, isLoading: isLoadingFundsCollectionData } =
     useGetFundsCollection();
+
+  const renderTabContents = () => {
+    switch (selectedTabIndex) {
+      case 0:
+      default:
+        return (
+          <FundsCollectionTableTabs fundsCollection={fundsCollectionData} />
+        );
+      case 1:
+        return <FundsSummaryTab />;
+    }
+  };
 
   return (
     <PageContainer
@@ -49,56 +51,25 @@ export const FundsCollectionPage = () => {
       loadingMessage="Loading funds collection..."
       isEmptyPage={fundsCollectionData?.length === 0}
       emptyPageMessage="No funds collection yet."
+      modals={
+        <AddFundCollectionModal
+          isVisible={addFundCollectionModal.isVisible}
+          onClose={addFundCollectionModal.hide}
+          onCancel={addFundCollectionModal.hide}
+        />
+      }
     >
-      <Stack direction="row" spacing={4}>
-        <Box flex={2}>
-          <TableContainer>
-            <Table aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  {tableHeaders.map((tableHeader, index) => (
-                    <TableCell
-                      key={tableHeader.key}
-                      align={index === 0 ? "left" : "right"}
-                    >
-                      {tableHeader.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {fundsCollectionData?.map((fundCollection) => (
-                  <TableRow
-                    key={fundCollection.name}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    onClick={() =>
-                      navigate(`/fundsCollection/${fundCollection.id}`)
-                    }
-                  >
-                    <TableCell component="th" scope="row">
-                      {fundCollection.name}
-                    </TableCell>
-                    <TableCell align="right">
-                      {formatNumberWithCommas(fundCollection.currentMonthTotal)}
-                    </TableCell>
-                    <TableCell align="right">
-                      {formatNumberWithCommas(fundCollection.yearToDateTotal)}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
-        <Box flex={1}>
-          <FundsSummary />
-        </Box>
-      </Stack>
-      <AddFundCollectionModal
-        isVisible={addFundCollectionModal.isVisible}
-        onClose={addFundCollectionModal.hide}
-        onCancel={addFundCollectionModal.hide}
-      />
+      <Tabs
+        value={selectedTabIndex}
+        defaultValue={selectedTabIndex}
+        onChange={(_, newValue) => setSelectedTabIndex(newValue)}
+        aria-label="basic tabs example"
+      >
+        {tabs.map((tab) => (
+          <Tab label={tab.label} />
+        ))}
+      </Tabs>
+      {renderTabContents()}
     </PageContainer>
   );
 };

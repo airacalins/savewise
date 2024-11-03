@@ -7,12 +7,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import { ContainedButton } from "../../../components/buttons/ContainedButton";
 import { DeleteOutline, Save } from "@mui/icons-material";
-// import { mockFundsCollection } from "../../../api/collection/mockFundsCollection";
 import { colors } from "../../../theme/colors";
 import {
   TUpdateCollectionSchema,
   updateCollectionSchema,
 } from "../../../api/collection/schema";
+import { useGetCollectionById } from "../../../api/collection/hooks";
 
 interface EditFundCollectionModalProps {
   isVisible: boolean;
@@ -25,9 +25,8 @@ interface EditFundCollectionModalProps {
 export const EditFundCollectionModal: React.FC<
   EditFundCollectionModalProps
 > = ({ isVisible, fundCollectionId, onClose, onDelete, onUpdate }) => {
-  const fundCollectionData = mockFundsCollection.find(
-    (fundCollection) => fundCollection.id === fundCollectionId
-  );
+  // API
+  const { data: fundCollectionData } = useGetCollectionById(fundCollectionId);
 
   const defaultValues = useMemo(
     () => ({
@@ -47,7 +46,6 @@ export const EditFundCollectionModal: React.FC<
     mode: "onChange",
   });
 
-  // Functions
   const handleCloseModal = () => {
     reset();
     onClose();

@@ -1,6 +1,6 @@
 import { Card, Stack } from "@mui/material";
 import { PageContainer } from "../../components/containers/PageContainer";
-import { FundsSummary } from "../funds/components/FundsSummary";
+import { FundsSummary } from "../funds/components/FundsSummaryTab";
 import { ExpensesSummary } from "../expenses/components/ExpensesSummary";
 import { Text } from "../../components/texts/Text";
 import { useGetCollections } from "../../api/collection/hooks";

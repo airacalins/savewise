@@ -1,4 +1,5 @@
-import { useGet, usePost } from "../reactQueryUtils";
+import queryClient from "../../queryClient";
+import { useDelete, useGet, usePost } from "../reactQueryUtils";
 import { Collection, CreateCollectionRequest } from "./type";
 
 const QUERY_KEY = "collections";
@@ -52,5 +53,22 @@ export const useGetCollectionById = (id: string) => {
   return useGet<Collection>({
     url,
     queryKey,
+  });
+};
+
+// DELETE - /api/Collections/{id}
+export const useDeleteCollectionById = (id: string) => {
+  const url = `/collections/${id}`;
+  const cacheKey = [QUERY_KEY, id];
+
+  return useDelete<unknown, unknown>({
+    url,
+    cacheKey,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY],
+      });
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY] });
+    },
   });
 };

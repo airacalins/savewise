@@ -21,6 +21,8 @@ interface PageContainerProps extends React.PropsWithChildren {
   loadingMessage?: string;
   isEmptyPage?: boolean;
   emptyPageMessage?: string;
+  modals?: React.ReactNode;
+  snackbars?: React.ReactNode;
 }
 
 export const PageContainer: React.FC<PageContainerProps> = ({
@@ -34,6 +36,8 @@ export const PageContainer: React.FC<PageContainerProps> = ({
   isEmptyPage,
   emptyPageMessage,
   children,
+  modals,
+  snackbars,
 }) => {
   const navigate = useNavigate();
 
@@ -46,7 +50,7 @@ export const PageContainer: React.FC<PageContainerProps> = ({
       return <EmptyStateCard message={emptyPageMessage} />;
     }
 
-    return <>{children}</>;
+    return children;
   };
 
   return (
@@ -93,6 +97,8 @@ export const PageContainer: React.FC<PageContainerProps> = ({
       )}
       <Box height="16px" />
       {renderContents()}
+      {modals}
+      {snackbars}
       <Box height="32px" />
     </Box>
   );

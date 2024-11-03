@@ -245,5 +245,13 @@ export const theme = createTheme({
         },
       },
     },
+    MuiSnackbar: {
+      defaultProps: {
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "right",
+        },
+      },
+    },
   },
 });
