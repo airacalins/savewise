@@ -1,7 +1,5 @@
 import { Card, Stack } from "@mui/material";
 import { PageContainer } from "../../components/containers/PageContainer";
-import { FundsSummary } from "../funds/components/FundsSummaryTab";
-import { ExpensesSummary } from "../expenses/components/ExpensesSummary";
 import { Text } from "../../components/texts/Text";
 import { useGetCollections } from "../../api/collection/hooks";
 
@@ -24,8 +22,8 @@ export const HomePage = () => {
         </Card>
 
         <Stack direction="row" spacing={4}>
-          <FundsSummary />
-          <ExpensesSummary />
+          {/* <FundsSummary /> */}
+          {/* <ExpensesSummary /> */}
         </Stack>
       </Stack>
     </PageContainer>

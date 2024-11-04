@@ -1,46 +1,46 @@
-import {
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Button,
-  Stack,
-  Box,
-} from "@mui/material";
+import { Button, Tabs, Tab } from "@mui/material";
 import { PageContainer } from "../../components/containers/PageContainer";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
-import { useNavigate } from "react-router-dom";
 import { AddExpenseCollectionModal } from "./components/AddExpenseCollectionModal";
-import { ExpensesSummary } from "./components/ExpensesSummary";
 import { useGetExpensesCollection } from "../../api/collection/hooks";
-import { formatNumberWithCommas } from "../../utils/number";
+import { ExpensesCollectionTableTab } from "./components/ExpensesCollectionTableTabs";
+import { ExpensesSummaryTab } from "./components/ExpensesSummaryTab";
+import { useState } from "react";
 
-const TABLE_HEADERS = [
+const tabs = [
   {
-    key: "name",
-    label: "Name",
+    value: "overview",
+    label: "Overview",
   },
   {
-    key: "currentMonth",
-    label: "Current Month",
-  },
-  {
-    key: "yearToDate",
-    label: "Year-to-Date",
+    value: "summary",
+    label: "Summary",
   },
 ];
 
 export const ExpensesCollectionPage = () => {
-  const navigate = useNavigate();
   const addExpenseCollectionModal = useVisibilityState();
+  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
   // API
   const {
     data: expensesCollectionData,
     isLoading: isLoadingExpensesCollection,
   } = useGetExpensesCollection();
+
+  const renderTabContents = () => {
+    switch (selectedTabIndex) {
+      case 0:
+      default:
+        return (
+          <ExpensesCollectionTableTab
+            expensesCollection={expensesCollectionData}
+          />
+        );
+      case 1:
+        return <ExpensesSummaryTab />;
+    }
+  };
 
   return (
     <PageContainer
@@ -56,54 +56,17 @@ export const ExpensesCollectionPage = () => {
       isEmptyPage={expensesCollectionData?.length === 0}
       emptyPageMessage="No expenses collection yet."
     >
-      <Stack direction="row" spacing={4}>
-        <Box flex={2}>
-          <TableContainer>
-            <Table aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  {TABLE_HEADERS.map((header, index) => (
-                    <TableCell
-                      key={header.key}
-                      align={index === 0 ? "left" : "right"}
-                    >
-                      {header.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {expensesCollectionData?.map((expenseCollection) => (
-                  <TableRow
-                    key={expenseCollection.name}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    onClick={() =>
-                      navigate(`/expensesCollection/${expenseCollection.id}`)
-                    }
-                  >
-                    <TableCell component="th" scope="row">
-                      {expenseCollection.name}
-                    </TableCell>
-                    <TableCell component="th" scope="row" align="right">
-                      {formatNumberWithCommas(
-                        expenseCollection.currentMonthTotal
-                      )}
-                    </TableCell>
-                    <TableCell component="th" scope="row" align="right">
-                      {formatNumberWithCommas(
-                        expenseCollection.yearToDateTotal
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
-        <Box flex={1}>
-          <ExpensesSummary />
-        </Box>
-      </Stack>
+      <Tabs
+        value={selectedTabIndex}
+        defaultValue={selectedTabIndex}
+        onChange={(_, newValue) => setSelectedTabIndex(newValue)}
+        aria-label="basic tabs example"
+      >
+        {tabs.map((tab) => (
+          <Tab label={tab.label} />
+        ))}
+      </Tabs>
+      {renderTabContents()}
       <AddExpenseCollectionModal
         isVisible={addExpenseCollectionModal.isVisible}
         onClose={addExpenseCollectionModal.hide}
