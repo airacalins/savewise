@@ -1,3 +1,4 @@
+using System.Linq;
 using Application.Dtos;
 using Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,7 @@ namespace Application.Commands
 
         public async Task<Result<List<CollectionDto>>> ExecuteCommand()
         {
-            var collections = await _context.Collections.ToListAsync();
+            var collections = await _context.Collections.OrderByDescending(collection => collection.Name).ToListAsync();
 
             if (collections.Count == 0)
             {

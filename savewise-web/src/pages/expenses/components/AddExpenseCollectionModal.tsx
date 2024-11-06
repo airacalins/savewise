@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Snackbar } from "@mui/material";
+import { Button } from "@mui/material";
 import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
 
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -12,9 +12,8 @@ import {
 } from "../../../api/collection/schema";
 import { CollectionType } from "../../../api/collection/type";
 import { useCreateCollection } from "../../../api/collection/hooks";
-import { toast } from "react-toastify";
-import { useVisibilityState } from "../../../hooks/useVisibilityState";
 import { useNavigate } from "react-router-dom";
+import { showSuccessToast } from "../../../utils/toast";
 
 const defaultValues = {
   name: "",
@@ -31,7 +30,6 @@ export const AddExpenseCollectionModal: React.FC<
   AddExpenseCollectionModalProps
 > = ({ isVisible, onClose, onCancel }) => {
   const navigate = useNavigate();
-  const successSnackbar = useVisibilityState();
 
   const {
     control,
@@ -68,12 +66,8 @@ export const AddExpenseCollectionModal: React.FC<
         collectionType: CollectionType.Expense,
       });
 
-      successSnackbar.show();
-      setTimeout(() => {
-        navigate(`/expensesCollection/${result.id}`);
-      }, 2000);
-    } catch {
-      toast.error("Failed to create expense collection");
+      showSuccessToast("Expense collection created.");
+      navigate(`/expensesCollection/${result.id}`);
     } finally {
       reset();
       onClose();
@@ -114,14 +108,6 @@ export const AddExpenseCollectionModal: React.FC<
           )}
         />
       </ConfirmActionModal>
-      <Snackbar
-        open={successSnackbar.isVisible}
-        message="Expense collection added successfully."
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
-        }}
-      />
     </>
   );
 };

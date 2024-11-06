@@ -4,7 +4,6 @@ import {
   Button,
   Chip,
   IconButton,
-  Snackbar,
   Stack,
   Table,
   TableBody,
@@ -36,6 +35,7 @@ import {
   useDeleteCollectionById,
   useGetCollectionById,
 } from "../../api/collection/hooks";
+import { showErrorToast, showSuccessToast } from "../../utils/toast";
 
 const tableHeaders = [
   { key: "date", label: "Date" },
@@ -48,8 +48,6 @@ export const FundsPage = () => {
   const { collectionId } = useParams();
   const editFundCollectionModal = useVisibilityState();
   const deleteFundCollectionWarningModal = useVisibilityState();
-  const deleteFundCollectionSuccessSnackbar = useVisibilityState();
-  const deleteFundCollectionFailedSnackbar = useVisibilityState();
   const addFundTransactionModal = useVisibilityState();
   const editFundTransactionModal = useVisibilityState();
   const deleteFundTransactionWarningModal = useVisibilityState();
@@ -90,16 +88,15 @@ export const FundsPage = () => {
   };
 
   const handleDeleteFundCollection = async () => {
+    navigate(`/fundsCollection`);
+    deleteFundCollectionWarningModal.hide();
+
     try {
       await deleteCollection.mutateAsync({});
-      deleteFundCollectionWarningModal.hide();
-      deleteFundCollectionSuccessSnackbar.show();
 
-      setTimeout(() => {
-        navigate(`/fundsCollection`);
-      }, 2000);
+      showSuccessToast("Fund collection deleted.");
     } catch {
-      deleteFundCollectionFailedSnackbar.show();
+      showErrorToast("Failed to delete fund collection");
     }
   };
 
@@ -130,7 +127,9 @@ export const FundsPage = () => {
       subtitle="View, create and manage fund collection."
       breadcrumbs={breadcrumbs}
       actions={<Button onClick={addFundTransactionModal.show}>Add Fund</Button>}
-      isLoading={isLoadingFundCollectionData}
+      isLoading={
+        fundCollectionData === undefined || isLoadingFundCollectionData
+      }
       loadingMessage="Loading fund collection..."
       isEmptyPage={fundCollectionTransactionsData.length === 0}
       emptyPageMessage="No transactions yet."
@@ -166,7 +165,7 @@ export const FundsPage = () => {
           <DeleteWarningActionModal
             isVisible={deleteFundCollectionWarningModal.isVisible}
             isDeleting={deleteCollection.isLoading}
-            itemName={fundCollectionData?.name ?? ""}
+            itemName={""}
             onClose={() => {
               deleteFundCollectionWarningModal.hide();
               editFundCollectionModal.show();
@@ -190,18 +189,6 @@ export const FundsPage = () => {
               editFundTransactionModal.show();
             }}
             onConfirm={() => {}}
-          />
-        </>
-      }
-      snackbars={
-        <>
-          <Snackbar
-            open={deleteFundCollectionSuccessSnackbar.isVisible}
-            message="Fund collection added successfully."
-          />
-          <Snackbar
-            open={deleteFundCollectionFailedSnackbar.isVisible}
-            message="Failed to delete fund collection."
           />
         </>
       }

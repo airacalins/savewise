@@ -11,7 +11,7 @@ namespace Application.Commands
 
         public async Task<Result<List<CollectionDto>>> ExecuteCommand(CollectionType collectionType)
         {
-            var result = await _context.Collections.ToListAsync();
+            var result = await _context.Collections.OrderBy(collection => collection.Name.ToLower()).ToListAsync();
 
             if (result.Count == 0)
             {

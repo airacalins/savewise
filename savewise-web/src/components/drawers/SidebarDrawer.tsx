@@ -11,7 +11,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Home, MoneyOff, Savings } from "@mui/icons-material";
 
 const drawerWidth = 240;
@@ -112,8 +112,11 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
 }) => {
   const theme = useTheme();
   const navigate = useNavigate();
-
-  const [selectedNavKey, setSelectedNavKey] = React.useState(sideNavs[0].key);
+  const location = useLocation();
+  const [selectedNavKey, setSelectedNavKey] = React.useState(
+    sideNavs.find((nav) => nav.link === location.pathname)?.key ||
+      sideNavs[0].key
+  );
 
   //   Functions
   const handleNavigate = (sideNav: SideNavProps) => {

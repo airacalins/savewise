@@ -10,6 +10,14 @@ namespace Application.Commands
 
         public Task<Result<Collection>> ExecuteCommand(CreateCollectionDto input)
         {
+            var existingCollection = _context.Collections
+              .FirstOrDefault(c => c.Name == input.Name);
+
+            if (existingCollection != null)
+            {
+                return Task.FromResult(Result<Collection>.Failure("Collection already exists"));
+            }
+
             var collection = input.ToCollection();
 
             _context.Collections.Add(collection);

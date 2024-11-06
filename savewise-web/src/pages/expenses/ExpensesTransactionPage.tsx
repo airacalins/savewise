@@ -19,7 +19,6 @@ import {
   Transaction,
   UpdateExpenseTransactionRequest,
 } from "../../api/transactions/type";
-import { EmptyStateCard } from "../../components/cards/EmptyStateCard";
 import {
   TCreateExpenseTransactionSchema,
   TUpdateExpenseTransactionSchema,
@@ -148,95 +147,93 @@ export const ExpensesPage = () => {
       loadingMessage="Loading transactions..."
       isEmptyPage={transactionData.length === 0}
       emptyPageMessage="No transaction for this expense yet."
+      modals={
+        <>
+          <EditExpenseCollectionModal
+            isVisible={editExpenseCollectionModal.isVisible}
+            expenseCollectionId={expensesCollectionData?.id ?? ""}
+            onClose={editExpenseCollectionModal.hide}
+            onDelete={() => {
+              editExpenseCollectionModal.hide();
+              deleteExpenseCollectionWarningModal.show();
+            }}
+            onUpdate={handleUpdateExpenseCollection}
+          />
+          <DeleteWarningActionModal
+            isVisible={deleteExpenseCollectionWarningModal.isVisible}
+            isDeleting={false}
+            itemName={expensesCollectionData?.name ?? ""}
+            onClose={() => {
+              deleteExpenseCollectionWarningModal.hide();
+              editExpenseCollectionModal.show();
+            }}
+            onCancel={() => {
+              deleteExpenseCollectionWarningModal.hide();
+              editExpenseCollectionModal.show();
+            }}
+            onConfirm={handleDeleteExpenseCollection}
+          />
+          <AddExpenseTransactionModal
+            isVisible={addExpenseTransactionModal.isVisible}
+            expenseCollectionName={expensesCollectionData?.name ?? ""}
+            onClose={addExpenseTransactionModal.hide}
+            onCancel={addExpenseTransactionModal.hide}
+            onSubmit={handleAddExpenseTransaction}
+          />
+          <EditExpenseTransactionModal
+            isVisible={editExpenseTransactionModal.isVisible}
+            expenseTransactionId={selectedExpenseTransaction?.id ?? ""}
+            onClose={editExpenseTransactionModal.hide}
+            onDelete={handleShowConfirmDeleteModal}
+            onUpdate={handleUpdateExpenseTransaction}
+          />
+          <DeleteWarningActionModal
+            isVisible={deleteExpenseCollectionWarningModal.isVisible}
+            isDeleting={false}
+            itemName={selectedExpenseTransaction?.description ?? ""}
+            onClose={() => {
+              deleteExpenseCollectionWarningModal.hide();
+              editExpenseCollectionModal.show();
+            }}
+            onCancel={() => {
+              deleteExpenseCollectionWarningModal.hide();
+              editExpenseCollectionModal.show();
+            }}
+            onConfirm={handleDeleteExpenseTransaction}
+          />
+        </>
+      }
     >
-      {transactionData.length === 0 ? (
-        <EmptyStateCard message="No expenses for this collection yet." />
-      ) : (
-        <TableContainer>
-          <Table aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                {tableHeaders.map((tableHeader) => (
-                  <TableCell key={tableHeader.key}>
-                    {tableHeader.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {transactionData.map((expense, index) => (
-                <TableRow
-                  key={index}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  onClick={() => {
-                    editExpenseTransactionModal.show();
-                    setSelectedExpenseTransaction(expense);
-                  }}
-                >
-                  <TableCell>{expense.description}</TableCell>
-                  <TableCell>
-                    {getFundSource(expense.fundCollectionId)}
-                  </TableCell>
-                  <TableCell>
-                    {dayjs(expense.date).format("MMM DD, YYYY")}
-                  </TableCell>
-                  <TableCell>{expense.amount}</TableCell>
-                </TableRow>
+      <TableContainer>
+        <Table aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              {tableHeaders.map((tableHeader) => (
+                <TableCell key={tableHeader.key}>{tableHeader.label}</TableCell>
               ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
-      <EditExpenseCollectionModal
-        isVisible={editExpenseCollectionModal.isVisible}
-        expenseCollectionId={expensesCollectionData?.id ?? ""}
-        onClose={editExpenseCollectionModal.hide}
-        onDelete={() => {
-          editExpenseCollectionModal.hide();
-          deleteExpenseCollectionWarningModal.show();
-        }}
-        onUpdate={handleUpdateExpenseCollection}
-      />
-      <DeleteWarningActionModal
-        isVisible={deleteExpenseCollectionWarningModal.isVisible}
-        itemName={expensesCollectionData?.name ?? ""}
-        onClose={() => {
-          deleteExpenseCollectionWarningModal.hide();
-          editExpenseCollectionModal.show();
-        }}
-        onCancel={() => {
-          deleteExpenseCollectionWarningModal.hide();
-          editExpenseCollectionModal.show();
-        }}
-        onConfirm={handleDeleteExpenseCollection}
-      />
-      <AddExpenseTransactionModal
-        isVisible={addExpenseTransactionModal.isVisible}
-        expenseCollectionName={expensesCollectionData?.name ?? ""}
-        onClose={addExpenseTransactionModal.hide}
-        onCancel={addExpenseTransactionModal.hide}
-        onSubmit={handleAddExpenseTransaction}
-      />
-      <EditExpenseTransactionModal
-        isVisible={editExpenseTransactionModal.isVisible}
-        expenseTransactionId={selectedExpenseTransaction?.id ?? ""}
-        onClose={editExpenseTransactionModal.hide}
-        onDelete={handleShowConfirmDeleteModal}
-        onUpdate={handleUpdateExpenseTransaction}
-      />
-      <DeleteWarningActionModal
-        isVisible={deleteExpenseCollectionWarningModal.isVisible}
-        itemName={selectedExpenseTransaction?.description ?? ""}
-        onClose={() => {
-          deleteExpenseCollectionWarningModal.hide();
-          editExpenseCollectionModal.show();
-        }}
-        onCancel={() => {
-          deleteExpenseCollectionWarningModal.hide();
-          editExpenseCollectionModal.show();
-        }}
-        onConfirm={handleDeleteExpenseTransaction}
-      />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {transactionData.map((expense, index) => (
+              <TableRow
+                key={index}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                onClick={() => {
+                  editExpenseTransactionModal.show();
+                  setSelectedExpenseTransaction(expense);
+                }}
+              >
+                <TableCell>{expense.description}</TableCell>
+                <TableCell>{getFundSource(expense.fundCollectionId)}</TableCell>
+                <TableCell>
+                  {dayjs(expense.date).format("MMM DD, YYYY")}
+                </TableCell>
+                <TableCell>{expense.amount}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </PageContainer>
   );
 };

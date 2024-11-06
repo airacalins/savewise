@@ -1,14 +1,8 @@
 import { Card, Stack } from "@mui/material";
 import { PageContainer } from "../../components/containers/PageContainer";
 import { Text } from "../../components/texts/Text";
-import { useGetCollections } from "../../api/collection/hooks";
 
 export const HomePage = () => {
-  const { data, error } = useGetCollections();
-
-  console.log(JSON.stringify(data, null, 2));
-  if (error) return <div>Error: {error.message}</div>;
-
   return (
     <PageContainer
       title="Home"

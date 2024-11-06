@@ -66,7 +66,7 @@ export const FundsCollectionPage = () => {
         aria-label="basic tabs example"
       >
         {tabs.map((tab) => (
-          <Tab label={tab.label} />
+          <Tab key={tab.value} label={tab.label} />
         ))}
       </Tabs>
       {renderTabContents()}

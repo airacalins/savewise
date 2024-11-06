@@ -5,7 +5,6 @@ import {
   updateExpenseTransactionSchema,
 } from "../../../api/transactions/schema";
 import { mockTransactions } from "../../../api/transactions/mockTransactions";
-// import { mockFundsCollection } from "../../../api/collection/mockFundsCollection";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";

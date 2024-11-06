@@ -4,7 +4,6 @@ import {
   useQueryClient,
   UseQueryOptions,
 } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 
 import {
   GenericMutationParams,
@@ -13,6 +12,7 @@ import {
   TQueryError,
 } from "./types";
 import { request } from "../utils/agent";
+import { showErrorToast } from "../utils/toast";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const handleError = (error: any) => {
@@ -23,17 +23,15 @@ export const handleError = (error: any) => {
     error.data.length > 0
   ) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    error.data.forEach((err: any) =>
-      toast.error(err.errorMessage, { position: "bottom-right" })
-    );
+    error.data.forEach((err: any) => showErrorToast(err.errorMessage));
   } else {
     const errorMessage =
       typeof error?.error === "string"
         ? error?.error
         : error?.statusText ?? "An error occured";
-    toast.error(error?.data?.errorMessage ?? errorMessage, {
-      position: "bottom-right",
-    });
+    console.log(
+      JSON.stringify(error?.data?.errorMessage ?? errorMessage, null, 2)
+    );
   }
 };
 
