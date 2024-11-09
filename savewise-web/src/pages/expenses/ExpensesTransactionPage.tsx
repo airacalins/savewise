@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PageContainer } from "../../components/containers/PageContainer";
 import {
   TableContainer,
@@ -31,9 +31,11 @@ import { Edit } from "@mui/icons-material";
 import { EditExpenseCollectionModal } from "./components/EditExpenseCollectionModal";
 import { TUpdateCollectionSchema } from "../../api/collection/schema";
 import {
+  useDeleteCollectionById,
   useGetCollectionById,
   useGetFundsCollection,
 } from "../../api/collection/hooks";
+import { showErrorToast, showSuccessToast } from "../../utils/toast";
 
 const tableHeaders = [
   { key: "description", label: "Description" },
@@ -44,6 +46,7 @@ const tableHeaders = [
 
 export const ExpensesPage = () => {
   const { collectionId } = useParams();
+  const navigate = useNavigate();
   const editExpenseCollectionModal = useVisibilityState();
   const addExpenseTransactionModal = useVisibilityState();
   const editExpenseTransactionModal = useVisibilityState();
@@ -58,15 +61,12 @@ export const ExpensesPage = () => {
     isLoading: isLoadingExpensesCollection,
   } = useGetCollectionById(collectionId ?? "");
   const { data: fundsCollectionData } = useGetFundsCollection();
+  const deleteCollection = useDeleteCollectionById(collectionId ?? "");
+
+  // Mock Data
   const transactionData = mockTransactions.filter(
     (transaction) => transaction.expenseCollectionId === collectionId
   );
-
-  // Functions
-  const handleShowConfirmDeleteModal = () => {
-    editExpenseTransactionModal.hide();
-    deleteExpenseTransactionWarningModal.show();
-  };
 
   const breadcrumbs = useMemo(() => {
     return [
@@ -90,13 +90,27 @@ export const ExpensesPage = () => {
     return fundCollection?.name ?? "Unknown Fund Source";
   };
 
+  const handleShowConfirmDeleteModal = () => {
+    editExpenseTransactionModal.hide();
+    deleteExpenseTransactionWarningModal.show();
+  };
+
   const handleUpdateExpenseCollection = (data: TUpdateCollectionSchema) => {
     console.log(data);
     editExpenseCollectionModal.hide();
   };
 
-  const handleDeleteExpenseCollection = () => {
+  const handleDeleteExpenseCollection = async () => {
+    navigate(`/expensesCollection`);
     deleteExpenseCollectionWarningModal.hide();
+
+    try {
+      await deleteCollection.mutateAsync({});
+
+      showSuccessToast("Expense collection deleted.");
+    } catch {
+      showErrorToast("Failed to delete fund collection.");
+    }
   };
 
   const handleAddExpenseTransaction = (
@@ -161,8 +175,8 @@ export const ExpensesPage = () => {
           />
           <DeleteWarningActionModal
             isVisible={deleteExpenseCollectionWarningModal.isVisible}
-            isDeleting={false}
-            itemName={expensesCollectionData?.name ?? ""}
+            isDeleting={deleteCollection.isLoading}
+            itemName={expensesCollectionData?.name}
             onClose={() => {
               deleteExpenseCollectionWarningModal.hide();
               editExpenseCollectionModal.show();
@@ -188,16 +202,16 @@ export const ExpensesPage = () => {
             onUpdate={handleUpdateExpenseTransaction}
           />
           <DeleteWarningActionModal
-            isVisible={deleteExpenseCollectionWarningModal.isVisible}
+            isVisible={deleteExpenseTransactionWarningModal.isVisible}
             isDeleting={false}
             itemName={selectedExpenseTransaction?.description ?? ""}
             onClose={() => {
-              deleteExpenseCollectionWarningModal.hide();
-              editExpenseCollectionModal.show();
+              deleteExpenseTransactionWarningModal.hide();
+              editExpenseTransactionModal.show();
             }}
             onCancel={() => {
-              deleteExpenseCollectionWarningModal.hide();
-              editExpenseCollectionModal.show();
+              deleteExpenseTransactionWarningModal.hide();
+              editExpenseTransactionModal.show();
             }}
             onConfirm={handleDeleteExpenseTransaction}
           />

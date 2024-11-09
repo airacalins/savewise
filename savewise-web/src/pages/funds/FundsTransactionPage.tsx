@@ -54,7 +54,7 @@ export const FundsPage = () => {
   const [selectedFundTransaction, setSelectedFundTransaction] =
     useState<null | Transaction>();
 
-  // Data
+  // API
   const { data: fundCollectionData, isLoading: isLoadingFundCollectionData } =
     useGetCollectionById(collectionId ?? "");
   const expenseCollectionData = mockExpensesCollectionData;
@@ -96,7 +96,7 @@ export const FundsPage = () => {
 
       showSuccessToast("Fund collection deleted.");
     } catch {
-      showErrorToast("Failed to delete fund collection");
+      showErrorToast("Failed to delete fund collection.");
     }
   };
 
@@ -165,7 +165,7 @@ export const FundsPage = () => {
           <DeleteWarningActionModal
             isVisible={deleteFundCollectionWarningModal.isVisible}
             isDeleting={deleteCollection.isLoading}
-            itemName={""}
+            itemName={fundCollectionData?.name}
             onClose={() => {
               deleteFundCollectionWarningModal.hide();
               editFundCollectionModal.show();

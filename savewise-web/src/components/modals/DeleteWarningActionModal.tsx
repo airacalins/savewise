@@ -15,7 +15,7 @@ import { OutlinedButton } from "../buttons/OutlinedButton";
 interface DeleteWarningActionModalProps extends PropsWithChildren {
   isVisible: boolean;
   isDeleting: boolean;
-  itemName: string;
+  itemName?: string;
   onClose: () => void;
   onCancel: () => void;
   onConfirm: () => void;
@@ -64,9 +64,18 @@ export const DeleteWarningActionModal: React.FC<
           </IconButton>
         </Stack>
         <Typography id="modal-modal-title" variant="body1">
-          {`This action is irreversible. Are you sure you want to delete ${
-            itemName === "" ? "this item" : itemName
-          }?`}
+          {!itemName ? (
+            "This action is irreversible. Are you sure you want to delete this item?"
+          ) : (
+            <Stack direction="row">
+              <Typography>
+                This action is irreversible. Are you sure you want to delete
+              </Typography>
+              <Box width="4px" />
+              <Typography fontWeight="bold">{itemName}</Typography>
+              <Typography>?</Typography>
+            </Stack>
+          )}
         </Typography>
         <Box height="24px" />
         {children}
