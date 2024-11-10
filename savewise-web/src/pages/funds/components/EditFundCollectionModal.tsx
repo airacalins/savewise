@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Button } from "@mui/material";
 import { TextInput } from "../../../components/inputs/TextInput";
 import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
@@ -12,21 +12,27 @@ import {
   TUpdateCollectionSchema,
   updateCollectionSchema,
 } from "../../../api/collection/schema";
-import { useGetCollectionById } from "../../../api/collection/hooks";
+import {
+  useGetCollectionById,
+  useUpdateCollectionById,
+} from "../../../api/collection/hooks";
+import { showErrorToast, showSuccessToast } from "../../../utils/toast";
 
 interface EditFundCollectionModalProps {
   isVisible: boolean;
   fundCollectionId: string;
   onClose: () => void;
   onDelete: () => void;
-  onUpdate: (data: TUpdateCollectionSchema) => void;
 }
 
 export const EditFundCollectionModal: React.FC<
   EditFundCollectionModalProps
-> = ({ isVisible, fundCollectionId, onClose, onDelete, onUpdate }) => {
+> = ({ isVisible, fundCollectionId, onClose, onDelete }) => {
   // API
   const { data: fundCollectionData } = useGetCollectionById(fundCollectionId);
+  const updateFundCollection = useUpdateCollectionById(
+    fundCollectionData?.id ?? ""
+  );
 
   const defaultValues = useMemo(
     () => ({
@@ -46,14 +52,26 @@ export const EditFundCollectionModal: React.FC<
     mode: "onChange",
   });
 
+  useEffect(() => {
+    reset(defaultValues);
+  }, [reset, defaultValues]);
+
+  // Functions
   const handleCloseModal = () => {
     reset();
     onClose();
   };
 
-  const handleFormSubmit = (data: TUpdateCollectionSchema) => {
-    onUpdate(data);
-    reset();
+  const handleUpdateFundCollection = async (
+    formValues: TUpdateCollectionSchema
+  ) => {
+    try {
+      await updateFundCollection.mutateAsync(formValues);
+
+      showSuccessToast("Fund collection updated.");
+    } catch {
+      showErrorToast("Failed to update fund collection.");
+    }
   };
 
   return (
@@ -74,7 +92,7 @@ export const EditFundCollectionModal: React.FC<
           <ContainedButton
             startIcon={<Save sx={{ color: colors.primary }} />}
             disabled={!isDirty || !isValid}
-            onClick={handleSubmit(handleFormSubmit)}
+            onClick={handleSubmit(handleUpdateFundCollection)}
           >
             Update
           </ContainedButton>

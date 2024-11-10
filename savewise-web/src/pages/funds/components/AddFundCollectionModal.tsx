@@ -57,7 +57,6 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
     onCancel();
   };
 
-  // Functions
   const handleAddFundCollection = async (formData: TCreateCollectionSchema) => {
     try {
       const result = await createFundCollection.mutateAsync({

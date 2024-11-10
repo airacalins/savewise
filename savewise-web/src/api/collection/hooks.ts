@@ -1,6 +1,10 @@
 import queryClient from "../../queryClient";
-import { useDelete, useGet, usePost } from "../reactQueryUtils";
-import { Collection, CreateCollectionRequest } from "./type";
+import { useDelete, useGet, usePost, usePut } from "../reactQueryUtils";
+import {
+  Collection,
+  CreateCollectionRequest,
+  UpdateCollectionRequest,
+} from "./type";
 
 const QUERY_KEY = "collections";
 
@@ -53,6 +57,17 @@ export const useGetCollectionById = (id: string) => {
   return useGet<Collection>({
     url,
     queryKey,
+  });
+};
+
+// PUT - /api/Collections/{id}
+export const useUpdateCollectionById = (id: string) => {
+  const url = `/collections/${id}`;
+  const cacheKey = [QUERY_KEY, id];
+
+  return usePut<Collection, UpdateCollectionRequest>({
+    url,
+    cacheKey,
   });
 };
 

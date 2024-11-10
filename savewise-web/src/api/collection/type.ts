@@ -15,3 +15,7 @@ export type CreateCollectionRequest = {
   name: string;
   collectionType: CollectionType;
 };
+
+export type UpdateCollectionRequest = {
+  name: string;
+};

@@ -30,7 +30,6 @@ import { Edit } from "@mui/icons-material";
 import { EditFundCollectionModal } from "./components/EditFundCollectionModal";
 import { DeleteWarningActionModal } from "../../components/modals/DeleteWarningActionModal";
 import { EditFundTransactionModal } from "./components/EditFundTransactionModal";
-import { TUpdateCollectionSchema } from "../../api/collection/schema";
 import {
   useDeleteCollectionById,
   useGetCollectionById,
@@ -61,6 +60,7 @@ export const FundsPage = () => {
   const fundCollectionTransactionsData = mockTransactions.filter(
     (transaction) => transaction.fundCollectionId === collectionId
   );
+
   const deleteCollection = useDeleteCollectionById(collectionId ?? "");
 
   const breadcrumbs = useMemo(() => {
@@ -81,10 +81,6 @@ export const FundsPage = () => {
   const getExpenseName = (id: string) => {
     const expense = expenseCollectionData.find((expense) => expense.id === id);
     return expense ? expense.name : "Unknown Expense";
-  };
-
-  const handleUpdateFundCollection = (data: TUpdateCollectionSchema) => {
-    console.log(data);
   };
 
   const handleDeleteFundCollection = async () => {
@@ -143,7 +139,6 @@ export const FundsPage = () => {
               editFundCollectionModal.hide();
               deleteFundCollectionWarningModal.show();
             }}
-            onUpdate={handleUpdateFundCollection}
           />
           <AddFundTransactionModal
             isVisible={addFundTransactionModal.isVisible}
