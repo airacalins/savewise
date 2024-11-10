@@ -16,6 +16,7 @@ namespace API.Controllers
         private readonly IGetCollectionsByTypeCommand _getCollectionsByTypeCommand;
         private readonly IGetCollectionByIdCommand _getCollectionByIdCommand;
         private readonly ICreateCollectionCommand _createCollectionCommand;
+        private readonly IUpdateCollectionCommand _updateCollectionCommand;
         private readonly IDeleteCollectionCommand _deleteCollectionCommand;
 
 
@@ -24,6 +25,7 @@ namespace API.Controllers
             IGetCollectionsByTypeCommand getCollectionsByTypeCommand,
             IGetCollectionByIdCommand getCollectionByIdCommand,
             ICreateCollectionCommand createCollectionCommand,
+            IUpdateCollectionCommand updateCollectionCommand,
             IDeleteCollectionCommand deleteCollectionCommand
             )
         {
@@ -31,6 +33,7 @@ namespace API.Controllers
             _getCollectionsByTypeCommand = getCollectionsByTypeCommand;
             _getCollectionByIdCommand = getCollectionByIdCommand;
             _createCollectionCommand = createCollectionCommand;
+            _updateCollectionCommand = updateCollectionCommand;
             _deleteCollectionCommand = deleteCollectionCommand;
         }
 
@@ -84,6 +87,16 @@ namespace API.Controllers
 
             var data = new CollectionDto(result.Value);
 
+            return Ok(data);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<CollectionViewModel>> UpdateCollection([FromRoute] Guid id, [FromBody] UpdateCollectionDto input)
+        {
+            var result = await _updateCollectionCommand.ExecuteCommand(id, input);
+            if (!result.IsSuccess) return BadRequest(result.Error);
+
+            var data = new CollectionDto(result.Value);
             return Ok(data);
         }
 
