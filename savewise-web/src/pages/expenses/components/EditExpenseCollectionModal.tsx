@@ -1,31 +1,36 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Button } from "@mui/material";
 import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import { TextInput } from "../../../components/inputs/TextInput";
 import { ContainedButton } from "../../../components/buttons/ContainedButton";
-import { mockExpensesCollectionData } from "../../../api/collection/mockExpensesCollection";
 import { DeleteOutline, Save } from "@mui/icons-material";
 import { colors } from "../../../theme/colors";
 import {
   TUpdateCollectionSchema,
   updateCollectionSchema,
 } from "../../../api/collection/schema";
+import {
+  useGetCollectionById,
+  useUpdateCollectionById,
+} from "../../../api/collection/hooks";
+import { showErrorToast, showSuccessToast } from "../../../utils/toast";
 
 interface EditExpenseCollectionModalProps {
   isVisible: boolean;
   expenseCollectionId: string;
   onClose: () => void;
   onDelete: () => void;
-  onUpdate: (data: TUpdateCollectionSchema) => void;
 }
 
 export const EditExpenseCollectionModal: React.FC<
   EditExpenseCollectionModalProps
-> = ({ isVisible, expenseCollectionId, onClose, onDelete, onUpdate }) => {
-  const expenseCollectionData = mockExpensesCollectionData.find(
-    (expenseCollection) => expenseCollection.id === expenseCollectionId
+> = ({ isVisible, expenseCollectionId, onClose, onDelete }) => {
+  const { data: expenseCollectionData } =
+    useGetCollectionById(expenseCollectionId);
+  const updateExpenseCollection = useUpdateCollectionById(
+    expenseCollectionData?.id ?? ""
   );
 
   const defaultValues = useMemo(
@@ -46,15 +51,26 @@ export const EditExpenseCollectionModal: React.FC<
     mode: "onChange",
   });
 
+  useEffect(() => {
+    reset(defaultValues);
+  }, [reset, defaultValues]);
+
   // Functions
   const handleCloseModal = () => {
     reset();
     onClose();
   };
 
-  const handleFormSubmit = (data: TUpdateCollectionSchema) => {
-    onUpdate(data);
-    reset();
+  const handleUpdateExpenseCollection = async (
+    formValues: TUpdateCollectionSchema
+  ) => {
+    try {
+      await updateExpenseCollection.mutateAsync(formValues);
+
+      showSuccessToast("Expense collection updated.");
+    } catch {
+      showErrorToast("Failed to update expense collection.");
+    }
   };
 
   return (
@@ -75,7 +91,7 @@ export const EditExpenseCollectionModal: React.FC<
           <ContainedButton
             startIcon={<Save sx={{ color: colors.primary }} />}
             disabled={!isDirty || !isValid}
-            onClick={handleSubmit(handleFormSubmit)}
+            onClick={handleSubmit(handleUpdateExpenseCollection)}
           >
             Update
           </ContainedButton>

@@ -29,7 +29,6 @@ import { AddExpenseTransactionModal } from "./components/AddExpenseTransactionMo
 import { DeleteWarningActionModal } from "../../components/modals/DeleteWarningActionModal";
 import { Edit } from "@mui/icons-material";
 import { EditExpenseCollectionModal } from "./components/EditExpenseCollectionModal";
-import { TUpdateCollectionSchema } from "../../api/collection/schema";
 import {
   useDeleteCollectionById,
   useGetCollectionById,
@@ -93,11 +92,6 @@ export const ExpensesPage = () => {
   const handleShowConfirmDeleteModal = () => {
     editExpenseTransactionModal.hide();
     deleteExpenseTransactionWarningModal.show();
-  };
-
-  const handleUpdateExpenseCollection = (data: TUpdateCollectionSchema) => {
-    console.log(data);
-    editExpenseCollectionModal.hide();
   };
 
   const handleDeleteExpenseCollection = async () => {
@@ -171,7 +165,6 @@ export const ExpensesPage = () => {
               editExpenseCollectionModal.hide();
               deleteExpenseCollectionWarningModal.show();
             }}
-            onUpdate={handleUpdateExpenseCollection}
           />
           <DeleteWarningActionModal
             isVisible={deleteExpenseCollectionWarningModal.isVisible}
