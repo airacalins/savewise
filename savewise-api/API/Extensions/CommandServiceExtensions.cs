@@ -1,5 +1,5 @@
-using Application.Commands;
-using Application.Interfaces;
+using Application.Collections.Commands;
+using Application.Collections.Interfaces;
 
 namespace API.Extensions
 {

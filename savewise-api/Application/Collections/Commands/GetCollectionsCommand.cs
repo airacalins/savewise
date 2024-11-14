@@ -1,9 +1,9 @@
 using System.Linq;
-using Application.Dtos;
-using Application.Interfaces;
+using Application.Collections.Dtos;
+using Application.Collections.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Commands
+namespace Application.Collections.Commands
 {
     public class GetCollectionsCommand(IDataContext context) : IGetCollectionsCommand
     {

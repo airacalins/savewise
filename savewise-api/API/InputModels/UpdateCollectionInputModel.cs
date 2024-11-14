@@ -1,4 +1,4 @@
-using Application.Dtos;
+using Application.Collections.Dtos;
 
 namespace API.InputModels
 {

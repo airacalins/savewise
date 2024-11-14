@@ -1,6 +1,6 @@
-using Application.Dtos;
+using Application.Collections.Dtos;
 
-namespace Application.Interfaces
+namespace Application.Collections.Interfaces
 {
     public interface IGetCollectionByIdCommand
     {

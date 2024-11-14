@@ -1,8 +1,8 @@
-using Application.Dtos;
-using Application.Interfaces;
+using Application.Collections.Dtos;
+using Application.Collections.Interfaces;
 using Domain.Entities;
 
-namespace Application.Commands
+namespace Application.Collections.Commands
 {
     public class UpdateCollectionCommand : IUpdateCollectionCommand
     {

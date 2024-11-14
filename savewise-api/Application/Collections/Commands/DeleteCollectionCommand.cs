@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Application.Interfaces;
+using Application.Collections.Dtos;
+using Application.Collections.Interfaces;
 
-namespace Application.Commands
+namespace Application.Collections.Commands
 {
     public class DeleteCollectionCommand(IDataContext context) : IDeleteCollectionCommand
     {

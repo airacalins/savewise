@@ -1,7 +1,7 @@
 using Domain.Entities;
 using Domain.Enums;
 
-namespace Application.Dtos
+namespace Application.Collections.Dtos
 {
     public class CreateCollectionDto
     {

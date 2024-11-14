@@ -1,4 +1,4 @@
-using Application.Dtos;
+using Application.Collections.Dtos;
 using Domain.Enums;
 
 namespace API.ViewModels

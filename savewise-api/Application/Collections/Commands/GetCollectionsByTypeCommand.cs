@@ -1,9 +1,9 @@
-using Application.Interfaces;
-using Application.Dtos;
+using Application.Collections.Interfaces;
+using Application.Collections.Dtos;
 using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Commands
+namespace Application.Collections.Commands
 {
     public class GetCollectionsByTypeCommand(IDataContext context) : IGetCollectionsByTypeCommand
     {

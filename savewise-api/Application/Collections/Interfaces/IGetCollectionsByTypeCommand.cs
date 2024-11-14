@@ -1,7 +1,7 @@
-using Application.Dtos;
+using Application.Collections.Dtos;
 using Domain.Enums;
 
-namespace Application.Interfaces
+namespace Application.Collections.Interfaces
 {
     public interface IGetCollectionsByTypeCommand
     {

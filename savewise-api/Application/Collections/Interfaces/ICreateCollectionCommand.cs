@@ -1,7 +1,7 @@
-using Application.Dtos;
+using Application.Collections.Dtos;
 using Domain.Entities;
 
-namespace Application.Interfaces
+namespace Application.Collections.Interfaces
 {
     public interface ICreateCollectionCommand
     {

@@ -1,7 +1,7 @@
 using API.InputModels;
 using API.ViewModels;
-using Application.Dtos;
-using Application.Interfaces;
+using Application.Collections.Dtos;
+using Application.Collections.Interfaces;
 using Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,6 +1,6 @@
 using Domain.Entities;
 
-namespace Application.Dtos
+namespace Application.Collections.Dtos
 {
     public class UpdateCollectionDto
     {

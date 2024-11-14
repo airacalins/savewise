@@ -1,8 +1,7 @@
-using Application.Interfaces;
-using Application.Dtos;
+using Application.Collections.Interfaces;
+using Application.Collections.Dtos;
 
-
-namespace Application.Commands
+namespace Application.Collections.Commands
 {
     public class GetCollectionByIdCommand(IDataContext context) : IGetCollectionByIdCommand
     {
