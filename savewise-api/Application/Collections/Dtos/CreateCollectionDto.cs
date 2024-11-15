@@ -17,7 +17,6 @@ namespace Application.Collections.Dtos
                 Name = Name,
                 CollectionType = CollectionType,
                 CreatedAt = DateTime.Now,
-
             };
         }
     }

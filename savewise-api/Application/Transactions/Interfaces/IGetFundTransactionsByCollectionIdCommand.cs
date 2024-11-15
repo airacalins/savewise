@@ -1,5 +1,4 @@
 using Application.Transactions.Dtos;
-using Domain.Enums;
 
 namespace Application.Transactions.Interfaces
 {
