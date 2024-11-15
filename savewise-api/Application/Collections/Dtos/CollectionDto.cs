@@ -3,25 +3,14 @@ using Domain.Enums;
 
 namespace Application.Collections.Dtos
 {
-    public class CollectionDto
+    public class CollectionDto(Collection collection)
     {
-        public CollectionDto(Collection collection)
-        {
-            Id = collection.Id;
-            Date = collection.Date;
-            Name = collection.Name;
-            CollectionType = collection.CollectionType;
-            CurrentMonthTotal = collection.CurrentMonthTotal;
-            YearToDateTotal = collection.YearToDateTotal;
-            CreatedAt = collection.CreatedAt;
-        }
-
-        public Guid Id { get; set; }
-        public DateTime Date { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public CollectionType CollectionType { get; set; }
-        public double CurrentMonthTotal { get; set; }
-        public double YearToDateTotal { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public Guid Id { get; set; } = collection.Id;
+        public DateTime Date { get; set; } = collection.Date;
+        public string Name { get; set; } = collection.Name;
+        public CollectionType CollectionType { get; set; } = collection.CollectionType;
+        public double CurrentMonthTotal { get; set; } = collection.CurrentMonthTotal;
+        public double YearToDateTotal { get; set; } = collection.YearToDateTotal;
+        public DateTime CreatedAt { get; set; } = collection.CreatedAt;
     }
 }

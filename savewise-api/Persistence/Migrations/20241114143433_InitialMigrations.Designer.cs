@@ -11,7 +11,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241027145727_InitialMigrations")]
+    [Migration("20241114143433_InitialMigrations")]
     partial class InitialMigrations
     {
         /// <inheritdoc />
@@ -52,191 +52,191 @@ namespace Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3b00dca3-2aa1-43a5-9d30-03500c642fd8"),
+                            Id = new Guid("ce2b8d8f-b2a6-42b2-a0e8-6dba415cd341"),
                             CollectionType = 0,
-                            CreatedAt = new DateTime(2024, 10, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6660),
+                            CreatedAt = new DateTime(2024, 11, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4150),
                             CurrentMonthTotal = 5000.0,
-                            Date = new DateTime(2024, 10, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6630),
+                            Date = new DateTime(2024, 11, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4120),
                             Name = "Emergency",
                             YearToDateTotal = 30000.0
                         },
                         new
                         {
-                            Id = new Guid("23b85a79-3c20-4c2a-8bab-5aaaaabee782"),
+                            Id = new Guid("013eb7a6-bace-41bb-966a-a5dfb11bdfe6"),
                             CollectionType = 0,
-                            CreatedAt = new DateTime(2024, 9, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6670),
+                            CreatedAt = new DateTime(2024, 10, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4160),
                             CurrentMonthTotal = 12000.0,
-                            Date = new DateTime(2024, 9, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6670),
+                            Date = new DateTime(2024, 10, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4150),
                             Name = "Retirement",
                             YearToDateTotal = 60000.0
                         },
                         new
                         {
-                            Id = new Guid("301063be-1716-42dc-8e26-ecc252d471e5"),
+                            Id = new Guid("8f518db6-44f7-4b0f-83e5-c29f474eb681"),
                             CollectionType = 0,
-                            CreatedAt = new DateTime(2024, 8, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6680),
+                            CreatedAt = new DateTime(2024, 9, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4160),
                             CurrentMonthTotal = 8000.0,
-                            Date = new DateTime(2024, 8, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6670),
+                            Date = new DateTime(2024, 9, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4160),
                             Name = "Investment",
                             YearToDateTotal = 50000.0
                         },
                         new
                         {
-                            Id = new Guid("24f08ee6-4539-4941-9dcb-dab932d21c78"),
+                            Id = new Guid("b255647d-e73d-4e16-96e9-4a98f4a8e449"),
                             CollectionType = 0,
-                            CreatedAt = new DateTime(2024, 7, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6680),
+                            CreatedAt = new DateTime(2024, 8, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4170),
                             CurrentMonthTotal = 3000.0,
-                            Date = new DateTime(2024, 7, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6680),
+                            Date = new DateTime(2024, 8, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4170),
                             Name = "Vacation",
                             YearToDateTotal = 15000.0
                         },
                         new
                         {
-                            Id = new Guid("cc5c06d1-8a4b-4cee-8c4d-fe237b43207b"),
+                            Id = new Guid("7f8067a6-b14b-4a06-a555-c6f36b6e336d"),
                             CollectionType = 0,
-                            CreatedAt = new DateTime(2024, 6, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6690),
+                            CreatedAt = new DateTime(2024, 7, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4190),
                             CurrentMonthTotal = 7000.0,
-                            Date = new DateTime(2024, 6, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6680),
+                            Date = new DateTime(2024, 7, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4180),
                             Name = "Education",
                             YearToDateTotal = 35000.0
                         },
                         new
                         {
-                            Id = new Guid("550e4e53-f9e0-4a6a-941b-cf31c6482944"),
+                            Id = new Guid("17f6da93-33aa-41d7-90e3-4e2629a666ab"),
                             CollectionType = 0,
-                            CreatedAt = new DateTime(2024, 5, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6690),
+                            CreatedAt = new DateTime(2024, 6, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4190),
                             CurrentMonthTotal = 9000.0,
-                            Date = new DateTime(2024, 5, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6690),
+                            Date = new DateTime(2024, 6, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4190),
                             Name = "Business",
                             YearToDateTotal = 40000.0
                         },
                         new
                         {
-                            Id = new Guid("c32a390d-9c3b-4170-b870-9e8eb347932d"),
+                            Id = new Guid("b9e71397-917b-4b92-a625-eddb01888db6"),
                             CollectionType = 0,
-                            CreatedAt = new DateTime(2024, 4, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6700),
+                            CreatedAt = new DateTime(2024, 5, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4190),
                             CurrentMonthTotal = 6000.0,
-                            Date = new DateTime(2024, 4, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6690),
+                            Date = new DateTime(2024, 5, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4190),
                             Name = "Health",
                             YearToDateTotal = 28000.0
                         },
                         new
                         {
-                            Id = new Guid("0d8524fb-3d0c-4634-a716-ff49135c009b"),
+                            Id = new Guid("8b0bf32a-305c-409a-b681-36652caa6996"),
                             CollectionType = 1,
-                            CreatedAt = new DateTime(2024, 10, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6700),
+                            CreatedAt = new DateTime(2024, 11, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4200),
                             CurrentMonthTotal = 1500.75,
-                            Date = new DateTime(2024, 10, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6700),
+                            Date = new DateTime(2024, 11, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4200),
                             Name = "Utilities",
                             YearToDateTotal = 12000.0
                         },
                         new
                         {
-                            Id = new Guid("06012527-39ac-460d-a8a5-2870502b2183"),
+                            Id = new Guid("4e6bf374-269c-4805-85d1-0760ea0b6831"),
                             CollectionType = 1,
-                            CreatedAt = new DateTime(2024, 10, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6710),
+                            CreatedAt = new DateTime(2024, 11, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4200),
                             CurrentMonthTotal = 3000.0,
-                            Date = new DateTime(2024, 10, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6700),
+                            Date = new DateTime(2024, 11, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4200),
                             Name = "Living Expenses",
                             YearToDateTotal = 25000.0
                         },
                         new
                         {
-                            Id = new Guid("f698a339-d97e-45a3-9f27-209580bd1c50"),
+                            Id = new Guid("e68a33fa-786a-4475-9894-9adc7c5b7170"),
                             CollectionType = 1,
-                            CreatedAt = new DateTime(2024, 10, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6710),
+                            CreatedAt = new DateTime(2024, 11, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4210),
                             CurrentMonthTotal = 2000.5,
-                            Date = new DateTime(2024, 10, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6710),
+                            Date = new DateTime(2024, 11, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4200),
                             Name = "Savings",
                             YearToDateTotal = 18000.0
                         },
                         new
                         {
-                            Id = new Guid("db8205ef-3fe6-4292-8f5b-23e2d9b81f88"),
+                            Id = new Guid("62733967-65e7-4859-97b2-9e078da0a8fe"),
                             CollectionType = 1,
-                            CreatedAt = new DateTime(2024, 10, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6710),
+                            CreatedAt = new DateTime(2024, 11, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4210),
                             CurrentMonthTotal = 1200.0,
-                            Date = new DateTime(2024, 10, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6710),
+                            Date = new DateTime(2024, 11, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4210),
                             Name = "Travel",
                             YearToDateTotal = 10000.0
                         },
                         new
                         {
-                            Id = new Guid("468097e8-8ac0-4ee6-b3d5-55c5d80eedd1"),
+                            Id = new Guid("cbd6cd10-58c3-4a2a-9bdc-f9aa3d673a68"),
                             CollectionType = 1,
-                            CreatedAt = new DateTime(2024, 10, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6720),
+                            CreatedAt = new DateTime(2024, 11, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4210),
                             CurrentMonthTotal = 800.0,
-                            Date = new DateTime(2024, 10, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6720),
+                            Date = new DateTime(2024, 11, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4210),
                             Name = "Entertainment",
                             YearToDateTotal = 7000.0
                         },
                         new
                         {
-                            Id = new Guid("44b8d408-5793-4e63-bf03-5fe486301661"),
+                            Id = new Guid("48aef32a-0d95-43ac-94d5-a982b2abddd2"),
                             CollectionType = 1,
-                            CreatedAt = new DateTime(2024, 10, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6720),
+                            CreatedAt = new DateTime(2024, 11, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4220),
                             CurrentMonthTotal = 900.0,
-                            Date = new DateTime(2024, 10, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6720),
+                            Date = new DateTime(2024, 11, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4220),
                             Name = "Groceries",
                             YearToDateTotal = 8000.0
                         },
                         new
                         {
-                            Id = new Guid("05ce9e5b-d4c5-4fa6-8242-8a2980e920fd"),
+                            Id = new Guid("cfc2aa39-7e43-4423-b44d-aa5fae30941a"),
                             CollectionType = 1,
-                            CreatedAt = new DateTime(2024, 10, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6730),
+                            CreatedAt = new DateTime(2024, 11, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4220),
                             CurrentMonthTotal = 650.25,
-                            Date = new DateTime(2024, 10, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6730),
+                            Date = new DateTime(2024, 11, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4220),
                             Name = "Healthcare",
                             YearToDateTotal = 5000.0
                         },
                         new
                         {
-                            Id = new Guid("2ae740a9-b63d-4024-9f9d-3fdc57a7030f"),
+                            Id = new Guid("50f18adb-764c-4bc3-8c2c-323ea7b2e7b9"),
                             CollectionType = 1,
-                            CreatedAt = new DateTime(2024, 10, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6730),
+                            CreatedAt = new DateTime(2024, 11, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4230),
                             CurrentMonthTotal = 1300.0,
-                            Date = new DateTime(2024, 10, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6730),
+                            Date = new DateTime(2024, 11, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4220),
                             Name = "Education",
                             YearToDateTotal = 11000.0
                         },
                         new
                         {
-                            Id = new Guid("28127989-ea8d-400e-8c2a-31efebd6835d"),
+                            Id = new Guid("2e33491f-0e02-4de8-b150-4306c05323a6"),
                             CollectionType = 1,
-                            CreatedAt = new DateTime(2024, 10, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6740),
+                            CreatedAt = new DateTime(2024, 11, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4230),
                             CurrentMonthTotal = 400.0,
-                            Date = new DateTime(2024, 10, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6730),
+                            Date = new DateTime(2024, 11, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4230),
                             Name = "Miscellaneous",
                             YearToDateTotal = 3000.0
                         },
                         new
                         {
-                            Id = new Guid("609ee40a-5cd2-4416-aaca-d4c342a861b7"),
+                            Id = new Guid("bc32ff64-4146-41da-916a-f69bc7752b42"),
                             CollectionType = 1,
-                            CreatedAt = new DateTime(2024, 10, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6740),
+                            CreatedAt = new DateTime(2024, 11, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4230),
                             CurrentMonthTotal = 600.5,
-                            Date = new DateTime(2024, 10, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6740),
+                            Date = new DateTime(2024, 11, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4230),
                             Name = "Insurance",
                             YearToDateTotal = 4500.0
                         },
                         new
                         {
-                            Id = new Guid("ac37e384-5e24-4a30-a629-936fed53e9cb"),
+                            Id = new Guid("861b326c-225d-445d-ad2a-78f7cbdd8e4b"),
                             CollectionType = 0,
-                            CreatedAt = new DateTime(2024, 9, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6750),
+                            CreatedAt = new DateTime(2024, 10, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4240),
                             CurrentMonthTotal = 10000.0,
-                            Date = new DateTime(2024, 9, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6750),
+                            Date = new DateTime(2024, 10, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4240),
                             Name = "Emergency Fund",
                             YearToDateTotal = 50000.0
                         },
                         new
                         {
-                            Id = new Guid("8e0d34fb-e32b-4cab-a2a6-76e225b1de2e"),
+                            Id = new Guid("71790a14-6074-4d68-a114-a6f299e7f13f"),
                             CollectionType = 0,
-                            CreatedAt = new DateTime(2024, 8, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6750),
+                            CreatedAt = new DateTime(2024, 9, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4240),
                             CurrentMonthTotal = 15000.0,
-                            Date = new DateTime(2024, 8, 27, 22, 57, 27, 338, DateTimeKind.Local).AddTicks(6750),
+                            Date = new DateTime(2024, 9, 14, 22, 34, 33, 550, DateTimeKind.Local).AddTicks(4240),
                             Name = "Retirement Fund",
                             YearToDateTotal = 70000.0
                         });
@@ -261,18 +261,18 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("ExpenseCollectionIdId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ExpenseCollectiondId")
+                    b.Property<Guid?>("ExpenseCollectionId")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("FundCollectionId")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("TransactionType")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ExpenseCollectionIdId");
+                    b.HasIndex("ExpenseCollectionId");
 
                     b.HasIndex("FundCollectionId");
 
@@ -281,11 +281,9 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Transaction", b =>
                 {
-                    b.HasOne("Domain.Entities.Collection", "ExpenseCollectionId")
+                    b.HasOne("Domain.Entities.Collection", "ExpenseCollection")
                         .WithMany()
-                        .HasForeignKey("ExpenseCollectionIdId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ExpenseCollectionId");
 
                     b.HasOne("Domain.Entities.Collection", "FundCollection")
                         .WithMany()
@@ -293,7 +291,7 @@ namespace Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ExpenseCollectionId");
+                    b.Navigation("ExpenseCollection");
 
                     b.Navigation("FundCollection");
                 });

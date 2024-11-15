@@ -1,4 +1,3 @@
-using System.Linq;
 using Application.Collections.Dtos;
 using Application.Collections.Interfaces;
 using Microsoft.EntityFrameworkCore;

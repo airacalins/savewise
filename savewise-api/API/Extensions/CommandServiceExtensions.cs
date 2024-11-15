@@ -1,5 +1,7 @@
 using Application.Collections.Commands;
 using Application.Collections.Interfaces;
+using Application.Transactions.Commands;
+using Application.Transactions.Interfaces;
 
 namespace API.Extensions
 {
@@ -7,12 +9,16 @@ namespace API.Extensions
     {
         public static IServiceCollection AddCommandServices(this IServiceCollection services)
         {
+            // Collections
             services.AddScoped<IGetCollectionsCommand, GetCollectionsCommand>();
             services.AddScoped<IGetCollectionsByTypeCommand, GetCollectionsByTypeCommand>();
             services.AddScoped<IGetCollectionByIdCommand, GetCollectionByIdCommand>();
             services.AddScoped<ICreateCollectionCommand, CreateCollectionCommand>();
             services.AddScoped<IUpdateCollectionCommand, UpdateCollectionCommand>();
             services.AddScoped<IDeleteCollectionCommand, DeleteCollectionCommand>();
+
+            // Transactions
+            services.AddScoped<IGetFundTransactionsByCollectionIdCommand, GetFundTransactionsByCollectionIdCommand>();
 
             return services;
         }
