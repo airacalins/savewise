@@ -2,7 +2,6 @@ using API.InputModels;
 using API.ViewModels;
 using Application.Transactions.Dtos;
 using Application.Transactions.Interfaces;
-using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -10,18 +9,15 @@ namespace API.Controllers
     [ApiController]
     [Route("api/[controller]")]
 
-    public class TransactionsController : ControllerBase
+    public class TransactionsController(
+        IGetFundTransactionsByCollectionIdCommand getFundTransactionsByCollectionIdCommand,
+        ICreateFundTransactionCommand createFundTransactionCommand,
+        IGetTransactionByIdCommand getTransactionByIdCommand
+        ) : ControllerBase
     {
-        private readonly IGetFundTransactionsByCollectionIdCommand _getFundTransactionsByCollectionIdCommand;
-        private readonly ICreateFundTransactionCommand _createFundTransactionCommand;
-
-        public TransactionsController(
-            IGetFundTransactionsByCollectionIdCommand getFundTransactionsByCollectionIdCommand,
-            ICreateFundTransactionCommand createFundTransactionCommand)
-        {
-            _getFundTransactionsByCollectionIdCommand = getFundTransactionsByCollectionIdCommand;
-            _createFundTransactionCommand = createFundTransactionCommand;
-        }
+        private readonly IGetFundTransactionsByCollectionIdCommand _getFundTransactionsByCollectionIdCommand = getFundTransactionsByCollectionIdCommand;
+        private readonly ICreateFundTransactionCommand _createFundTransactionCommand = createFundTransactionCommand;
+        private readonly IGetTransactionByIdCommand _getTransactionByIdCommand = getTransactionByIdCommand;
 
         [HttpGet("funds/{fundCollectionId}")]
         public async Task<ActionResult<List<FundTransactionViewModel>>> GetFundTransactionsByCollectionId([FromRoute] Guid fundCollectionId)
@@ -55,6 +51,26 @@ namespace API.Controllers
             if (!result.IsSuccess) return BadRequest(result.Error);
 
             return Ok(result.Value);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<TransactionViewModel>> GetTransactionById([FromRoute] Guid id)
+        {
+            var result = await _getTransactionByIdCommand.ExecuteCommand(id);
+            if (!result.IsSuccess) return BadRequest(result.Error);
+
+            var transactionViewModel = new TransactionViewModel
+            {
+                Id = result.Value.Id,
+                Date = result.Value.Date,
+                Description = result.Value.Description,
+                Amount = result.Value.Amount,
+                FundCollectionId = result.Value.FundCollectionId,
+                ExpenseCollectionId = result.Value.ExpenseCollectionId,
+                TransactionType = result.Value.TransactionType
+            };
+
+            return Ok(transactionViewModel);
         }
     }
 }
