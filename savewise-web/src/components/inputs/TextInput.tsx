@@ -9,19 +9,19 @@ import React from "react";
 
 interface TextInputProps extends MuiOutlinedInputProps {
   label: string;
-  helperText?: string; // Optional prop for helper text
+  errorMessage?: string; // Optional prop for helper text
 }
 
 export const TextInput: React.FC<TextInputProps> = ({
   label,
-  helperText,
+  errorMessage,
   ...props
 }) => {
   return (
     <FormControl fullWidth variant="outlined" error={props.error}>
       <InputLabel htmlFor={props.name}>{label}</InputLabel>
       <OutlinedInput id={props.name} label={label} {...props} />
-      {helperText && <FormHelperText>{helperText}</FormHelperText>}
+      {errorMessage && <FormHelperText>{errorMessage}</FormHelperText>}
     </FormControl>
   );
 };

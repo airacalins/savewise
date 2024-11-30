@@ -25,13 +25,14 @@ const DEFAULT_VALUES = {
 interface AddFundTransactionModalProps {
   fundCollection?: Collection;
   isVisible: boolean;
+  onRefetch: () => void;
   onClose: () => void;
   onCancel: () => void;
 }
 
 export const AddFundTransactionModal: React.FC<
   AddFundTransactionModalProps
-> = ({ fundCollection, isVisible, onClose, onCancel }) => {
+> = ({ fundCollection, isVisible, onRefetch, onClose, onCancel }) => {
   const {
     control,
     formState: { errors, isValid },
@@ -67,9 +68,10 @@ export const AddFundTransactionModal: React.FC<
         date: newDateFormat(formValues.date),
       };
 
-      const result = await createFundTransaction.mutateAsync(input);
+      await createFundTransaction.mutateAsync(input);
 
-      showSuccessToast(`${result.description} transaction created.`);
+      showSuccessToast("Transaction created.");
+      onRefetch();
     } catch {
       showErrorToast("Failed to create transaction.");
     } finally {
@@ -115,7 +117,7 @@ export const AddFundTransactionModal: React.FC<
               placeholder="e.g., Business lunch, office supplies, travel expenses"
               error={!!errors.description}
               defaultValue={DEFAULT_VALUES.description}
-              helperText={errors.description?.message}
+              errorMessage={errors.description?.message}
               {...field}
             />
           )}
@@ -128,7 +130,7 @@ export const AddFundTransactionModal: React.FC<
               label="Amount"
               placeholder="100.00"
               error={!!errors.amount}
-              helperText={errors.amount?.message}
+              errorMessage={errors.amount?.message}
               {...field}
               onChange={(e) => {
                 const value = e.target.value;

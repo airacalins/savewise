@@ -102,7 +102,7 @@ export const AddExpenseCollectionModal: React.FC<
               placeholder="Groceries, Electricity, etc."
               error={!!errors.name}
               defaultValue={defaultValues.name}
-              helperText={errors.name?.message}
+              errorMessage={errors.name?.message}
               {...field}
             />
           )}

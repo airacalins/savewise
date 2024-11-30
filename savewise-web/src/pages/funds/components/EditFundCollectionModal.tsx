@@ -107,7 +107,7 @@ export const EditFundCollectionModal: React.FC<
             label="Name"
             placeholder="Income, Business, etc."
             error={!!errors.name}
-            helperText={errors.name?.message}
+            errorMessage={errors.name?.message}
             {...field}
           />
         )}

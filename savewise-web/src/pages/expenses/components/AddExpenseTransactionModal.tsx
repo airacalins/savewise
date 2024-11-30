@@ -104,7 +104,7 @@ export const AddExpenseTransactionModal: React.FC<
               placeholder="e.g., Business lunch, office supplies, travel expenses"
               error={!!errors.description}
               defaultValue={DEFAULT_VALUES.description}
-              helperText={errors.description?.message}
+              errorMessage={errors.description?.message}
               {...field}
             />
           )}
@@ -118,7 +118,7 @@ export const AddExpenseTransactionModal: React.FC<
               placeholder="1000.00"
               type="number"
               error={!!errors.amount}
-              helperText={errors.amount?.message}
+              errorMessage={errors.amount?.message}
               {...field}
               onChange={(e) => {
                 const value = e.target.value;

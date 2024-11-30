@@ -106,7 +106,7 @@ export const EditExpenseCollectionModal: React.FC<
             label="Name"
             placeholder="Groceries, Electricity, etc."
             error={!!errors.name}
-            helperText={errors.name?.message}
+            errorMessage={errors.name?.message}
             {...field}
           />
         )}

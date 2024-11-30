@@ -2,7 +2,6 @@ import { PageContainer } from "../../components/containers/PageContainer";
 import {
   Box,
   Button,
-  Chip,
   IconButton,
   Stack,
   Table,
@@ -16,10 +15,8 @@ import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMemo, useState } from "react";
 import dayjs from "dayjs";
-import { mockTransactions } from "../../api/transactions/mockTransactions";
 import { Text } from "../../components/texts/Text";
 import { Transaction } from "../../api/transactions/type";
-import { mockExpensesCollectionData } from "../../api/collection/mockExpensesCollection";
 import { TUpdateFundTransactionSchema } from "../../api/transactions/schema";
 import { AddFundTransactionModal } from "./components/AddFundTransactionModal";
 import { Edit } from "@mui/icons-material";
@@ -53,14 +50,11 @@ export const FundTransactionsPage = () => {
   // API
   const { data: fundCollectionData, isLoading: isLoadingFundCollectionData } =
     useGetCollectionById(collectionId ?? "");
-  const { data: fundTransactionsData, isLoading: isLoadingFundTransactions } =
-    useGetFundTransactions(collectionId ?? "");
-
-  // Mock Data
-  const expenseCollectionData = mockExpensesCollectionData;
-  const fundCollectionTransactionsData = mockTransactions.filter(
-    (transaction) => transaction.fundCollectionId === collectionId
-  );
+  const {
+    data: fundTransactionsData,
+    isLoading: isLoadingFundTransactions,
+    refetch: refetchFundTransactions,
+  } = useGetFundTransactions(collectionId ?? "");
 
   const deleteCollection = useDeleteCollectionById(collectionId ?? "");
 
@@ -79,9 +73,13 @@ export const FundTransactionsPage = () => {
   }, [fundCollectionData]);
 
   // Functions
-  const getExpenseName = (id: string) => {
-    const expense = expenseCollectionData.find((expense) => expense.id === id);
-    return expense ? expense.name : "Unknown Expense";
+  // const getExpenseName = (id: string) => {
+  //   const expense = expenseCollectionData.find((expense) => expense.id === id);
+  //   return expense ? expense.name : "Unknown Expense";
+  // };
+
+  const handleUpdateFundTransaction = (data: TUpdateFundTransactionSchema) => {
+    console.log(data);
   };
 
   const handleDeleteFundCollection = async () => {
@@ -96,12 +94,6 @@ export const FundTransactionsPage = () => {
       showErrorToast("Failed to delete fund collection.");
     }
   };
-
-  const handleUpdateFundTransaction = (data: TUpdateFundTransactionSchema) => {
-    console.log(data);
-  };
-
-  console.log(JSON.stringify(fundTransactionsData, null, 2));
 
   return (
     <PageContainer
@@ -120,7 +112,7 @@ export const FundTransactionsPage = () => {
         isLoadingFundTransactions
       }
       loadingMessage="Loading fund transactions..."
-      isEmptyPage={fundCollectionTransactionsData.length === 0}
+      isEmptyPage={fundTransactionsData?.length === 0}
       emptyPageMessage="No transactions yet."
       modals={
         <>
@@ -136,6 +128,7 @@ export const FundTransactionsPage = () => {
           <AddFundTransactionModal
             isVisible={addFundTransactionModal.isVisible}
             fundCollection={fundCollectionData}
+            onRefetch={refetchFundTransactions}
             onClose={addFundTransactionModal.hide}
             onCancel={addFundTransactionModal.hide}
           />
@@ -190,7 +183,7 @@ export const FundTransactionsPage = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {fundCollectionTransactionsData.map((fundTransaction, index) => (
+            {fundTransactionsData?.map((fundTransaction, index) => (
               <TableRow
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -207,12 +200,12 @@ export const FundTransactionsPage = () => {
                     <Text>{fundTransaction.description}</Text>
                     <Box width="8px" />
 
-                    <Chip
+                    {/* <Chip
                       label={getExpenseName(fundTransaction.id)}
                       variant="outlined"
                       color="error"
                       size="small"
-                    />
+                    /> */}
                   </Stack>
                 </TableCell>
                 <TableCell>

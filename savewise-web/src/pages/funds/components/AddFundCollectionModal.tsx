@@ -100,7 +100,7 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
               placeholder="Income, Business, etc."
               error={!!errors.name}
               defaultValue={defaultValues.name}
-              helperText={errors.name?.message}
+              errorMessage={errors.name?.message}
               {...field}
             />
           )}
