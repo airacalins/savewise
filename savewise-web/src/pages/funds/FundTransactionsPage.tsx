@@ -18,13 +18,9 @@ import { useMemo, useState } from "react";
 import dayjs from "dayjs";
 import { mockTransactions } from "../../api/transactions/mockTransactions";
 import { Text } from "../../components/texts/Text";
-import { AddFundRequest, Transaction } from "../../api/transactions/type";
+import { Transaction } from "../../api/transactions/type";
 import { mockExpensesCollectionData } from "../../api/collection/mockExpensesCollection";
-import {
-  TCreateFundTransactionSchema,
-  TUpdateFundTransactionSchema,
-} from "../../api/transactions/schema";
-import { newDateFormat } from "../../utils/date";
+import { TUpdateFundTransactionSchema } from "../../api/transactions/schema";
 import { AddFundTransactionModal } from "./components/AddFundTransactionModal";
 import { Edit } from "@mui/icons-material";
 import { EditFundCollectionModal } from "./components/EditFundCollectionModal";
@@ -35,6 +31,7 @@ import {
   useGetCollectionById,
 } from "../../api/collection/hooks";
 import { showErrorToast, showSuccessToast } from "../../utils/toast";
+import { useGetFundTransactions } from "../../api/transactions/hooks";
 
 const tableHeaders = [
   { key: "date", label: "Date" },
@@ -42,7 +39,7 @@ const tableHeaders = [
   { key: "amount", label: "Amount" },
 ];
 
-export const FundsPage = () => {
+export const FundTransactionsPage = () => {
   const navigate = useNavigate();
   const { collectionId } = useParams();
   const editFundCollectionModal = useVisibilityState();
@@ -56,6 +53,10 @@ export const FundsPage = () => {
   // API
   const { data: fundCollectionData, isLoading: isLoadingFundCollectionData } =
     useGetCollectionById(collectionId ?? "");
+  const { data: fundTransactionsData, isLoading: isLoadingFundTransactions } =
+    useGetFundTransactions(collectionId ?? "");
+
+  // Mock Data
   const expenseCollectionData = mockExpensesCollectionData;
   const fundCollectionTransactionsData = mockTransactions.filter(
     (transaction) => transaction.fundCollectionId === collectionId
@@ -96,21 +97,11 @@ export const FundsPage = () => {
     }
   };
 
-  const handleCreateFundTransaction = (data: TCreateFundTransactionSchema) => {
-    const input: AddFundRequest = {
-      fundCollectionId: collectionId ?? "",
-      ...data,
-      date: newDateFormat(data.date),
-    };
-
-    console.log("AddFundTransactionRequest: ", input);
-
-    addFundTransactionModal.hide();
-  };
-
   const handleUpdateFundTransaction = (data: TUpdateFundTransactionSchema) => {
     console.log(data);
   };
+
+  console.log(JSON.stringify(fundTransactionsData, null, 2));
 
   return (
     <PageContainer
@@ -124,9 +115,11 @@ export const FundsPage = () => {
       breadcrumbs={breadcrumbs}
       actions={<Button onClick={addFundTransactionModal.show}>Add Fund</Button>}
       isLoading={
-        fundCollectionData === undefined || isLoadingFundCollectionData
+        fundCollectionData === undefined ||
+        isLoadingFundCollectionData ||
+        isLoadingFundTransactions
       }
-      loadingMessage="Loading fund collection..."
+      loadingMessage="Loading fund transactions..."
       isEmptyPage={fundCollectionTransactionsData.length === 0}
       emptyPageMessage="No transactions yet."
       modals={
@@ -142,10 +135,9 @@ export const FundsPage = () => {
           />
           <AddFundTransactionModal
             isVisible={addFundTransactionModal.isVisible}
-            fundCollectionName={fundCollectionData?.name ?? ""}
+            fundCollection={fundCollectionData}
             onClose={addFundTransactionModal.hide}
             onCancel={addFundTransactionModal.hide}
-            onSubmit={handleCreateFundTransaction}
           />
           <EditFundTransactionModal
             isVisible={editFundTransactionModal.isVisible}

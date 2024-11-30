@@ -8,7 +8,7 @@ namespace Application.Collections.Commands
     {
         private readonly IDataContext _context = context;
 
-        public Task<Result<Collection>> ExecuteCommand(CreateCollectionDto input)
+        public async Task<Result<Collection>> ExecuteCommand(CreateCollectionDto input)
         {
             var isExistingCollection = _context.Collections
                 .Where(c => c.CollectionType == input.CollectionType)
@@ -16,15 +16,15 @@ namespace Application.Collections.Commands
 
             if (isExistingCollection != null)
             {
-                return Task.FromResult(Result<Collection>.Failure("Collection name already exists"));
+                return Result<Collection>.Failure("Collection name already exists");
             }
 
             var collection = input.ToCollection();
 
             _context.Collections.Add(collection);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-            return Task.FromResult(Result<Collection>.Success(collection));
+            return Result<Collection>.Success(collection);
         }
     }
 }

@@ -12,7 +12,6 @@ namespace API.Controllers
 
     public class CollectionsController : ControllerBase
     {
-        private readonly IGetCollectionsCommand _getCollectionsCommand;
         private readonly IGetCollectionsByTypeCommand _getCollectionsByTypeCommand;
         private readonly IGetCollectionByIdCommand _getCollectionByIdCommand;
         private readonly ICreateCollectionCommand _createCollectionCommand;
@@ -21,7 +20,6 @@ namespace API.Controllers
 
 
         public CollectionsController(
-            IGetCollectionsCommand getCollectionsCommand,
             IGetCollectionsByTypeCommand getCollectionsByTypeCommand,
             IGetCollectionByIdCommand getCollectionByIdCommand,
             ICreateCollectionCommand createCollectionCommand,
@@ -29,7 +27,6 @@ namespace API.Controllers
             IDeleteCollectionCommand deleteCollectionCommand
             )
         {
-            _getCollectionsCommand = getCollectionsCommand;
             _getCollectionsByTypeCommand = getCollectionsByTypeCommand;
             _getCollectionByIdCommand = getCollectionByIdCommand;
             _createCollectionCommand = createCollectionCommand;
@@ -37,15 +34,6 @@ namespace API.Controllers
             _deleteCollectionCommand = deleteCollectionCommand;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<CollectionViewModel>>> GetCollections()
-        {
-            var result = await _getCollectionsCommand.ExecuteCommand();
-            if (!result.IsSuccess) return BadRequest(result.Error);
-
-            var data = result.Value.Select(fund => new CollectionViewModel(fund)).ToList();
-            return Ok(data);
-        }
 
         [HttpGet("funds")]
         public async Task<ActionResult<List<CollectionViewModel>>> GetFundCollections()

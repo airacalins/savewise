@@ -4,6 +4,6 @@ namespace Application.Transactions.Interfaces
 {
     public interface IGetFundTransactionsByCollectionIdCommand
     {
-        Task<Result<List<TransactionDto>>> ExecuteCommand(Guid collectionId);
+        Task<Result<List<FundTransactionDto>>> ExecuteCommand(Guid collectionId);
     }
 }

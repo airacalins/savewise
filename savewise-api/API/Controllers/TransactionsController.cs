@@ -1,6 +1,8 @@
 using API.InputModels;
 using API.ViewModels;
+using Application.Transactions.Dtos;
 using Application.Transactions.Interfaces;
+using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -22,24 +24,37 @@ namespace API.Controllers
         }
 
         [HttpGet("funds/{fundCollectionId}")]
-        public async Task<ActionResult<List<TransactionViewModel>>> GetFundTransactionsByCollectionId([FromRoute] Guid fundCollectionId)
+        public async Task<ActionResult<List<FundTransactionViewModel>>> GetFundTransactionsByCollectionId([FromRoute] Guid fundCollectionId)
         {
             var result = await _getFundTransactionsByCollectionIdCommand.ExecuteCommand(fundCollectionId);
+
             if (!result.IsSuccess) return BadRequest(result.Error);
 
-            var data = result.Value.Select(transaction => new TransactionViewModel(transaction)).ToList();
-            return Ok(data);
+            var fundTransactionsViewModel = result.Value.Select(transaction => new FundTransactionViewModel
+            {
+                Id = transaction.Id,
+                Date = transaction.Date,
+                Description = transaction.Description,
+                Amount = transaction.Amount
+            }).ToList();
+
+            return Ok(fundTransactionsViewModel);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<TransactionViewModel>> CreateFundTransaction(CreateFundTransactionInputModel input)
+        [HttpPost("funds")]
+        public async Task<ActionResult<bool>> CreateFundTransaction(CreateFundTransactionInputModel input)
         {
-            var result = await _createFundTransactionCommand.ExecuteCommand(input.ToTransactionDto());
+            var result = await _createFundTransactionCommand.ExecuteCommand(new CreateTransactionDto
+            {
+                Date = input.Date,
+                Amount = input.Amount,
+                Description = input.Description,
+                FundCollectionId = input.FundCollectionId
+            });
 
             if (!result.IsSuccess) return BadRequest(result.Error);
 
-            var data = new TransactionViewModel(result.Value);
-            return Ok(data);
+            return Ok(result.Value);
         }
     }
 }

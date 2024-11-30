@@ -3,7 +3,7 @@ import { OutletPage } from "../components/containers/OutletPage";
 import { ExpensesCollectionPage } from "../pages/expenses/ExpensesCollectionPage";
 import { FundsCollectionPage } from "../pages/funds/FundsCollectionPage";
 import { ExpensesPage } from "../pages/expenses/ExpensesTransactionPage";
-import { FundsPage } from "../pages/funds/FundsTransactionPage";
+import { FundTransactionsPage } from "../pages/funds/FundTransactionsPage";
 import { LoginPage } from "../pages/auth/LoginPage";
 import { HomePage } from "../pages/home/HomePage";
 import { SignUpPage } from "../pages/auth/SignUpPage";
@@ -31,7 +31,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/fundsCollection/:collectionId",
-        element: <FundsPage />,
+        element: <FundTransactionsPage />,
       },
       {
         path: "/expensesCollection",

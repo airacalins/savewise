@@ -11,6 +11,11 @@ import {
 } from "../../../api/transactions/schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ContainedButton } from "../../../components/buttons/ContainedButton";
+import { useCreateFundTransaction } from "../../../api/transactions/hooks";
+import { CreateFundTransactionRequest } from "../../../api/transactions/type";
+import { newDateFormat } from "../../../utils/date";
+import { Collection } from "../../../api/collection/type";
+import { showErrorToast, showSuccessToast } from "../../../utils/toast";
 
 const DEFAULT_VALUES = {
   date: new Date(),
@@ -18,16 +23,15 @@ const DEFAULT_VALUES = {
 };
 
 interface AddFundTransactionModalProps {
-  fundCollectionName: string;
+  fundCollection?: Collection;
   isVisible: boolean;
   onClose: () => void;
   onCancel: () => void;
-  onSubmit: (data: TCreateFundTransactionSchema) => void;
 }
 
 export const AddFundTransactionModal: React.FC<
   AddFundTransactionModalProps
-> = ({ fundCollectionName, isVisible, onClose, onCancel, onSubmit }) => {
+> = ({ fundCollection, isVisible, onClose, onCancel }) => {
   const {
     control,
     formState: { errors, isValid },
@@ -38,6 +42,9 @@ export const AddFundTransactionModal: React.FC<
     defaultValues: DEFAULT_VALUES,
     mode: "onChange",
   });
+
+  // API
+  const createFundTransaction = useCreateFundTransaction();
 
   // Functions
   const handleCloseModal = () => {
@@ -50,22 +57,38 @@ export const AddFundTransactionModal: React.FC<
     onCancel();
   };
 
-  const handleFormSubmit = (data: TCreateFundTransactionSchema) => {
-    onSubmit(data);
-    reset();
+  const handleCreateFundTransaction = async (
+    formValues: TCreateFundTransactionSchema
+  ) => {
+    try {
+      const input: CreateFundTransactionRequest = {
+        fundCollectionId: fundCollection?.id ?? "",
+        ...formValues,
+        date: newDateFormat(formValues.date),
+      };
+
+      const result = await createFundTransaction.mutateAsync(input);
+
+      showSuccessToast(`${result.description} transaction created.`);
+    } catch {
+      showErrorToast("Failed to create transaction.");
+    } finally {
+      onClose();
+      reset();
+    }
   };
 
   return (
     <ConfirmActionModal
       isVisible={isVisible}
-      title={`Add ${fundCollectionName} Fund`}
+      title={`Add ${fundCollection?.name} Fund`}
       onClose={handleCloseModal}
       actions={
         <>
           <Button onClick={handleCancel}>Cancel</Button>
           <ContainedButton
             disabled={!isValid}
-            onClick={handleSubmit(handleFormSubmit)}
+            onClick={handleSubmit(handleCreateFundTransaction)}
           >
             Submit
           </ContainedButton>
@@ -103,7 +126,7 @@ export const AddFundTransactionModal: React.FC<
           render={({ field }) => (
             <TextInput
               label="Amount"
-              placeholder="Enter amount"
+              placeholder="100.00"
               error={!!errors.amount}
               helperText={errors.amount?.message}
               {...field}

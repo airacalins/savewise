@@ -1,8 +1,6 @@
-using Application.Transactions.Dtos;
-
-namespace API.InputModels
+namespace Application.Transactions.Dtos
 {
-    public class CreateFundTransactionInputModel
+    public class CreateTransactionDto
     {
         public DateTime Date { get; set; }
         public string Description { get; set; } = string.Empty;

@@ -9,20 +9,22 @@ namespace Application.Transactions.Commands
     {
         private readonly IDataContext _context = context;
 
-        public async Task<Result<List<TransactionDto>>> ExecuteCommand(Guid collectionId)
+        public async Task<Result<List<FundTransactionDto>>> ExecuteCommand(Guid collectionId)
         {
-            var transactions = await _context.Transactions
+            var fundTransactions = await _context.Transactions
                 .Where(transaction => transaction.FundCollectionId == collectionId && transaction.TransactionType == TransactionType.Deposit)
                 .ToListAsync();
 
-            if (transactions.Count == 0)
+            var fundTransactionDtos = fundTransactions.Select(item => new FundTransactionDto
             {
-                return Result<List<TransactionDto>>.Failure("No fund transactions found");
-            }
+                Id = item.Id,
+                Date = item.Date,
+                Description = item.Description,
+                Amount = item.Amount,
+                FundCollectionId = item.FundCollectionId,
+            }).ToList();
 
-            var transactionDtos = transactions.Select(item => new TransactionDto(item)).ToList();
-
-            return Result<List<TransactionDto>>.Success(transactionDtos);
+            return Result<List<FundTransactionDto>>.Success(fundTransactionDtos);
         }
     }
 }

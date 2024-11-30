@@ -38,6 +38,8 @@ export const FundsCollectionPage = () => {
     }
   };
 
+  console.log(JSON.stringify(fundsCollectionData, null, 2));
+
   return (
     <PageContainer
       title="Funds Collection"

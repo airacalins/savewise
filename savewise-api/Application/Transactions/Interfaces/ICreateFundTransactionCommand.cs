@@ -4,6 +4,6 @@ namespace Application.Transactions.Interfaces
 {
     public interface ICreateFundTransactionCommand
     {
-        Task<Result<TransactionDto>> ExecuteCommand(CreateFundTransactionDto input);
+        Task<Result<bool>> ExecuteCommand(CreateTransactionDto input);
     }
 }

@@ -1,5 +1,7 @@
 using Application.Transactions.Dtos;
 using Application.Transactions.Interfaces;
+using Domain.Entities;
+using Domain.Enums;
 
 namespace Application.Transactions.Commands
 {
@@ -7,13 +9,37 @@ namespace Application.Transactions.Commands
     {
         private readonly IDataContext _context = context;
 
-        public Task<Result<TransactionDto>> ExecuteCommand(CreateFundTransactionDto input)
+        public async Task<Result<bool>> ExecuteCommand(CreateTransactionDto input)
         {
-            var transaction = input.ToTransactionEntity();
-            _context.Transactions.Add(transaction);
-            _context.SaveChangesAsync();
+            if (input.Description == null)
+            {
+                return Result<bool>.Failure("Description is required");
+            }
 
-            return Task.FromResult(Result<TransactionDto>.Success(new TransactionDto(transaction)));
+            if (input.Amount < 0)
+            {
+                return Result<bool>.Failure("Amount must be greater than 0");
+            }
+
+            if (input.FundCollectionId == Guid.Empty)
+            {
+                return Result<bool>.Failure("Fund collection ID is required");
+            }
+
+            var transaction = new Transaction
+            {
+                Date = input.Date,
+                Amount = input.Amount,
+                Description = input.Description,
+                FundCollectionId = input.FundCollectionId,
+                TransactionType = TransactionType.Deposit,
+                CreatedAt = DateTime.Now
+            };
+
+            _context.Transactions.Add(transaction);
+            await _context.SaveChangesAsync();
+
+            return Result<bool>.Success(true);
         }
     }
 }
