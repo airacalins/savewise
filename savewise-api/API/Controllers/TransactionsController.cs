@@ -12,12 +12,14 @@ namespace API.Controllers
     public class TransactionsController(
         IGetFundTransactionsByCollectionIdCommand getFundTransactionsByCollectionIdCommand,
         ICreateFundTransactionCommand createFundTransactionCommand,
-        IGetTransactionByIdCommand getTransactionByIdCommand
+        IGetTransactionByIdCommand getTransactionByIdCommand,
+        IDeleteTransactionCommand deleteTransactionCommand
         ) : ControllerBase
     {
         private readonly IGetFundTransactionsByCollectionIdCommand _getFundTransactionsByCollectionIdCommand = getFundTransactionsByCollectionIdCommand;
         private readonly ICreateFundTransactionCommand _createFundTransactionCommand = createFundTransactionCommand;
         private readonly IGetTransactionByIdCommand _getTransactionByIdCommand = getTransactionByIdCommand;
+        private readonly IDeleteTransactionCommand _deleteTransactionCommand = deleteTransactionCommand;
 
         [HttpGet("funds/{fundCollectionId}")]
         public async Task<ActionResult<List<FundTransactionViewModel>>> GetFundTransactionsByCollectionId([FromRoute] Guid fundCollectionId)
@@ -71,6 +73,15 @@ namespace API.Controllers
             };
 
             return Ok(transactionViewModel);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<bool>> DeleteTransaction([FromRoute] Guid id)
+        {
+            var result = await _deleteTransactionCommand.ExecuteCommand(id);
+            if (!result.IsSuccess) return BadRequest(result.Error);
+
+            return Ok(result.Value);
         }
     }
 }

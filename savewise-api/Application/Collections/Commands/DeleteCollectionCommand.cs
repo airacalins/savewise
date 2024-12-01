@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Application.Collections.Dtos;
 using Application.Collections.Interfaces;
 
 namespace Application.Collections.Commands
