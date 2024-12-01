@@ -1,5 +1,9 @@
 import { useGet, usePost } from "../reactQueryUtils";
-import { CreateFundTransactionRequest, FundTransaction } from "./type";
+import {
+  CreateFundTransactionRequest,
+  FundTransaction,
+  Transaction,
+} from "./type";
 
 const QUERY_KEY = "collections";
 
@@ -22,5 +26,16 @@ export const useCreateFundTransaction = () => {
   return usePost<FundTransaction, CreateFundTransactionRequest>({
     url,
     cacheKey,
+  });
+};
+
+// GET - /api/Transactions/{id}
+export const useGetTransaction = (id: string) => {
+  const url = `/transactions/${id}`;
+  const queryKey = [QUERY_KEY, id];
+
+  return useGet<Transaction>({
+    url,
+    queryKey,
   });
 };

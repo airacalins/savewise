@@ -4,10 +4,8 @@ import {
   TUpdateFundTransactionSchema,
   updateExpenseTransactionSchema,
 } from "../../../api/transactions/schema";
-import { mockTransactions } from "../../../api/transactions/mockTransactions";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
-import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
 import {
   Button,
   FormControl,
@@ -23,6 +21,8 @@ import dayjs from "dayjs";
 import { TextInput } from "../../../components/inputs/TextInput";
 import { colors } from "../../../theme/colors";
 import { useGetFundsCollection } from "../../../api/collection/hooks";
+import { useGetTransaction } from "../../../api/transactions/hooks";
+import { FormModal } from "../../../components/modals/FormModal";
 
 interface EditFundTransactionModalProps {
   isVisible: boolean;
@@ -36,10 +36,10 @@ export const EditFundTransactionModal: React.FC<
   EditFundTransactionModalProps
 > = ({ isVisible, fundTransactionId, onClose, onDelete, onUpdate }) => {
   // API
-  const fundTransactionData = mockTransactions.find(
-    (fundTransaction) => fundTransaction.id === fundTransactionId
-  );
-  const { data: fundsCollectionData } = useGetFundsCollection();
+  const { data: fundsCollectionData, isLoading: isLoadingFundsCollectionData } =
+    useGetFundsCollection();
+  const { data: fundTransactionData, isLoading: isLoadingFundTransactionData } =
+    useGetTransaction(fundTransactionId);
 
   const defaultValues = useMemo(() => {
     return {
@@ -77,8 +77,9 @@ export const EditFundTransactionModal: React.FC<
   };
 
   return (
-    <ConfirmActionModal
+    <FormModal
       isVisible={isVisible}
+      isLoading={isLoadingFundTransactionData || isLoadingFundsCollectionData}
       title="Update Fund"
       onClose={handleCloseModal}
       actions={
@@ -163,6 +164,6 @@ export const EditFundTransactionModal: React.FC<
           )}
         />
       </Stack>
-    </ConfirmActionModal>
+    </FormModal>
   );
 };
