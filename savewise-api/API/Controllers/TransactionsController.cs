@@ -13,12 +13,14 @@ namespace API.Controllers
         IGetFundTransactionsByCollectionIdCommand getFundTransactionsByCollectionIdCommand,
         ICreateFundTransactionCommand createFundTransactionCommand,
         IGetTransactionByIdCommand getTransactionByIdCommand,
+        IUpdateTransactionCommand updateTransactionCommand,
         IDeleteTransactionCommand deleteTransactionCommand
         ) : ControllerBase
     {
         private readonly IGetFundTransactionsByCollectionIdCommand _getFundTransactionsByCollectionIdCommand = getFundTransactionsByCollectionIdCommand;
         private readonly ICreateFundTransactionCommand _createFundTransactionCommand = createFundTransactionCommand;
         private readonly IGetTransactionByIdCommand _getTransactionByIdCommand = getTransactionByIdCommand;
+        private readonly IUpdateTransactionCommand _updateTransactionCommand = updateTransactionCommand;
         private readonly IDeleteTransactionCommand _deleteTransactionCommand = deleteTransactionCommand;
 
         [HttpGet("funds/{fundCollectionId}")]
@@ -73,6 +75,15 @@ namespace API.Controllers
             };
 
             return Ok(transactionViewModel);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<bool>> UpdateTransaction([FromRoute] Guid id, [FromBody] UpdateTransactionDto input)
+        {
+            var result = await _updateTransactionCommand.ExecuteCommand(id, input);
+            if (!result.IsSuccess) return BadRequest(result.Error);
+
+            return Ok(result.Value);
         }
 
         [HttpDelete("{id}")]
