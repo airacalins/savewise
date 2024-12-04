@@ -1,9 +1,10 @@
 import queryClient from "../../queryClient";
-import { useDelete, useGet, usePost } from "../reactQueryUtils";
+import { useDelete, useGet, usePost, usePut } from "../reactQueryUtils";
 import {
   CreateFundTransactionRequest,
   FundTransaction,
   Transaction,
+  UpdateFundTransactionRequest,
 } from "./type";
 
 const QUERY_KEY = "transactions";
@@ -41,6 +42,20 @@ export const useGetTransaction = (id: string) => {
   });
 };
 
+// PUT - /api/Transactions/{id}
+export const useUpdateTransaction = (id: string) => {
+  const url = `/transactions/${id}`;
+  const cacheKey = [QUERY_KEY, id];
+
+  return usePut<unknown, UpdateFundTransactionRequest>({
+    url,
+    cacheKey,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY] });
+    },
+  });
+};
+
 // DELETE - /api/Transactions/{id}
 export const useDeleteTransaction = (id: string) => {
   const url = `/transactions/${id}`;
@@ -50,9 +65,6 @@ export const useDeleteTransaction = (id: string) => {
     url,
     cacheKey,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY],
-      });
       await queryClient.invalidateQueries({ queryKey: [QUERY_KEY] });
     },
   });

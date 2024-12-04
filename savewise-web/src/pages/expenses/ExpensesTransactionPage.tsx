@@ -15,7 +15,7 @@ import { useMemo, useState } from "react";
 import dayjs from "dayjs";
 import { mockTransactions } from "../../api/transactions/mockTransactions";
 import {
-  AddExpenseTransactionRequest as CreateExpenseTransactionRequest,
+  CreateExpenseTransactionRequest as CreateExpenseTransactionRequest,
   Transaction,
   UpdateExpenseTransactionRequest,
 } from "../../api/transactions/type";

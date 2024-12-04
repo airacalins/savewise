@@ -17,7 +17,6 @@ import { useMemo, useState } from "react";
 import dayjs from "dayjs";
 import { Text } from "../../components/texts/Text";
 import { FundTransaction } from "../../api/transactions/type";
-import { TUpdateFundTransactionSchema } from "../../api/transactions/schema";
 import { AddFundTransactionModal } from "./components/AddFundTransactionModal";
 import { Edit } from "@mui/icons-material";
 import { EditFundCollectionModal } from "./components/EditFundCollectionModal";
@@ -80,10 +79,6 @@ export const FundTransactionsPage = () => {
   //   const expense = expenseCollectionData.find((expense) => expense.id === id);
   //   return expense ? expense.name : "Unknown Expense";
   // };
-
-  const handleUpdateFundTransaction = (data: TUpdateFundTransactionSchema) => {
-    console.log(data);
-  };
 
   const handleDeleteFundCollection = async () => {
     navigate(`/fundsCollections`);
@@ -152,12 +147,12 @@ export const FundTransactionsPage = () => {
           <EditFundTransactionModal
             isVisible={editFundTransactionModal.isVisible}
             fundTransactionId={selectedTransaction?.id ?? ""}
+            onRefetch={refetchFundTransactions}
             onClose={editFundTransactionModal.hide}
             onDelete={() => {
               editFundTransactionModal.hide();
               deleteFundTransactionWarningModal.show();
             }}
-            onUpdate={handleUpdateFundTransaction}
           />
           <DeleteWarningActionModal
             isVisible={deleteFundCollectionWarningModal.isVisible}

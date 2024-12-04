@@ -2,22 +2,6 @@ export enum TransactionType {
   Debit = "Debit",
   Credit = "Credit",
 }
-
-export type FundTransaction = {
-  id: string;
-  date: string;
-  amount: number;
-  description: string;
-  fundCollectionId: string;
-};
-
-export type CreateFundTransactionRequest = {
-  date: string;
-  description: string;
-  amount: number;
-  fundCollectionId: string;
-};
-
 export type Transaction = {
   id: string;
   date: string;
@@ -28,9 +12,19 @@ export type Transaction = {
   transactionType: TransactionType;
 };
 
-export type AddFundRequest = Omit<Transaction, "id" | "expenseCollectionId">;
+export type FundTransaction = {
+  id: string;
+  date: string;
+  amount: number;
+  description: string;
+  fundCollectionId: string;
+};
 
-export type AddExpenseTransactionRequest = Omit<Transaction, "id">;
+export type CreateFundTransactionRequest = Omit<FundTransaction, "id">;
+
+export type UpdateFundTransactionRequest = Omit<FundTransaction, "id">;
+
+export type CreateExpenseTransactionRequest = Omit<Transaction, "id">;
 
 export type UpdateExpenseTransactionRequest = Omit<
   Transaction,

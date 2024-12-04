@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import {
   TUpdateExpenseTransactionSchema,
-  TUpdateFundTransactionSchema,
   updateExpenseTransactionSchema,
 } from "../../../api/transactions/schema";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -21,25 +20,32 @@ import dayjs from "dayjs";
 import { TextInput } from "../../../components/inputs/TextInput";
 import { colors } from "../../../theme/colors";
 import { useGetFundsCollection } from "../../../api/collection/hooks";
-import { useGetTransaction } from "../../../api/transactions/hooks";
+import {
+  useGetTransaction,
+  useUpdateTransaction,
+} from "../../../api/transactions/hooks";
 import { FormModal } from "../../../components/modals/FormModal";
+import { UpdateFundTransactionRequest } from "../../../api/transactions/type";
+import { newDateFormat } from "../../../utils/date";
+import { showErrorToast, showSuccessToast } from "../../../utils/toast";
 
 interface EditFundTransactionModalProps {
   isVisible: boolean;
   fundTransactionId: string;
+  onRefetch: () => void;
   onClose: () => void;
   onDelete: () => void;
-  onUpdate: (data: TUpdateFundTransactionSchema) => void;
 }
 
 export const EditFundTransactionModal: React.FC<
   EditFundTransactionModalProps
-> = ({ isVisible, fundTransactionId, onClose, onDelete, onUpdate }) => {
+> = ({ isVisible, fundTransactionId, onRefetch, onClose, onDelete }) => {
   // API
   const { data: fundsCollectionData, isLoading: isLoadingFundsCollectionData } =
     useGetFundsCollection();
   const { data: fundTransactionData, isLoading: isLoadingFundTransactionData } =
     useGetTransaction(fundTransactionId);
+  const updateFundTransaction = useUpdateTransaction(fundTransactionId);
 
   const defaultValues = useMemo(() => {
     return {
@@ -71,9 +77,21 @@ export const EditFundTransactionModal: React.FC<
     onClose();
   };
 
-  const handleFormSubmit = (data: TUpdateExpenseTransactionSchema) => {
-    onUpdate(data);
-    reset();
+  const handleFormSubmit = async (
+    formValues: TUpdateExpenseTransactionSchema
+  ) => {
+    try {
+      const input: UpdateFundTransactionRequest = {
+        ...formValues,
+        date: newDateFormat(formValues.date),
+      };
+
+      await updateFundTransaction.mutateAsync(input);
+      showSuccessToast("Transaction updated.");
+      onRefetch();
+    } catch {
+      showErrorToast("Failed to update transaction.");
+    }
   };
 
   return (
