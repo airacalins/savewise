@@ -63,21 +63,11 @@ export const DeleteWarningActionModal: React.FC<
             <Close />
           </IconButton>
         </Stack>
-        <Typography id="modal-modal-title" variant="body1">
-          {!itemName ? (
-            "This action is irreversible. Are you sure you want to delete this item?"
-          ) : (
-            <Stack direction="row">
-              <Typography>
-                This action is irreversible. Are you sure you want to delete
-              </Typography>
-              <Box width="4px" />
-              <Typography fontWeight="bold">{itemName}</Typography>
-              <Typography>?</Typography>
-            </Stack>
-          )}
-        </Typography>
         <Box height="24px" />
+        <Typography id="modal-modal-title" variant="body1">
+          This action is irreversible. Are you sure you want to delete{" "}
+          {itemName ? <strong>{itemName}</strong> : "this item"}?
+        </Typography>
         {children}
         <Box height="32px" />
         <Stack direction="row" spacing={2} justifyContent="flex-end">

@@ -16,7 +16,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useMemo, useState } from "react";
 import dayjs from "dayjs";
 import { Text } from "../../components/texts/Text";
-import { Transaction } from "../../api/transactions/type";
+import { FundTransaction } from "../../api/transactions/type";
 import { TUpdateFundTransactionSchema } from "../../api/transactions/schema";
 import { AddFundTransactionModal } from "./components/AddFundTransactionModal";
 import { Edit } from "@mui/icons-material";
@@ -24,11 +24,14 @@ import { EditFundCollectionModal } from "./components/EditFundCollectionModal";
 import { DeleteWarningActionModal } from "../../components/modals/DeleteWarningActionModal";
 import { EditFundTransactionModal } from "./components/EditFundTransactionModal";
 import {
-  useDeleteCollectionById,
+  useDeleteCollection,
   useGetCollectionById,
 } from "../../api/collection/hooks";
 import { showErrorToast, showSuccessToast } from "../../utils/toast";
-import { useGetFundTransactions } from "../../api/transactions/hooks";
+import {
+  useDeleteTransaction,
+  useGetFundTransactions,
+} from "../../api/transactions/hooks";
 
 const tableHeaders = [
   { key: "date", label: "Date" },
@@ -44,8 +47,8 @@ export const FundTransactionsPage = () => {
   const addFundTransactionModal = useVisibilityState();
   const editFundTransactionModal = useVisibilityState();
   const deleteFundTransactionWarningModal = useVisibilityState();
-  const [selectedFundTransaction, setSelectedFundTransaction] =
-    useState<null | Transaction>();
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<null | FundTransaction>();
 
   // API
   const { data: fundCollectionData, isLoading: isLoadingFundCollectionData } =
@@ -55,8 +58,8 @@ export const FundTransactionsPage = () => {
     isLoading: isLoadingFundTransactions,
     refetch: refetchFundTransactions,
   } = useGetFundTransactions(collectionId ?? "");
-
-  const deleteCollection = useDeleteCollectionById(collectionId ?? "");
+  const deleteCollection = useDeleteCollection(collectionId ?? "");
+  const deleteTransaction = useDeleteTransaction(selectedTransaction?.id ?? "");
 
   const breadcrumbs = useMemo(() => {
     return [
@@ -83,7 +86,7 @@ export const FundTransactionsPage = () => {
   };
 
   const handleDeleteFundCollection = async () => {
-    navigate(`/fundsCollection`);
+    navigate(`/fundsCollections`);
     deleteFundCollectionWarningModal.hide();
 
     try {
@@ -92,6 +95,20 @@ export const FundTransactionsPage = () => {
       showSuccessToast("Fund collection deleted.");
     } catch {
       showErrorToast("Failed to delete fund collection.");
+    }
+  };
+
+  const handleDeleteTransaction = async () => {
+    deleteFundTransactionWarningModal.hide();
+
+    try {
+      await deleteTransaction.mutateAsync({});
+      setSelectedTransaction(null);
+      showSuccessToast("Transaction deleted.");
+      await refetchFundTransactions();
+    } catch (error) {
+      console.error("Error during deletion or refetch:", error);
+      showErrorToast("Failed to delete transaction.");
     }
   };
 
@@ -134,7 +151,7 @@ export const FundTransactionsPage = () => {
           />
           <EditFundTransactionModal
             isVisible={editFundTransactionModal.isVisible}
-            fundTransactionId={selectedFundTransaction?.id ?? ""}
+            fundTransactionId={selectedTransaction?.id ?? ""}
             onClose={editFundTransactionModal.hide}
             onDelete={() => {
               editFundTransactionModal.hide();
@@ -158,8 +175,8 @@ export const FundTransactionsPage = () => {
           />
           <DeleteWarningActionModal
             isVisible={deleteFundTransactionWarningModal.isVisible}
-            isDeleting={false}
-            itemName={selectedFundTransaction?.description ?? ""}
+            isDeleting={deleteTransaction.isLoading}
+            itemName={selectedTransaction?.description ?? ""}
             onClose={() => {
               deleteFundTransactionWarningModal.hide();
               editFundTransactionModal.show();
@@ -168,7 +185,7 @@ export const FundTransactionsPage = () => {
               deleteFundTransactionWarningModal.hide();
               editFundTransactionModal.show();
             }}
-            onConfirm={() => {}}
+            onConfirm={handleDeleteTransaction}
           />
         </>
       }
@@ -189,7 +206,7 @@ export const FundTransactionsPage = () => {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 onClick={() => {
                   editFundTransactionModal.show();
-                  setSelectedFundTransaction(fundTransaction);
+                  setSelectedTransaction(fundTransaction);
                 }}
               >
                 <TableCell>

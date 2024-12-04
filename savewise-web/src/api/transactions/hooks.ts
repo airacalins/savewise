@@ -1,11 +1,12 @@
-import { useGet, usePost } from "../reactQueryUtils";
+import queryClient from "../../queryClient";
+import { useDelete, useGet, usePost } from "../reactQueryUtils";
 import {
   CreateFundTransactionRequest,
   FundTransaction,
   Transaction,
 } from "./type";
 
-const QUERY_KEY = "collections";
+const QUERY_KEY = "transactions";
 
 // GET - /api/Transactions/funds/{fundCollectionId}
 export const useGetFundTransactions = (fundCollectionId: string) => {
@@ -37,5 +38,22 @@ export const useGetTransaction = (id: string) => {
   return useGet<Transaction>({
     url,
     queryKey,
+  });
+};
+
+// DELETE - /api/Transactions/{id}
+export const useDeleteTransaction = (id: string) => {
+  const url = `/transactions/${id}`;
+  const cacheKey = [QUERY_KEY, id];
+
+  return useDelete<unknown, unknown>({
+    url,
+    cacheKey,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY],
+      });
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEY] });
+    },
   });
 };

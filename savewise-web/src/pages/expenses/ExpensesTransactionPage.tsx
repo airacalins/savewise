@@ -30,7 +30,7 @@ import { DeleteWarningActionModal } from "../../components/modals/DeleteWarningA
 import { Edit } from "@mui/icons-material";
 import { EditExpenseCollectionModal } from "./components/EditExpenseCollectionModal";
 import {
-  useDeleteCollectionById,
+  useDeleteCollection,
   useGetCollectionById,
   useGetFundsCollection,
 } from "../../api/collection/hooks";
@@ -60,7 +60,7 @@ export const ExpensesPage = () => {
     isLoading: isLoadingExpensesCollection,
   } = useGetCollectionById(collectionId ?? "");
   const { data: fundsCollectionData } = useGetFundsCollection();
-  const deleteCollection = useDeleteCollectionById(collectionId ?? "");
+  const deleteCollection = useDeleteCollection(collectionId ?? "");
 
   // Mock Data
   const transactionData = mockTransactions.filter(

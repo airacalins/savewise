@@ -72,7 +72,7 @@ export const useUpdateCollectionById = (id: string) => {
 };
 
 // DELETE - /api/Collections/{id}
-export const useDeleteCollectionById = (id: string) => {
+export const useDeleteCollection = (id: string) => {
   const url = `/collections/${id}`;
   const cacheKey = [QUERY_KEY, id];
 

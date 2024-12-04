@@ -55,7 +55,9 @@ export const FundsCollectionTableTabs: React.FC<
             <TableRow
               key={fundCollection.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              onClick={() => navigate(`/fundsCollection/${fundCollection.id}`)}
+              onClick={() =>
+                navigate(`/fundsCollections/${fundCollection.id}/transactions`)
+              }
             >
               <TableCell component="th" scope="row">
                 {fundCollection.name}

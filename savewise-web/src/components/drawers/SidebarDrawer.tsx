@@ -88,13 +88,13 @@ const sideNavs = [
   {
     key: "funds",
     name: "Funds",
-    link: "/fundsCollection",
+    link: "/fundsCollections",
     icon: <Savings />,
   },
   {
     key: "expenses",
     name: "Expenses",
-    link: "/expensesCollection",
+    link: "/expensesCollections",
     icon: <MoneyOff />,
   },
 ];
