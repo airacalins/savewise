@@ -11,6 +11,7 @@ namespace API.Controllers
 
     public class TransactionsController(
         IGetFundTransactionsByCollectionIdCommand getFundTransactionsByCollectionIdCommand,
+        IGetExpenseTransactionsByCollectionIdCommand getExpenseTransactionsByCollectionIdCommand,
         ICreateFundTransactionCommand createFundTransactionCommand,
         IGetTransactionByIdCommand getTransactionByIdCommand,
         IUpdateTransactionCommand updateTransactionCommand,
@@ -18,6 +19,7 @@ namespace API.Controllers
         ) : ControllerBase
     {
         private readonly IGetFundTransactionsByCollectionIdCommand _getFundTransactionsByCollectionIdCommand = getFundTransactionsByCollectionIdCommand;
+        private readonly IGetExpenseTransactionsByCollectionIdCommand _getExpenseTransactionsByCollectionIdCommand = getExpenseTransactionsByCollectionIdCommand;
         private readonly ICreateFundTransactionCommand _createFundTransactionCommand = createFundTransactionCommand;
         private readonly IGetTransactionByIdCommand _getTransactionByIdCommand = getTransactionByIdCommand;
         private readonly IUpdateTransactionCommand _updateTransactionCommand = updateTransactionCommand;
@@ -39,6 +41,26 @@ namespace API.Controllers
             }).ToList();
 
             return Ok(fundTransactionsViewModel);
+        }
+
+        [HttpGet("expenses/{expenseCollectionId}")]
+        public async Task<ActionResult<List<ExpenseTransactionViewModel>>> GetExpenseTransactionsByCollectionId([FromRoute] Guid expenseCollectionId)
+        {
+            var result = await _getExpenseTransactionsByCollectionIdCommand.ExecuteCommand(expenseCollectionId);
+
+            if (!result.IsSuccess) return BadRequest(result.Error);
+
+            var expenseTransactionsViewModel = result.Value.Select(transaction => new ExpenseTransactionViewModel
+            {
+                Id = transaction.Id,
+                Date = transaction.Date,
+                Description = transaction.Description,
+                Amount = transaction.Amount,
+                FundCollectionId = transaction.FundCollectionId,
+                ExpenseCollectionId = transaction.ExpenseCollectionId
+            }).ToList();
+
+            return Ok(expenseTransactionsViewModel);
         }
 
         [HttpPost("funds")]
