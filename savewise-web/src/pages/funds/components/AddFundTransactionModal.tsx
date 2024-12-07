@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Stack } from "@mui/material";
 import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -17,7 +17,7 @@ import { newDateFormat } from "../../../utils/date";
 import { Collection } from "../../../api/collection/type";
 import { showErrorToast, showSuccessToast } from "../../../utils/toast";
 
-const DEFAULT_VALUES = {
+const defaultValues = {
   date: new Date(),
   description: "",
 };
@@ -40,9 +40,13 @@ export const AddFundTransactionModal: React.FC<
     handleSubmit,
   } = useForm<TCreateFundTransactionSchema>({
     resolver: yupResolver(createFundTransactionSchema),
-    defaultValues: DEFAULT_VALUES,
+    defaultValues: defaultValues,
     mode: "onChange",
   });
+
+  useEffect(() => {
+    reset(defaultValues);
+  }, [reset]);
 
   // API
   const createFundTransaction = useCreateFundTransaction();
@@ -69,14 +73,12 @@ export const AddFundTransactionModal: React.FC<
       };
 
       await createFundTransaction.mutateAsync(input);
-
       showSuccessToast("Transaction created.");
+      reset();
       onRefetch();
+      onClose();
     } catch {
       showErrorToast("Failed to create transaction.");
-    } finally {
-      onClose();
-      reset();
     }
   };
 
@@ -102,10 +104,7 @@ export const AddFundTransactionModal: React.FC<
           name="date"
           control={control}
           render={() => (
-            <DatePicker
-              label="Date"
-              defaultValue={dayjs(DEFAULT_VALUES.date)}
-            />
+            <DatePicker label="Date" defaultValue={dayjs(defaultValues.date)} />
           )}
         />
         <Controller
@@ -116,7 +115,7 @@ export const AddFundTransactionModal: React.FC<
               label="Description"
               placeholder="e.g., Business lunch, office supplies, travel expenses"
               error={!!errors.description}
-              defaultValue={DEFAULT_VALUES.description}
+              defaultValue={defaultValues.description}
               errorMessage={errors.description?.message}
               {...field}
             />
