@@ -63,9 +63,9 @@ export const FundTransactionsPage = () => {
   const breadcrumbs = useMemo(() => {
     return [
       {
-        key: "fundsCollection",
-        name: "Funds Collection",
-        link: "/fundsCollection",
+        key: "funds",
+        name: "Funds",
+        link: "/funds",
       },
       {
         key: fundCollectionData?.name ?? "",
@@ -81,7 +81,7 @@ export const FundTransactionsPage = () => {
   // };
 
   const handleDeleteFundCollection = async () => {
-    navigate(`/fundsCollections`);
+    navigate(`/funds`);
     deleteFundCollectionWarningModal.hide();
 
     try {

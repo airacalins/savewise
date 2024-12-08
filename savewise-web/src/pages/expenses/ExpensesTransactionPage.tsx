@@ -70,9 +70,9 @@ export const ExpensesPage = () => {
   const breadcrumbs = useMemo(() => {
     return [
       {
-        key: "expensesCollection",
-        name: "Expenses Collection",
-        link: "/expensesCollection",
+        key: "expenses",
+        name: "Expenses",
+        link: "/expenses",
       },
       {
         key: expensesCollectionData?.name ?? "",

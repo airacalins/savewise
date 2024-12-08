@@ -40,17 +40,17 @@ export const FundsCollectionPage = () => {
 
   return (
     <PageContainer
-      title="Funds Collection"
-      subtitle="View, create and manage funds collection."
+      title="Funds"
+      subtitle="View, create and manage funds."
       actions={
         <Button onClick={addFundCollectionModal.show}>
           Add Fund Collection
         </Button>
       }
       isLoading={isLoadingFundsCollectionData}
-      loadingMessage="Loading funds collection..."
+      loadingMessage="Loading funds..."
       isEmptyPage={fundsCollectionData?.length === 0}
-      emptyPageMessage="No funds collection yet."
+      emptyPageMessage="No funds yet."
       modals={
         <AddFundCollectionModal
           isVisible={addFundCollectionModal.isVisible}

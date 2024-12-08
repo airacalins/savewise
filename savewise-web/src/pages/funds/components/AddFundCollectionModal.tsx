@@ -64,8 +64,8 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
         collectionType: CollectionType.Fund,
       });
 
-      showSuccessToast("Fund collection created.");
-      navigate(`/fundsCollections/${result.id}`);
+      showSuccessToast("Fund created.");
+      navigate(`/funds/${result.id}`);
     } finally {
       reset();
       onClose();

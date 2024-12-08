@@ -44,7 +44,7 @@ export const ExpensesCollectionPage = () => {
 
   return (
     <PageContainer
-      title="Expenses Collection"
+      title="Expenses"
       subtitle="View, create and manage expenses."
       actions={
         <Button onClick={addExpenseCollectionModal.show}>
@@ -52,9 +52,9 @@ export const ExpensesCollectionPage = () => {
         </Button>
       }
       isLoading={isLoadingExpensesCollection}
-      loadingMessage="Loading expenses collection..."
+      loadingMessage="Loading expenses..."
       isEmptyPage={expensesCollectionData?.length === 0}
-      emptyPageMessage="No expenses collection yet."
+      emptyPageMessage="No expenses yet."
     >
       <Tabs
         value={selectedTabIndex}

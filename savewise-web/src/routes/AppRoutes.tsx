@@ -26,19 +26,19 @@ export const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "/fundsCollections",
+        path: "/funds",
         element: <FundsCollectionPage />,
       },
       {
-        path: "/fundsCollections/:collectionId/transactions",
+        path: "/funds/:collectionId/transactions",
         element: <FundTransactionsPage />,
       },
       {
-        path: "/expensesCollections",
+        path: "/expenses",
         element: <ExpensesCollectionPage />,
       },
       {
-        path: "/expensesCollections/:collectionId/transactions",
+        path: "/expenses/:collectionId/transactions",
         element: <ExpensesPage />,
       },
     ],
