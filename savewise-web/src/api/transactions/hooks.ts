@@ -1,7 +1,9 @@
 import queryClient from "../../queryClient";
 import { useDelete, useGet, usePost, usePut } from "../reactQueryUtils";
 import {
+  CreateExpenseTransactionRequest,
   CreateFundTransactionRequest,
+  ExpenseTransaction,
   FundTransaction,
   Transaction,
   UpdateFundTransactionRequest,
@@ -20,12 +22,34 @@ export const useGetFundTransactions = (fundCollectionId: string) => {
   });
 };
 
+// GET - /api/Transactions/expenses/{expenseCollectionId}
+export const useGetExpenseTransactions = (expenseCollectionId: string) => {
+  const url = `/transactions/expenses/${expenseCollectionId}`;
+  const queryKey = [QUERY_KEY, "expenses", expenseCollectionId];
+
+  return useGet<Array<ExpenseTransaction>>({
+    url,
+    queryKey,
+  });
+};
+
 // POST - /api/Transactions/funds
 export const useCreateFundTransaction = () => {
   const url = "/transactions/funds";
   const cacheKey = [QUERY_KEY, "funds", "create"];
 
   return usePost<FundTransaction, CreateFundTransactionRequest>({
+    url,
+    cacheKey,
+  });
+};
+
+// POST - /api/Transactions/expenses
+export const useCreateExpenseTransaction = () => {
+  const url = `/transactions/expenses`;
+  const cacheKey = [QUERY_KEY, "expenses", "create"];
+
+  return usePost<boolean, CreateExpenseTransactionRequest>({
     url,
     cacheKey,
   });

@@ -20,11 +20,20 @@ export type FundTransaction = {
   fundCollectionId: string;
 };
 
+export type ExpenseTransaction = {
+  id: string;
+  date: string;
+  amount: number;
+  description: string;
+  fundCollectionId: string;
+  expenseCollectionId: string;
+};
+
 export type CreateFundTransactionRequest = Omit<FundTransaction, "id">;
 
 export type UpdateFundTransactionRequest = Omit<FundTransaction, "id">;
 
-export type CreateExpenseTransactionRequest = Omit<Transaction, "id">;
+export type CreateExpenseTransactionRequest = Omit<ExpenseTransaction, "id">;
 
 export type UpdateExpenseTransactionRequest = Omit<
   Transaction,

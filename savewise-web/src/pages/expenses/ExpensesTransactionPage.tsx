@@ -13,16 +13,11 @@ import {
 import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { useMemo, useState } from "react";
 import dayjs from "dayjs";
-import { mockTransactions } from "../../api/transactions/mockTransactions";
 import {
-  CreateExpenseTransactionRequest as CreateExpenseTransactionRequest,
-  Transaction,
+  ExpenseTransaction,
   UpdateExpenseTransactionRequest,
 } from "../../api/transactions/type";
-import {
-  TCreateExpenseTransactionSchema,
-  TUpdateExpenseTransactionSchema,
-} from "../../api/transactions/schema";
+import { TUpdateExpenseTransactionSchema } from "../../api/transactions/schema";
 import { newDateFormat } from "../../utils/date";
 import { EditExpenseTransactionModal } from "./components/EditExpenseTransactionModal";
 import { AddExpenseTransactionModal } from "./components/AddExpenseTransactionModal";
@@ -35,6 +30,7 @@ import {
   useGetFundsCollection,
 } from "../../api/collection/hooks";
 import { showErrorToast, showSuccessToast } from "../../utils/toast";
+import { useGetExpenseTransactions } from "../../api/transactions/hooks";
 
 const tableHeaders = [
   { key: "description", label: "Description" },
@@ -52,20 +48,26 @@ export const ExpensesPage = () => {
   const deleteExpenseCollectionWarningModal = useVisibilityState();
   const deleteExpenseTransactionWarningModal = useVisibilityState();
   const [selectedExpenseTransaction, setSelectedExpenseTransaction] =
-    useState<null | Transaction>();
+    useState<null | ExpenseTransaction>();
 
   // API
   const {
     data: expensesCollectionData,
     isLoading: isLoadingExpensesCollection,
   } = useGetCollectionById(collectionId ?? "");
-  const { data: fundsCollectionData } = useGetFundsCollection();
+  const { data: fundsCollectionData, isLoading: isLoadingFundsCollection } =
+    useGetFundsCollection();
+  const {
+    data: expenseTransactionsData,
+    isLoading: isLoadingExpenseTransaction,
+    refetch: refetchExpenseTransactions,
+  } = useGetExpenseTransactions(collectionId ?? "");
   const deleteCollection = useDeleteCollection(collectionId ?? "");
 
   // Mock Data
-  const transactionData = mockTransactions.filter(
-    (transaction) => transaction.expenseCollectionId === collectionId
-  );
+  // const transactionData = mockTransactions.filter(
+  //   (transaction) => transaction.expenseCollectionId === collectionId
+  // );
 
   const breadcrumbs = useMemo(() => {
     return [
@@ -107,20 +109,6 @@ export const ExpensesPage = () => {
     }
   };
 
-  const handleAddExpenseTransaction = (
-    data: TCreateExpenseTransactionSchema
-  ) => {
-    const input: CreateExpenseTransactionRequest = {
-      expenseCollectionId: collectionId ?? "",
-      ...data,
-      date: newDateFormat(data.date),
-    };
-
-    console.log("AddExpenseTransactionRequest: ", input);
-
-    addExpenseTransactionModal.hide();
-  };
-
   const handleUpdateExpenseTransaction = (
     data: TUpdateExpenseTransactionSchema
   ) => {
@@ -151,9 +139,13 @@ export const ExpensesPage = () => {
       actions={
         <Button onClick={addExpenseTransactionModal.show}>Add Expense</Button>
       }
-      isLoading={isLoadingExpensesCollection}
+      isLoading={
+        isLoadingFundsCollection ||
+        isLoadingExpensesCollection ||
+        isLoadingExpenseTransaction
+      }
       loadingMessage="Loading transactions..."
-      isEmptyPage={transactionData.length === 0}
+      isEmptyPage={expenseTransactionsData?.length === 0}
       emptyPageMessage="No transaction for this expense yet."
       modals={
         <>
@@ -182,10 +174,10 @@ export const ExpensesPage = () => {
           />
           <AddExpenseTransactionModal
             isVisible={addExpenseTransactionModal.isVisible}
-            expenseCollectionName={expensesCollectionData?.name ?? ""}
+            expenseCollection={expensesCollectionData}
+            onRefetch={refetchExpenseTransactions}
             onClose={addExpenseTransactionModal.hide}
             onCancel={addExpenseTransactionModal.hide}
-            onSubmit={handleAddExpenseTransaction}
           />
           <EditExpenseTransactionModal
             isVisible={editExpenseTransactionModal.isVisible}
@@ -221,21 +213,23 @@ export const ExpensesPage = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {transactionData.map((expense, index) => (
+            {expenseTransactionsData?.map((transaction, index) => (
               <TableRow
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 onClick={() => {
                   editExpenseTransactionModal.show();
-                  setSelectedExpenseTransaction(expense);
+                  setSelectedExpenseTransaction(transaction);
                 }}
               >
-                <TableCell>{expense.description}</TableCell>
-                <TableCell>{getFundSource(expense.fundCollectionId)}</TableCell>
+                <TableCell>{transaction.description}</TableCell>
                 <TableCell>
-                  {dayjs(expense.date).format("MMM DD, YYYY")}
+                  {getFundSource(transaction.fundCollectionId)}
                 </TableCell>
-                <TableCell>{expense.amount}</TableCell>
+                <TableCell>
+                  {dayjs(transaction.date).format("MMM DD, YYYY")}
+                </TableCell>
+                <TableCell>{transaction.amount}</TableCell>
               </TableRow>
             ))}
           </TableBody>

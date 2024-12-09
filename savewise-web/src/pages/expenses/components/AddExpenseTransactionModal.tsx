@@ -19,26 +19,34 @@ import { ContainedButton } from "../../../components/buttons/ContainedButton";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import { useGetFundsCollection } from "../../../api/collection/hooks";
+import { Collection } from "../../../api/collection/type";
+import { newDateFormat } from "../../../utils/date";
+import { showErrorToast, showSuccessToast } from "../../../utils/toast";
+import { useCreateExpenseTransaction } from "../../../api/transactions/hooks";
+import { CreateExpenseTransactionRequest } from "../../../api/transactions/type";
 
-const DEFAULT_VALUES = {
+const defaultValues = {
   date: new Date(),
   description: "",
+  amount: 0,
   fundCollectionId: "",
+  expenseCollectionId: "",
 };
 
 interface AddExpenseTransactionModalProps {
+  expenseCollection?: Collection;
   isVisible: boolean;
-  expenseCollectionName: string;
+  onRefetch: () => void;
   onClose: () => void;
   onCancel: () => void;
-  onSubmit: (data: TCreateExpenseTransactionSchema) => void;
 }
 
 export const AddExpenseTransactionModal: React.FC<
   AddExpenseTransactionModalProps
-> = ({ isVisible, expenseCollectionName, onClose, onCancel, onSubmit }) => {
+> = ({ expenseCollection, isVisible, onRefetch, onClose, onCancel }) => {
   // API
   const { data: fundsCollectionData } = useGetFundsCollection();
+  const createExpenseTransaction = useCreateExpenseTransaction();
 
   const {
     control,
@@ -47,7 +55,7 @@ export const AddExpenseTransactionModal: React.FC<
     handleSubmit,
   } = useForm<TCreateExpenseTransactionSchema>({
     resolver: yupResolver(createExpenseTransactionSchema),
-    defaultValues: DEFAULT_VALUES,
+    defaultValues: defaultValues,
     mode: "onChange",
   });
 
@@ -62,22 +70,41 @@ export const AddExpenseTransactionModal: React.FC<
     onCancel();
   };
 
-  const handleFormSubmit = (data: TCreateExpenseTransactionSchema) => {
-    onSubmit(data);
+  const handleCreateExpenseTransaction = async (
+    formValues: TCreateExpenseTransactionSchema
+  ) => {
+    try {
+      const input: CreateExpenseTransactionRequest = {
+        ...formValues,
+        expenseCollectionId: expenseCollection?.id ?? "",
+        date: newDateFormat(formValues.date),
+      };
+
+      await createExpenseTransaction.mutateAsync(input);
+      showSuccessToast("Transaction created.");
+      reset();
+      onRefetch();
+      onClose();
+    } catch (error) {
+      if (error instanceof Error) {
+        showErrorToast(error.message);
+      }
+    }
+
     reset();
   };
 
   return (
     <ConfirmActionModal
       isVisible={isVisible}
-      title={`Add ${expenseCollectionName} Expense`}
+      title={`Add ${expenseCollection?.name} Expense`}
       onClose={handleCloseModal}
       actions={
         <>
           <Button onClick={handleCancel}>Cancel</Button>
           <ContainedButton
             disabled={!isValid}
-            onClick={handleSubmit(handleFormSubmit)}
+            onClick={handleSubmit(handleCreateExpenseTransaction)}
           >
             Submit
           </ContainedButton>
@@ -89,10 +116,7 @@ export const AddExpenseTransactionModal: React.FC<
           name="date"
           control={control}
           render={() => (
-            <DatePicker
-              label="Date"
-              defaultValue={dayjs(DEFAULT_VALUES.date)}
-            />
+            <DatePicker label="Date" defaultValue={dayjs(defaultValues.date)} />
           )}
         />
         <Controller
@@ -103,7 +127,7 @@ export const AddExpenseTransactionModal: React.FC<
               label="Description"
               placeholder="e.g., Business lunch, office supplies, travel expenses"
               error={!!errors.description}
-              defaultValue={DEFAULT_VALUES.description}
+              defaultValue={defaultValues.description}
               errorMessage={errors.description?.message}
               {...field}
             />
@@ -139,7 +163,7 @@ export const AddExpenseTransactionModal: React.FC<
               <Select
                 labelId="source-select-label"
                 label="Fund Source"
-                defaultValue={DEFAULT_VALUES.fundCollectionId}
+                defaultValue={defaultValues.fundCollectionId}
                 {...field}
               >
                 {fundsCollectionData?.map((fund) => (
