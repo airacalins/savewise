@@ -1,8 +1,8 @@
 using Domain.Enums;
 
-namespace API.ViewModels
+namespace Application.Transactions.Dtos
 {
-    public class ExpenseTransactionViewModel
+    public class CreateExpenseTransactionDto
     {
         public Guid Id { get; set; }
         public DateTime Date { get; set; }
@@ -10,5 +10,6 @@ namespace API.ViewModels
         public decimal Amount { get; set; }
         public Guid FundCollectionId { get; set; }
         public Guid? ExpenseCollectionId { get; set; }
+        public TransactionType TransactionType { get; set; }
     }
 }

@@ -1,5 +1,3 @@
-using Application.Transactions.Dtos;
-
 namespace API.InputModels
 {
     public class CreateFundTransactionInputModel

@@ -1,6 +1,6 @@
 namespace Application.Transactions.Dtos
 {
-    public class CreateTransactionDto
+    public class CreateFundTransactionDto
     {
         public DateTime Date { get; set; }
         public string Description { get; set; } = string.Empty;

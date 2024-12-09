@@ -5,11 +5,11 @@ using Domain.Enums;
 
 namespace Application.Transactions.Commands
 {
-    public class CreateFundTransactionCommand(IDataContext context) : ICreateFundTransactionCommand
+    public class CreateExpenseTransactionCommand(IDataContext context) : ICreateExpenseTransactionCommand
     {
         private readonly IDataContext _context = context;
 
-        public async Task<Result<bool>> ExecuteCommand(CreateFundTransactionDto input)
+        public async Task<Result<bool>> ExecuteCommand(CreateExpenseTransactionDto input)
         {
             if (input.Description == null)
             {
@@ -29,10 +29,11 @@ namespace Application.Transactions.Commands
             var transaction = new Transaction
             {
                 Date = input.Date,
-                Amount = input.Amount,
                 Description = input.Description,
+                Amount = input.Amount,
                 FundCollectionId = input.FundCollectionId,
-                TransactionType = TransactionType.Deposit,
+                ExpenseCollectionId = input.ExpenseCollectionId,
+                TransactionType = TransactionType.Withdrawal,
                 CreatedAt = DateTime.Now
             };
 

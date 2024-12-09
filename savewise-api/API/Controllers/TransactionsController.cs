@@ -13,6 +13,7 @@ namespace API.Controllers
         IGetFundTransactionsByCollectionIdCommand getFundTransactionsByCollectionIdCommand,
         IGetExpenseTransactionsByCollectionIdCommand getExpenseTransactionsByCollectionIdCommand,
         ICreateFundTransactionCommand createFundTransactionCommand,
+        ICreateExpenseTransactionCommand createExpenseTransactionCommand,
         IGetTransactionByIdCommand getTransactionByIdCommand,
         IUpdateTransactionCommand updateTransactionCommand,
         IDeleteTransactionCommand deleteTransactionCommand
@@ -21,6 +22,7 @@ namespace API.Controllers
         private readonly IGetFundTransactionsByCollectionIdCommand _getFundTransactionsByCollectionIdCommand = getFundTransactionsByCollectionIdCommand;
         private readonly IGetExpenseTransactionsByCollectionIdCommand _getExpenseTransactionsByCollectionIdCommand = getExpenseTransactionsByCollectionIdCommand;
         private readonly ICreateFundTransactionCommand _createFundTransactionCommand = createFundTransactionCommand;
+        private readonly ICreateExpenseTransactionCommand _createExpenseTransactionCommand = createExpenseTransactionCommand;
         private readonly IGetTransactionByIdCommand _getTransactionByIdCommand = getTransactionByIdCommand;
         private readonly IUpdateTransactionCommand _updateTransactionCommand = updateTransactionCommand;
         private readonly IDeleteTransactionCommand _deleteTransactionCommand = deleteTransactionCommand;
@@ -66,12 +68,29 @@ namespace API.Controllers
         [HttpPost("funds")]
         public async Task<ActionResult<bool>> CreateFundTransaction(CreateFundTransactionInputModel input)
         {
-            var result = await _createFundTransactionCommand.ExecuteCommand(new CreateTransactionDto
+            var result = await _createFundTransactionCommand.ExecuteCommand(new CreateFundTransactionDto
             {
                 Date = input.Date,
                 Amount = input.Amount,
                 Description = input.Description,
                 FundCollectionId = input.FundCollectionId
+            });
+
+            if (!result.IsSuccess) return BadRequest(result.Error);
+
+            return Ok(result.Value);
+        }
+
+        [HttpPost("expenses")]
+        public async Task<ActionResult<bool>> CreateExpenseTransaction(CreateExpenseTransactionInputModel input)
+        {
+            var result = await _createExpenseTransactionCommand.ExecuteCommand(new CreateExpenseTransactionDto
+            {
+                Date = input.Date,
+                Amount = input.Amount,
+                Description = input.Description,
+                FundCollectionId = input.FundCollectionId,
+                ExpenseCollectionId = input.ExpenseCollectionId
             });
 
             if (!result.IsSuccess) return BadRequest(result.Error);
