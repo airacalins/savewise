@@ -1,5 +1,6 @@
 using API.InputModels;
 using API.ViewModels;
+using Application.Transactions.Commands;
 using Application.Transactions.Dtos;
 using Application.Transactions.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -12,18 +13,16 @@ namespace API.Controllers
     public class TransactionsController(
         IGetFundTransactionsByCollectionIdCommand getFundTransactionsByCollectionIdCommand,
         IGetExpenseTransactionsByCollectionIdCommand getExpenseTransactionsByCollectionIdCommand,
-        ICreateFundTransactionCommand createFundTransactionCommand,
-        ICreateExpenseTransactionCommand createExpenseTransactionCommand,
         IGetTransactionByIdCommand getTransactionByIdCommand,
+        ICreateTransactionCommand createTransactionCommand,
         IUpdateTransactionCommand updateTransactionCommand,
         IDeleteTransactionCommand deleteTransactionCommand
         ) : ControllerBase
     {
         private readonly IGetFundTransactionsByCollectionIdCommand _getFundTransactionsByCollectionIdCommand = getFundTransactionsByCollectionIdCommand;
         private readonly IGetExpenseTransactionsByCollectionIdCommand _getExpenseTransactionsByCollectionIdCommand = getExpenseTransactionsByCollectionIdCommand;
-        private readonly ICreateFundTransactionCommand _createFundTransactionCommand = createFundTransactionCommand;
-        private readonly ICreateExpenseTransactionCommand _createExpenseTransactionCommand = createExpenseTransactionCommand;
         private readonly IGetTransactionByIdCommand _getTransactionByIdCommand = getTransactionByIdCommand;
+        private readonly ICreateTransactionCommand _createTransactionCommand = createTransactionCommand;
         private readonly IUpdateTransactionCommand _updateTransactionCommand = updateTransactionCommand;
         private readonly IDeleteTransactionCommand _deleteTransactionCommand = deleteTransactionCommand;
 
@@ -65,39 +64,6 @@ namespace API.Controllers
             return Ok(expenseTransactionsViewModel);
         }
 
-        [HttpPost("funds")]
-        public async Task<ActionResult<bool>> CreateFundTransaction(CreateFundTransactionInputModel input)
-        {
-            var result = await _createFundTransactionCommand.ExecuteCommand(new CreateFundTransactionDto
-            {
-                Date = input.Date,
-                Amount = input.Amount,
-                Description = input.Description,
-                FundCollectionId = input.FundCollectionId
-            });
-
-            if (!result.IsSuccess) return BadRequest(result.Error);
-
-            return Ok(result.Value);
-        }
-
-        [HttpPost("expenses")]
-        public async Task<ActionResult<bool>> CreateExpenseTransaction(CreateExpenseTransactionInputModel input)
-        {
-            var result = await _createExpenseTransactionCommand.ExecuteCommand(new CreateExpenseTransactionDto
-            {
-                Date = input.Date,
-                Amount = input.Amount,
-                Description = input.Description,
-                FundCollectionId = input.FundCollectionId,
-                ExpenseCollectionId = input.ExpenseCollectionId
-            });
-
-            if (!result.IsSuccess) return BadRequest(result.Error);
-
-            return Ok(result.Value);
-        }
-
         [HttpGet("{id}")]
         public async Task<ActionResult<TransactionViewModel>> GetTransactionById([FromRoute] Guid id)
         {
@@ -116,6 +82,24 @@ namespace API.Controllers
             };
 
             return Ok(transactionViewModel);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<bool>> CreateFundTransaction(CreateTransactionInputModel input)
+        {
+            var result = await _createTransactionCommand.ExecuteCommand(new CreateTransactionDto
+            {
+                Date = input.Date,
+                Amount = input.Amount,
+                Description = input.Description,
+                FundCollectionId = input.FundCollectionId,
+                ExpenseCollectionId = input.ExpenseCollectionId,
+                TransactionType = input.TransactionType
+            });
+
+            if (!result.IsSuccess) return BadRequest(result.Error);
+
+            return Ok(result.Value);
         }
 
         [HttpPut("{id}")]

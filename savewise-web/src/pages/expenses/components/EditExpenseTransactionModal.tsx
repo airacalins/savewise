@@ -11,9 +11,6 @@ import { DeleteOutline, Save } from "@mui/icons-material";
 import { colors } from "../../../theme/colors";
 import { DatePicker } from "@mui/x-date-pickers";
 import { TextInput } from "../../../components/inputs/TextInput";
-import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
-import { mockTransactions } from "../../../api/transactions/mockTransactions";
-// import { mockFundsCollection } from "../../../api/collection/mockFundsCollection";
 import {
   TUpdateExpenseTransactionSchema,
   updateExpenseTransactionSchema,
@@ -23,6 +20,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ContainedButton } from "../../../components/buttons/ContainedButton";
 import dayjs from "dayjs";
 import { useGetFundsCollection } from "../../../api/collection/hooks";
+import { useGetTransaction } from "../../../api/transactions/hooks";
+import { FormModal } from "../../../components/modals/FormModal";
 
 interface EditExpenseTransactionModalProps {
   isVisible: boolean;
@@ -36,10 +35,12 @@ export const EditExpenseTransactionModal: React.FC<
   EditExpenseTransactionModalProps
 > = ({ isVisible, expenseTransactionId, onClose, onDelete, onUpdate }) => {
   // API
-  const { data: fundsCollectionData } = useGetFundsCollection();
-  const expenseTransactionData = mockTransactions.find(
-    (expense) => expense.id === expenseTransactionId
-  );
+  const { data: fundsCollectionData, isLoading: isLoadingFundsCollection } =
+    useGetFundsCollection();
+  const {
+    data: expenseTransactionData,
+    isLoading: isLoadingExpenseTransactions,
+  } = useGetTransaction(expenseTransactionId);
 
   const defaultValues = useMemo(
     () => ({
@@ -47,6 +48,7 @@ export const EditExpenseTransactionModal: React.FC<
       description: expenseTransactionData?.description ?? "",
       amount: expenseTransactionData?.amount ?? 0,
       fundCollectionId: expenseTransactionData?.fundCollectionId ?? "",
+      expenseCollectionId: expenseTransactionData?.expenseCollectionId ?? "",
     }),
     [expenseTransactionData]
   );
@@ -78,8 +80,9 @@ export const EditExpenseTransactionModal: React.FC<
   };
 
   return (
-    <ConfirmActionModal
+    <FormModal
       isVisible={isVisible}
+      isLoading={isLoadingFundsCollection || isLoadingExpenseTransactions}
       title="Update Expense"
       onClose={handleCloseModal}
       actions={
@@ -164,6 +167,6 @@ export const EditExpenseTransactionModal: React.FC<
           )}
         />
       </Stack>
-    </ConfirmActionModal>
+    </FormModal>
   );
 };

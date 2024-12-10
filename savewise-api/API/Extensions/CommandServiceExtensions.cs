@@ -19,9 +19,8 @@ namespace API.Extensions
             // Transactions
             services.AddScoped<IGetFundTransactionsByCollectionIdCommand, GetFundTransactionsByCollectionIdCommand>();
             services.AddScoped<IGetExpenseTransactionsByCollectionIdCommand, GetExpenseTransactionsByCollectionIdCommand>();
-            services.AddScoped<ICreateFundTransactionCommand, CreateFundTransactionCommand>();
-            services.AddScoped<ICreateExpenseTransactionCommand, CreateExpenseTransactionCommand>();
             services.AddScoped<IGetTransactionByIdCommand, GetTransactionByIdCommand>();
+            services.AddScoped<ICreateTransactionCommand, CreateTransactionCommand>();
             services.AddScoped<IUpdateTransactionCommand, UpdateTransactionCommand>();
             services.AddScoped<IDeleteTransactionCommand, DeleteTransactionCommand>();
 

@@ -1,15 +1,13 @@
-using Application.Transactions.Dtos;
 using Application.Transactions.Interfaces;
 using Domain.Entities;
-using Domain.Enums;
 
 namespace Application.Transactions.Commands
 {
-    public class CreateFundTransactionCommand(IDataContext context) : ICreateFundTransactionCommand
+    public class CreateTransactionCommand(IDataContext context) : ICreateTransactionCommand
     {
-        private readonly IDataContext _context = context;
 
-        public async Task<Result<bool>> ExecuteCommand(CreateFundTransactionDto input)
+        private readonly IDataContext _context = context;
+        public async Task<Result<bool>> ExecuteCommand(CreateTransactionDto input)
         {
             if (input.Description == null)
             {
@@ -29,10 +27,11 @@ namespace Application.Transactions.Commands
             var transaction = new Transaction
             {
                 Date = input.Date,
-                Amount = input.Amount,
                 Description = input.Description,
+                Amount = input.Amount,
                 FundCollectionId = input.FundCollectionId,
-                TransactionType = TransactionType.Deposit,
+                ExpenseCollectionId = input.ExpenseCollectionId,
+                TransactionType = input.TransactionType,
                 CreatedAt = DateTime.Now
             };
 
