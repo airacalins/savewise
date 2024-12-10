@@ -64,11 +64,6 @@ export const ExpensesPage = () => {
   } = useGetExpenseTransactions(collectionId ?? "");
   const deleteCollection = useDeleteCollection(collectionId ?? "");
 
-  // Mock Data
-  // const transactionData = mockTransactions.filter(
-  //   (transaction) => transaction.expenseCollectionId === collectionId
-  // );
-
   const breadcrumbs = useMemo(() => {
     return [
       {

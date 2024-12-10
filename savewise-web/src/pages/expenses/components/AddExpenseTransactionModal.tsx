@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Button,
   FormControl,
@@ -25,14 +25,6 @@ import { showErrorToast, showSuccessToast } from "../../../utils/toast";
 import { useCreateExpenseTransaction } from "../../../api/transactions/hooks";
 import { CreateExpenseTransactionRequest } from "../../../api/transactions/type";
 
-const defaultValues = {
-  date: new Date(),
-  description: "",
-  amount: 0,
-  fundCollectionId: "",
-  expenseCollectionId: "",
-};
-
 interface AddExpenseTransactionModalProps {
   expenseCollection?: Collection;
   isVisible: boolean;
@@ -47,6 +39,16 @@ export const AddExpenseTransactionModal: React.FC<
   // API
   const { data: fundsCollectionData } = useGetFundsCollection();
   const createExpenseTransaction = useCreateExpenseTransaction();
+
+  const defaultValues = useMemo(() => {
+    return {
+      date: new Date(),
+      description: "",
+      amount: 0,
+      fundCollectionId: "",
+      expenseCollectionId: expenseCollection?.id ?? "",
+    };
+  }, [expenseCollection]);
 
   const {
     control,
