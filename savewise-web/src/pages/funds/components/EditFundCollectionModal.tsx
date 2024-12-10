@@ -12,27 +12,27 @@ import {
   TUpdateCollectionSchema,
   updateCollectionSchema,
 } from "../../../api/collection/schema";
-import {
-  useGetCollectionById,
-  useUpdateCollectionById,
-} from "../../../api/collection/hooks";
-import { showErrorToast, showSuccessToast } from "../../../utils/toast";
+import { useGetCollectionById } from "../../../api/collection/hooks";
 
 interface EditFundCollectionModalProps {
   isVisible: boolean;
   fundCollectionId: string;
-  onClose: () => void;
-  onDelete: () => void;
+  onUpdateCollection: (data: TUpdateCollectionSchema) => void;
+  onCloseModal: () => void;
+  onDeleteCollection: () => void;
 }
 
 export const EditFundCollectionModal: React.FC<
   EditFundCollectionModalProps
-> = ({ isVisible, fundCollectionId, onClose, onDelete }) => {
+> = ({
+  isVisible,
+  fundCollectionId,
+  onUpdateCollection,
+  onCloseModal,
+  onDeleteCollection,
+}) => {
   // API
   const { data: fundCollectionData } = useGetCollectionById(fundCollectionId);
-  const updateFundCollection = useUpdateCollectionById(
-    fundCollectionData?.id ?? ""
-  );
 
   const defaultValues = useMemo(
     () => ({
@@ -58,20 +58,16 @@ export const EditFundCollectionModal: React.FC<
 
   // Functions
   const handleCloseModal = () => {
+    onCloseModal();
     reset();
-    onClose();
   };
 
+  // Functions
   const handleUpdateFundCollection = async (
     formValues: TUpdateCollectionSchema
   ) => {
-    try {
-      await updateFundCollection.mutateAsync(formValues);
-
-      showSuccessToast("Fund collection updated.");
-    } catch {
-      showErrorToast("Failed to update fund collection.");
-    }
+    onUpdateCollection(formValues);
+    reset();
   };
 
   return (
@@ -85,7 +81,7 @@ export const EditFundCollectionModal: React.FC<
             color="error"
             startIcon={<DeleteOutline sx={{ color: "inherit" }} />}
             disabled={isDirty}
-            onClick={onDelete}
+            onClick={onDeleteCollection}
           >
             Delete
           </Button>

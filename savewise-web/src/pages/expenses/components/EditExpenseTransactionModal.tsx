@@ -70,8 +70,8 @@ export const EditExpenseTransactionModal: React.FC<
 
   // Functions
   const handleCloseModal = () => {
-    reset();
     onClose();
+    reset();
   };
 
   const handleFormSubmit = (data: TUpdateExpenseTransactionSchema) => {

@@ -86,8 +86,8 @@ export const FundsCollectionPage = () => {
         <AddFundCollectionModal
           isVisible={addFundCollectionModal.isVisible}
           onCreateCollection={handleCreateCollection}
-          onClose={addFundCollectionModal.hide}
-          onCancel={addFundCollectionModal.hide}
+          onCloseModal={addFundCollectionModal.hide}
+          onCancelCreate={addFundCollectionModal.hide}
         />
       }
     >

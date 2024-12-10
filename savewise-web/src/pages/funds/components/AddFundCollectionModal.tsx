@@ -20,15 +20,15 @@ const defaultValues = {
 interface AddFundCollectionModalProps {
   isVisible: boolean;
   onCreateCollection: (formData: TCreateCollectionSchema) => void;
-  onClose: () => void;
-  onCancel: () => void;
+  onCloseModal: () => void;
+  onCancelCreate: () => void;
 }
 
 export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
   isVisible,
   onCreateCollection,
-  onClose,
-  onCancel,
+  onCloseModal: onClose,
+  onCancelCreate: onCancel,
 }) => {
   const {
     control,
@@ -46,13 +46,13 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
 
   // Functions
   const handleOnCloseModal = () => {
-    reset();
     onClose();
+    reset();
   };
 
   const handleOnCancel = () => {
-    reset();
     onCancel();
+    reset();
   };
 
   const handleCreateCollection = (formValues: TCreateCollectionSchema) => {

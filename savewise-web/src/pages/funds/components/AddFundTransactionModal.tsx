@@ -56,13 +56,13 @@ export const AddFundTransactionModal: React.FC<
 
   // Functions
   const handleCloseModal = () => {
-    reset();
     onClose();
+    reset();
   };
 
   const handleCancel = () => {
-    reset();
     onCancel();
+    reset();
   };
 
   const handleCreateFundTransaction = async (

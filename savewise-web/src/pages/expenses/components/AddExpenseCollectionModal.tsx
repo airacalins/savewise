@@ -21,13 +21,18 @@ const defaultValues = {
 interface AddExpenseCollectionModalProps {
   isVisible: boolean;
   onCreateCollection: (formData: TCreateCollectionSchema) => void;
-  onClose: () => void;
-  onCancel: () => void;
+  onCloseModal: () => void;
+  onCancelCreate: () => void;
 }
 
 export const AddExpenseCollectionModal: React.FC<
   AddExpenseCollectionModalProps
-> = ({ isVisible, onCreateCollection, onClose, onCancel }) => {
+> = ({
+  isVisible,
+  onCreateCollection,
+  onCloseModal: onClose,
+  onCancelCreate: onCancel,
+}) => {
   const {
     control,
     formState: { errors, isValid },

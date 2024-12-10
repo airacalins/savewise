@@ -28,9 +28,11 @@ import {
   useDeleteCollection,
   useGetCollectionById,
   useGetFundsCollection,
+  useUpdateCollectionById,
 } from "../../api/collection/hooks";
 import { showErrorToast, showSuccessToast } from "../../utils/toast";
 import { useGetExpenseTransactions } from "../../api/transactions/hooks";
+import { TUpdateCollectionSchema } from "../../api/collection/schema";
 
 const tableHeaders = [
   { key: "description", label: "Description" },
@@ -43,6 +45,7 @@ export const ExpensesPage = () => {
   const { collectionId } = useParams();
   const navigate = useNavigate();
   const editExpenseCollectionModal = useVisibilityState();
+
   const addExpenseTransactionModal = useVisibilityState();
   const editExpenseTransactionModal = useVisibilityState();
   const deleteExpenseCollectionWarningModal = useVisibilityState();
@@ -62,6 +65,9 @@ export const ExpensesPage = () => {
     isLoading: isLoadingExpenseTransaction,
     refetch: refetchExpenseTransactions,
   } = useGetExpenseTransactions(collectionId ?? "");
+  const updateFundCollection = useUpdateCollectionById(
+    expensesCollectionData?.id ?? ""
+  );
   const deleteCollection = useDeleteCollection(collectionId ?? "");
 
   const breadcrumbs = useMemo(() => {
@@ -86,22 +92,21 @@ export const ExpensesPage = () => {
     return fundCollection?.name ?? "Unknown Fund Source";
   };
 
+  const handleUpdateCollection = async (
+    formValues: TUpdateCollectionSchema
+  ) => {
+    try {
+      await updateFundCollection.mutateAsync(formValues);
+      showSuccessToast("Expense collection updated.");
+      editExpenseCollectionModal.hide();
+    } catch {
+      showErrorToast("Failed to update expense collection.");
+    }
+  };
+
   const handleShowConfirmDeleteModal = () => {
     editExpenseTransactionModal.hide();
     deleteExpenseTransactionWarningModal.show();
-  };
-
-  const handleDeleteExpenseCollection = async () => {
-    navigate(`/expensesCollection`);
-    deleteExpenseCollectionWarningModal.hide();
-
-    try {
-      await deleteCollection.mutateAsync({});
-
-      showSuccessToast("Expense collection deleted.");
-    } catch {
-      showErrorToast("Failed to delete fund collection.");
-    }
   };
 
   const handleUpdateExpenseTransaction = (
@@ -115,6 +120,19 @@ export const ExpensesPage = () => {
     console.log("UpdateExpenseTransactionRequest: ", input);
 
     editExpenseTransactionModal.hide();
+  };
+
+  const handleDeleteExpenseCollection = async () => {
+    navigate(`/expenses`);
+    deleteExpenseCollectionWarningModal.hide();
+
+    try {
+      await deleteCollection.mutateAsync({});
+
+      showSuccessToast("Expense collection deleted.");
+    } catch {
+      showErrorToast("Failed to delete fund collection.");
+    }
   };
 
   const handleDeleteExpenseTransaction = () => {
@@ -147,8 +165,9 @@ export const ExpensesPage = () => {
           <EditExpenseCollectionModal
             isVisible={editExpenseCollectionModal.isVisible}
             expenseCollectionId={expensesCollectionData?.id ?? ""}
-            onClose={editExpenseCollectionModal.hide}
-            onDelete={() => {
+            onUpdateCollection={handleUpdateCollection}
+            onCloseModal={editExpenseCollectionModal.hide}
+            onDeleteCollection={() => {
               editExpenseCollectionModal.hide();
               deleteExpenseCollectionWarningModal.show();
             }}

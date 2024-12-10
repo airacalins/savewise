@@ -98,8 +98,8 @@ export const ExpensesCollectionPage = () => {
       <AddExpenseCollectionModal
         isVisible={addExpenseCollectionModal.isVisible}
         onCreateCollection={handleCreateCollection}
-        onClose={addExpenseCollectionModal.hide}
-        onCancel={addExpenseCollectionModal.hide}
+        onCloseModal={addExpenseCollectionModal.hide}
+        onCancelCreate={addExpenseCollectionModal.hide}
       />
     </PageContainer>
   );

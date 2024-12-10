@@ -25,12 +25,14 @@ import { EditFundTransactionModal } from "./components/EditFundTransactionModal"
 import {
   useDeleteCollection,
   useGetCollectionById,
+  useUpdateCollectionById,
 } from "../../api/collection/hooks";
 import { showErrorToast, showSuccessToast } from "../../utils/toast";
 import {
   useDeleteTransaction,
   useGetFundTransactions,
 } from "../../api/transactions/hooks";
+import { TUpdateCollectionSchema } from "../../api/collection/schema";
 
 const tableHeaders = [
   { key: "date", label: "Date" },
@@ -57,6 +59,9 @@ export const FundTransactionsPage = () => {
     isLoading: isLoadingFundTransactions,
     refetch: refetchFundTransactions,
   } = useGetFundTransactions(collectionId ?? "");
+  const updateFundCollection = useUpdateCollectionById(
+    fundCollectionData?.id ?? ""
+  );
   const deleteCollection = useDeleteCollection(collectionId ?? "");
   const deleteTransaction = useDeleteTransaction(selectedTransaction?.id ?? "");
 
@@ -75,18 +80,24 @@ export const FundTransactionsPage = () => {
   }, [fundCollectionData]);
 
   // Functions
-  // const getExpenseName = (id: string) => {
-  //   const expense = expenseCollectionData.find((expense) => expense.id === id);
-  //   return expense ? expense.name : "Unknown Expense";
-  // };
+  const handleUpdateCollection = async (
+    formValues: TUpdateCollectionSchema
+  ) => {
+    try {
+      await updateFundCollection.mutateAsync(formValues);
+      showSuccessToast("Fund collection updated.");
+      editFundCollectionModal.hide();
+    } catch {
+      showErrorToast("Failed to update fund collection.");
+    }
+  };
 
-  const handleDeleteFundCollection = async () => {
+  const handleDeleteCollection = async () => {
     navigate(`/funds`);
     deleteFundCollectionWarningModal.hide();
 
     try {
       await deleteCollection.mutateAsync({});
-
       showSuccessToast("Fund collection deleted.");
     } catch {
       showErrorToast("Failed to delete fund collection.");
@@ -131,8 +142,9 @@ export const FundTransactionsPage = () => {
           <EditFundCollectionModal
             isVisible={editFundCollectionModal.isVisible}
             fundCollectionId={fundCollectionData?.id ?? ""}
-            onClose={editFundCollectionModal.hide}
-            onDelete={() => {
+            onUpdateCollection={handleUpdateCollection}
+            onCloseModal={editFundCollectionModal.hide}
+            onDeleteCollection={() => {
               editFundCollectionModal.hide();
               deleteFundCollectionWarningModal.show();
             }}
@@ -149,15 +161,16 @@ export const FundTransactionsPage = () => {
             fundTransactionId={selectedTransaction?.id ?? ""}
             onRefetch={refetchFundTransactions}
             onClose={editFundTransactionModal.hide}
-            onDelete={() => {
-              editFundTransactionModal.hide();
-              deleteFundTransactionWarningModal.show();
-            }}
+            // onDeleteCollection={() => {
+            //   editFundTransactionModal.hide();
+            //   deleteFundTransactionWarningModal.show();
+            // }}
           />
           <DeleteWarningActionModal
             isVisible={deleteFundCollectionWarningModal.isVisible}
             isDeleting={deleteCollection.isLoading}
             itemName={fundCollectionData?.name}
+            onConfirm={handleDeleteCollection}
             onClose={() => {
               deleteFundCollectionWarningModal.hide();
               editFundCollectionModal.show();
@@ -166,7 +179,6 @@ export const FundTransactionsPage = () => {
               deleteFundCollectionWarningModal.hide();
               editFundCollectionModal.show();
             }}
-            onConfirm={handleDeleteFundCollection}
           />
           <DeleteWarningActionModal
             isVisible={deleteFundTransactionWarningModal.isVisible}

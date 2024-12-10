@@ -11,27 +11,27 @@ import {
   TUpdateCollectionSchema,
   updateCollectionSchema,
 } from "../../../api/collection/schema";
-import {
-  useGetCollectionById,
-  useUpdateCollectionById,
-} from "../../../api/collection/hooks";
-import { showErrorToast, showSuccessToast } from "../../../utils/toast";
+import { useGetCollectionById } from "../../../api/collection/hooks";
 
 interface EditExpenseCollectionModalProps {
   isVisible: boolean;
   expenseCollectionId: string;
-  onClose: () => void;
-  onDelete: () => void;
+  onUpdateCollection: (data: TUpdateCollectionSchema) => void;
+  onCloseModal: () => void;
+  onDeleteCollection: () => void;
 }
 
 export const EditExpenseCollectionModal: React.FC<
   EditExpenseCollectionModalProps
-> = ({ isVisible, expenseCollectionId, onClose, onDelete }) => {
+> = ({
+  isVisible,
+  expenseCollectionId,
+  onUpdateCollection,
+  onCloseModal,
+  onDeleteCollection,
+}) => {
   const { data: expenseCollectionData } =
     useGetCollectionById(expenseCollectionId);
-  const updateExpenseCollection = useUpdateCollectionById(
-    expenseCollectionData?.id ?? ""
-  );
 
   const defaultValues = useMemo(
     () => ({
@@ -57,20 +57,15 @@ export const EditExpenseCollectionModal: React.FC<
 
   // Functions
   const handleCloseModal = () => {
+    onCloseModal();
     reset();
-    onClose();
   };
 
-  const handleUpdateExpenseCollection = async (
+  const handleUpdateExpenseCollection = (
     formValues: TUpdateCollectionSchema
   ) => {
-    try {
-      await updateExpenseCollection.mutateAsync(formValues);
-
-      showSuccessToast("Expense collection updated.");
-    } catch {
-      showErrorToast("Failed to update expense collection.");
-    }
+    onUpdateCollection(formValues);
+    reset();
   };
 
   return (
@@ -84,7 +79,7 @@ export const EditExpenseCollectionModal: React.FC<
             color="error"
             startIcon={<DeleteOutline sx={{ color: "inherit" }} />}
             disabled={isDirty}
-            onClick={onDelete}
+            onClick={onDeleteCollection}
           >
             Delete
           </Button>
