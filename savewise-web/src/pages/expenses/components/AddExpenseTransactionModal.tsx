@@ -22,8 +22,11 @@ import { useGetFundsCollection } from "../../../api/collection/hooks";
 import { Collection } from "../../../api/collection/type";
 import { newDateFormat } from "../../../utils/date";
 import { showErrorToast, showSuccessToast } from "../../../utils/toast";
-import { useCreateExpenseTransaction } from "../../../api/transactions/hooks";
-import { CreateExpenseTransactionRequest } from "../../../api/transactions/type";
+import {
+  CreateExpenseTransactionRequest,
+  TransactionType,
+} from "../../../api/transactions/type";
+import { useCreateTransaction } from "../../../api/transactions/hooks";
 
 interface AddExpenseTransactionModalProps {
   expenseCollection?: Collection;
@@ -38,7 +41,7 @@ export const AddExpenseTransactionModal: React.FC<
 > = ({ expenseCollection, isVisible, onRefetch, onClose, onCancel }) => {
   // API
   const { data: fundsCollectionData } = useGetFundsCollection();
-  const createExpenseTransaction = useCreateExpenseTransaction();
+  const createExpenseTransaction = useCreateTransaction();
 
   const defaultValues = useMemo(() => {
     return {
@@ -78,8 +81,9 @@ export const AddExpenseTransactionModal: React.FC<
     try {
       const input: CreateExpenseTransactionRequest = {
         ...formValues,
-        expenseCollectionId: expenseCollection?.id ?? "",
         date: newDateFormat(formValues.date),
+        expenseCollectionId: expenseCollection?.id ?? "",
+        transactionType: TransactionType.Withdrawal,
       };
 
       await createExpenseTransaction.mutateAsync(input);

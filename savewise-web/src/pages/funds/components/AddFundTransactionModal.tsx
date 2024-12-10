@@ -11,11 +11,14 @@ import {
 } from "../../../api/transactions/schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ContainedButton } from "../../../components/buttons/ContainedButton";
-import { useCreateFundTransaction } from "../../../api/transactions/hooks";
-import { CreateFundTransactionRequest } from "../../../api/transactions/type";
+import {
+  CreateFundTransactionRequest,
+  TransactionType,
+} from "../../../api/transactions/type";
 import { newDateFormat } from "../../../utils/date";
 import { Collection } from "../../../api/collection/type";
 import { showErrorToast, showSuccessToast } from "../../../utils/toast";
+import { useCreateTransaction } from "../../../api/transactions/hooks";
 
 const defaultValues = {
   date: new Date(),
@@ -49,7 +52,7 @@ export const AddFundTransactionModal: React.FC<
   }, [reset]);
 
   // API
-  const createFundTransaction = useCreateFundTransaction();
+  const createFundTransaction = useCreateTransaction();
 
   // Functions
   const handleCloseModal = () => {
@@ -67,9 +70,10 @@ export const AddFundTransactionModal: React.FC<
   ) => {
     try {
       const input: CreateFundTransactionRequest = {
-        fundCollectionId: fundCollection?.id ?? "",
         ...formValues,
         date: newDateFormat(formValues.date),
+        fundCollectionId: fundCollection?.id ?? "",
+        transactionType: TransactionType.Deposit,
       };
 
       await createFundTransaction.mutateAsync(input);

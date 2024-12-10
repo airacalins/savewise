@@ -33,28 +33,6 @@ export const useGetExpenseTransactions = (expenseCollectionId: string) => {
   });
 };
 
-// POST - /api/Transactions/funds
-export const useCreateFundTransaction = () => {
-  const url = "/transactions/funds";
-  const cacheKey = [QUERY_KEY, "funds", "create"];
-
-  return usePost<FundTransaction, CreateFundTransactionRequest>({
-    url,
-    cacheKey,
-  });
-};
-
-// POST - /api/Transactions/expenses
-export const useCreateExpenseTransaction = () => {
-  const url = `/transactions/expenses`;
-  const cacheKey = [QUERY_KEY, "expenses", "create"];
-
-  return usePost<boolean, CreateExpenseTransactionRequest>({
-    url,
-    cacheKey,
-  });
-};
-
 // GET - /api/Transactions/{id}
 export const useGetTransaction = (id: string) => {
   const url = `/transactions/${id}`;
@@ -91,5 +69,19 @@ export const useDeleteTransaction = (id: string) => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: [QUERY_KEY] });
     },
+  });
+};
+
+// POST - /api/Transactions
+export const useCreateTransaction = () => {
+  const url = "/transactions";
+  const cacheKey = [QUERY_KEY, "funds", "create"];
+
+  return usePost<
+    FundTransaction,
+    CreateFundTransactionRequest | CreateExpenseTransactionRequest
+  >({
+    url,
+    cacheKey,
   });
 };

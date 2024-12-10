@@ -12,8 +12,6 @@ import {
 } from "../../../api/collection/schema";
 import { CollectionType } from "../../../api/collection/type";
 import { useCreateCollection } from "../../../api/collection/hooks";
-import { useNavigate } from "react-router-dom";
-import { showSuccessToast } from "../../../utils/toast";
 
 const defaultValues = {
   name: "",
@@ -22,15 +20,14 @@ const defaultValues = {
 
 interface AddExpenseCollectionModalProps {
   isVisible: boolean;
+  onCreateCollection: (formData: TCreateCollectionSchema) => void;
   onClose: () => void;
   onCancel: () => void;
 }
 
 export const AddExpenseCollectionModal: React.FC<
   AddExpenseCollectionModalProps
-> = ({ isVisible, onClose, onCancel }) => {
-  const navigate = useNavigate();
-
+> = ({ isVisible, onCreateCollection, onClose, onCancel }) => {
   const {
     control,
     formState: { errors, isValid },
@@ -56,22 +53,9 @@ export const AddExpenseCollectionModal: React.FC<
     onCancel();
   };
 
-  // Functions
-  const handleAddExpenseCollection = async (
-    formData: TCreateCollectionSchema
-  ) => {
-    try {
-      const result = await createExpenseCollection.mutateAsync({
-        name: formData.name,
-        collectionType: CollectionType.Expense,
-      });
-
-      showSuccessToast("Expense collection created.");
-      navigate(`/expensesCollection/${result.id}`);
-    } finally {
-      reset();
-      onClose();
-    }
+  const handleCreateCollection = (formValues: TCreateCollectionSchema) => {
+    onCreateCollection(formValues);
+    reset();
   };
 
   return (
@@ -85,7 +69,7 @@ export const AddExpenseCollectionModal: React.FC<
             <Button onClick={handleCancel}>Cancel</Button>
             <ContainedButton
               disabled={!isValid}
-              onClick={handleSubmit(handleAddExpenseCollection)}
+              onClick={handleSubmit(handleCreateCollection)}
               isLoading={createExpenseCollection.isLoading}
             >
               Submit

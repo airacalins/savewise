@@ -1,11 +1,18 @@
-import { Button, Tabs, Tab } from "@mui/material";
+import { Tabs, Tab } from "@mui/material";
 import { PageContainer } from "../../components/containers/PageContainer";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { AddExpenseCollectionModal } from "./components/AddExpenseCollectionModal";
-import { useGetExpensesCollection } from "../../api/collection/hooks";
+import {
+  useCreateCollection,
+  useGetExpensesCollection,
+} from "../../api/collection/hooks";
 import { ExpensesCollectionTableTab } from "./components/ExpensesCollectionTableTabs";
 import { ExpensesSummaryTab } from "./components/ExpensesSummaryTab";
 import { useState } from "react";
+import { TCreateCollectionSchema } from "../../api/collection/schema";
+import { CollectionType } from "../../api/collection/type";
+import { showErrorToast, showSuccessToast } from "../../utils/toast";
+import { OutlinedButton } from "../../components/buttons/OutlinedButton";
 
 const tabs = [
   {
@@ -26,7 +33,25 @@ export const ExpensesCollectionPage = () => {
   const {
     data: expensesCollectionData,
     isLoading: isLoadingExpensesCollection,
+    refetch: refetchExpensesCollection,
   } = useGetExpensesCollection();
+  const createCollection = useCreateCollection();
+
+  // Functions
+  const handleCreateCollection = async (formData: TCreateCollectionSchema) => {
+    try {
+      const result = await createCollection.mutateAsync({
+        name: formData.name,
+        collectionType: CollectionType.Expense,
+      });
+
+      showSuccessToast(`${result.name} created.`);
+      refetchExpensesCollection();
+      addExpenseCollectionModal.hide();
+    } catch {
+      showErrorToast("Failed to create expense.");
+    }
+  };
 
   const renderTabContents = () => {
     switch (selectedTabIndex) {
@@ -47,9 +72,12 @@ export const ExpensesCollectionPage = () => {
       title="Expenses"
       subtitle="View, create and manage expenses."
       actions={
-        <Button onClick={addExpenseCollectionModal.show}>
+        <OutlinedButton
+          isLoading={createCollection.isLoading}
+          onClick={addExpenseCollectionModal.show}
+        >
           Add Expense Collection
-        </Button>
+        </OutlinedButton>
       }
       isLoading={isLoadingExpensesCollection}
       loadingMessage="Loading expenses..."
@@ -69,6 +97,7 @@ export const ExpensesCollectionPage = () => {
       {renderTabContents()}
       <AddExpenseCollectionModal
         isVisible={addExpenseCollectionModal.isVisible}
+        onCreateCollection={handleCreateCollection}
         onClose={addExpenseCollectionModal.hide}
         onCancel={addExpenseCollectionModal.hide}
       />

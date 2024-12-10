@@ -1,11 +1,18 @@
-import { Button, Tab, Tabs } from "@mui/material";
+import { Tab, Tabs } from "@mui/material";
 import { PageContainer } from "../../components/containers/PageContainer";
 import { useVisibilityState } from "../../hooks/useVisibilityState";
 import { AddFundCollectionModal } from "./components/AddFundCollectionModal";
-import { useGetFundsCollection } from "../../api/collection/hooks";
+import {
+  useCreateCollection,
+  useGetFundsCollection,
+} from "../../api/collection/hooks";
 import { useState } from "react";
 import { FundsSummaryTab } from "./components/FundsSummaryTab";
 import { FundsCollectionTableTabs } from "./components/FundsCollectionTableTabs";
+import { TCreateCollectionSchema } from "../../api/collection/schema";
+import { CollectionType } from "../../api/collection/type";
+import { showErrorToast, showSuccessToast } from "../../utils/toast";
+import { OutlinedButton } from "../../components/buttons/OutlinedButton";
 
 const tabs = [
   {
@@ -23,8 +30,29 @@ export const FundsCollectionPage = () => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
   // API
-  const { data: fundsCollectionData, isLoading: isLoadingFundsCollectionData } =
-    useGetFundsCollection();
+  const {
+    data: fundsCollectionData,
+    isLoading: isLoadingFundsCollectionData,
+    refetch: refetchFundsCollection,
+  } = useGetFundsCollection();
+  const createCollection = useCreateCollection();
+
+  const handleCreateCollection = async (
+    formValues: TCreateCollectionSchema
+  ) => {
+    try {
+      const result = await createCollection.mutateAsync({
+        name: formValues.name,
+        collectionType: CollectionType.Fund,
+      });
+
+      showSuccessToast(`${result.name} created.`);
+      refetchFundsCollection();
+      addFundCollectionModal.hide();
+    } catch {
+      showErrorToast("Failed to create fund.");
+    }
+  };
 
   const renderTabContents = () => {
     switch (selectedTabIndex) {
@@ -43,9 +71,12 @@ export const FundsCollectionPage = () => {
       title="Funds"
       subtitle="View, create and manage funds."
       actions={
-        <Button onClick={addFundCollectionModal.show}>
+        <OutlinedButton
+          isLoading={createCollection.isLoading}
+          onClick={addFundCollectionModal.show}
+        >
           Add Fund Collection
-        </Button>
+        </OutlinedButton>
       }
       isLoading={isLoadingFundsCollectionData}
       loadingMessage="Loading funds..."
@@ -54,6 +85,7 @@ export const FundsCollectionPage = () => {
       modals={
         <AddFundCollectionModal
           isVisible={addFundCollectionModal.isVisible}
+          onCreateCollection={handleCreateCollection}
           onClose={addFundCollectionModal.hide}
           onCancel={addFundCollectionModal.hide}
         />

@@ -11,8 +11,6 @@ import {
 } from "../../../api/collection/schema";
 import { CollectionType } from "../../../api/collection/type";
 import { useCreateCollection } from "../../../api/collection/hooks";
-import { useNavigate } from "react-router-dom";
-import { showSuccessToast } from "../../../utils/toast";
 
 const defaultValues = {
   name: "",
@@ -21,17 +19,17 @@ const defaultValues = {
 
 interface AddFundCollectionModalProps {
   isVisible: boolean;
+  onCreateCollection: (formData: TCreateCollectionSchema) => void;
   onClose: () => void;
   onCancel: () => void;
 }
 
 export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
   isVisible,
+  onCreateCollection,
   onClose,
   onCancel,
 }) => {
-  const navigate = useNavigate();
-
   const {
     control,
     formState: { errors, isValid },
@@ -57,19 +55,9 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
     onCancel();
   };
 
-  const handleAddFundCollection = async (formData: TCreateCollectionSchema) => {
-    try {
-      const result = await createFundCollection.mutateAsync({
-        name: formData.name,
-        collectionType: CollectionType.Fund,
-      });
-
-      showSuccessToast("Fund created.");
-      navigate(`/funds/${result.id}`);
-    } finally {
-      reset();
-      onClose();
-    }
+  const handleCreateCollection = (formValues: TCreateCollectionSchema) => {
+    onCreateCollection(formValues);
+    reset();
   };
 
   return (
@@ -83,7 +71,7 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
             <Button onClick={handleOnCancel}>Cancel</Button>
             <ContainedButton
               disabled={!isValid || createFundCollection.isLoading}
-              onClick={handleSubmit(handleAddFundCollection)}
+              onClick={handleSubmit(handleCreateCollection)}
               isLoading={createFundCollection.isLoading}
             >
               Submit
