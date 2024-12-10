@@ -97,6 +97,7 @@ export const ExpensesCollectionPage = () => {
       {renderTabContents()}
       <AddExpenseCollectionModal
         isVisible={addExpenseCollectionModal.isVisible}
+        isSubmitting={createCollection.isLoading}
         onCreateCollection={handleCreateCollection}
         onCloseModal={addExpenseCollectionModal.hide}
         onCancelCreate={addExpenseCollectionModal.hide}

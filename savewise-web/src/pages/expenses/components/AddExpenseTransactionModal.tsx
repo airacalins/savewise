@@ -7,7 +7,6 @@ import {
   Select,
   Stack,
 } from "@mui/material";
-import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { TextInput } from "../../../components/inputs/TextInput";
@@ -27,6 +26,7 @@ import {
   TransactionType,
 } from "../../../api/transactions/type";
 import { useCreateTransaction } from "../../../api/transactions/hooks";
+import { FormModal } from "../../../components/modals/FormModal";
 
 interface AddExpenseTransactionModalProps {
   expenseCollection?: Collection;
@@ -40,7 +40,8 @@ export const AddExpenseTransactionModal: React.FC<
   AddExpenseTransactionModalProps
 > = ({ expenseCollection, isVisible, onRefetch, onClose, onCancel }) => {
   // API
-  const { data: fundsCollectionData } = useGetFundsCollection();
+  const { data: fundsCollectionData, isLoading: isLoadingFundsCollection } =
+    useGetFundsCollection();
   const createExpenseTransaction = useCreateTransaction();
 
   const defaultValues = useMemo(() => {
@@ -101,8 +102,9 @@ export const AddExpenseTransactionModal: React.FC<
   };
 
   return (
-    <ConfirmActionModal
+    <FormModal
       isVisible={isVisible}
+      isLoading={isLoadingFundsCollection}
       title={`Add ${expenseCollection?.name} Expense`}
       onClose={handleCloseModal}
       actions={
@@ -182,6 +184,6 @@ export const AddExpenseTransactionModal: React.FC<
           )}
         />
       </Stack>
-    </ConfirmActionModal>
+    </FormModal>
   );
 };

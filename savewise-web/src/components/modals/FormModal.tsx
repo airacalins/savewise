@@ -13,7 +13,7 @@ import { Skeleton } from "../skeletons/Skeleton";
 
 interface FormModalProps extends PropsWithChildren {
   isVisible: boolean;
-  isLoading: boolean;
+  isLoading?: boolean;
   title: string;
   description?: string;
   onClose: () => void;
@@ -22,7 +22,7 @@ interface FormModalProps extends PropsWithChildren {
 
 export const FormModal: React.FC<FormModalProps> = ({
   isVisible,
-  isLoading,
+  isLoading = false,
   title,
   description,
   children,

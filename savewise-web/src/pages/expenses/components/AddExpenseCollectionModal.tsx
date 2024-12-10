@@ -1,6 +1,5 @@
 import React from "react";
 import { Button } from "@mui/material";
-import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
@@ -11,7 +10,7 @@ import {
   TCreateCollectionSchema,
 } from "../../../api/collection/schema";
 import { CollectionType } from "../../../api/collection/type";
-import { useCreateCollection } from "../../../api/collection/hooks";
+import { FormModal } from "../../../components/modals/FormModal";
 
 const defaultValues = {
   name: "",
@@ -20,6 +19,7 @@ const defaultValues = {
 
 interface AddExpenseCollectionModalProps {
   isVisible: boolean;
+  isSubmitting: boolean;
   onCreateCollection: (formData: TCreateCollectionSchema) => void;
   onCloseModal: () => void;
   onCancelCreate: () => void;
@@ -29,6 +29,7 @@ export const AddExpenseCollectionModal: React.FC<
   AddExpenseCollectionModalProps
 > = ({
   isVisible,
+  isSubmitting,
   onCreateCollection,
   onCloseModal: onClose,
   onCancelCreate: onCancel,
@@ -43,9 +44,6 @@ export const AddExpenseCollectionModal: React.FC<
     defaultValues,
     mode: "onChange",
   });
-
-  // API
-  const createExpenseCollection = useCreateCollection();
 
   // Functions
   const handleCloseModal = () => {
@@ -64,39 +62,37 @@ export const AddExpenseCollectionModal: React.FC<
   };
 
   return (
-    <>
-      <ConfirmActionModal
-        isVisible={isVisible}
-        title="Create expense collection"
-        onClose={handleCloseModal}
-        actions={
-          <>
-            <Button onClick={handleCancel}>Cancel</Button>
-            <ContainedButton
-              disabled={!isValid}
-              onClick={handleSubmit(handleCreateCollection)}
-              isLoading={createExpenseCollection.isLoading}
-            >
-              Submit
-            </ContainedButton>
-          </>
-        }
-      >
-        <Controller
-          name="name"
-          control={control}
-          render={({ field }) => (
-            <TextInput
-              label="Name"
-              placeholder="Groceries, Electricity, etc."
-              error={!!errors.name}
-              defaultValue={defaultValues.name}
-              errorMessage={errors.name?.message}
-              {...field}
-            />
-          )}
-        />
-      </ConfirmActionModal>
-    </>
+    <FormModal
+      isVisible={isVisible}
+      title="Create expense collection"
+      onClose={handleCloseModal}
+      actions={
+        <>
+          <Button onClick={handleCancel}>Cancel</Button>
+          <ContainedButton
+            disabled={!isValid}
+            onClick={handleSubmit(handleCreateCollection)}
+            isLoading={isSubmitting}
+          >
+            Submit
+          </ContainedButton>
+        </>
+      }
+    >
+      <Controller
+        name="name"
+        control={control}
+        render={({ field }) => (
+          <TextInput
+            label="Name"
+            placeholder="Groceries, Electricity, etc."
+            error={!!errors.name}
+            defaultValue={defaultValues.name}
+            errorMessage={errors.name?.message}
+            {...field}
+          />
+        )}
+      />
+    </FormModal>
   );
 };

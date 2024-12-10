@@ -10,7 +10,6 @@ import {
   TCreateCollectionSchema,
 } from "../../../api/collection/schema";
 import { CollectionType } from "../../../api/collection/type";
-import { useCreateCollection } from "../../../api/collection/hooks";
 
 const defaultValues = {
   name: "",
@@ -19,6 +18,7 @@ const defaultValues = {
 
 interface AddFundCollectionModalProps {
   isVisible: boolean;
+  isSubmitting: boolean;
   onCreateCollection: (formData: TCreateCollectionSchema) => void;
   onCloseModal: () => void;
   onCancelCreate: () => void;
@@ -26,9 +26,10 @@ interface AddFundCollectionModalProps {
 
 export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
   isVisible,
+  isSubmitting,
   onCreateCollection,
-  onCloseModal: onClose,
-  onCancelCreate: onCancel,
+  onCloseModal,
+  onCancelCreate,
 }) => {
   const {
     control,
@@ -41,17 +42,14 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
     mode: "onChange",
   });
 
-  // API
-  const createFundCollection = useCreateCollection();
-
   // Functions
   const handleOnCloseModal = () => {
-    onClose();
+    onCloseModal();
     reset();
   };
 
   const handleOnCancel = () => {
-    onCancel();
+    onCancelCreate();
     reset();
   };
 
@@ -70,9 +68,9 @@ export const AddFundCollectionModal: React.FC<AddFundCollectionModalProps> = ({
           <>
             <Button onClick={handleOnCancel}>Cancel</Button>
             <ContainedButton
-              disabled={!isValid || createFundCollection.isLoading}
+              disabled={!isValid}
+              isLoading={isSubmitting}
               onClick={handleSubmit(handleCreateCollection)}
-              isLoading={createFundCollection.isLoading}
             >
               Submit
             </ContainedButton>
