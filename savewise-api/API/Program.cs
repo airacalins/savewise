@@ -1,6 +1,8 @@
 using System.Text.Json.Serialization;
 using API.Extensions;
 using Application;
+using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -9,28 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Dependency Injections
 builder.Services.AddScoped<IDataContext, DataContext>();
 builder.Services.AddCommandServices();
-
-// Add services to the container.
-builder.Services.AddControllers().AddJsonOptions(options =>
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<DataContext>(opt =>
-{
-    opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
-
-// Configure CORS
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("CorsPolicy", builder =>
-    {
-        builder
-            .WithOrigins("http://localhost:5173")
-            .AllowAnyMethod()
-            .AllowAnyHeader();
-    });
-});
+builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddIdentityServices(builder.Configuration);
 
 var app = builder.Build();
 
@@ -53,7 +35,9 @@ var services = scope.ServiceProvider;
 try
 {
     var context = services.GetRequiredService<DataContext>();
-    context.Database.Migrate();
+    var userManager = services.GetRequiredService<UserManager<User>>();
+    await context.Database.MigrateAsync();
+    await Seed.SeedData(context, userManager);
 }
 catch (Exception ex)
 {
