@@ -99,6 +99,15 @@ const sideNavs = [
   },
 ];
 
+const bottomNavs = [
+  {
+    key: "logout",
+    name: "Logout",
+    link: "/auth/login",
+    icon: <Savings />,
+  },
+];
+
 interface SidebarDrawerProps {
   isOpen: boolean;
   onDrawerOpen: () => void;
@@ -142,8 +151,38 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
         )}
       </DrawerHeader>
       <Divider />
-      <List>
+      <List style={{ flexGrow: 1 }}>
         {sideNavs.map((sideNav) => (
+          <ListItem key={sideNav.key} disablePadding sx={{ display: "block" }}>
+            <ListItemButton
+              selected={selectedNavKey === sideNav.key}
+              onClick={() => handleNavigate(sideNav)}
+              sx={[
+                { minHeight: 48, px: 2.5 },
+                { justifyContent: isOpen ? "initial" : "center" },
+              ]}
+            >
+              <ListItemIcon
+                onClick={() => handleNavigate(sideNav)}
+                sx={[
+                  { minWidth: 0, justifyContent: "center" },
+                  { mr: isOpen ? 3 : "auto" },
+                ]}
+              >
+                {sideNav.icon}
+              </ListItemIcon>
+              <ListItemText
+                primary={sideNav.name}
+                sx={{ opacity: isOpen ? 1 : 0 }}
+              />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+
+      <List>
+        <Divider />
+        {bottomNavs.map((sideNav) => (
           <ListItem key={sideNav.key} disablePadding sx={{ display: "block" }}>
             <ListItemButton
               selected={selectedNavKey === sideNav.key}
