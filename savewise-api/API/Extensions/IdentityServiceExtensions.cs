@@ -1,4 +1,5 @@
 using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Persistence;
 
 namespace API.Extensions
@@ -8,10 +9,9 @@ namespace API.Extensions
         public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration config)
         {
             services
-                .AddIdentityCore<User>(opt => opt.Password.RequireNonAlphanumeric = false)
+                .AddIdentityApiEndpoints<User>(opt => opt.User.RequireUniqueEmail = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<DataContext>();
-
-            services.AddAuthentication();
 
             return services;
         }
