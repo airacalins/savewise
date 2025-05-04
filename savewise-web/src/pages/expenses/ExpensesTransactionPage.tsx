@@ -10,7 +10,7 @@ import {
   Button,
   IconButton,
 } from "@mui/material";
-import { useVisibilityState } from "../../hooks/useVisibilityState";
+import { useVisibility } from "../../hooks/useVisibility";
 import { useMemo, useState } from "react";
 import dayjs from "dayjs";
 import {
@@ -44,12 +44,12 @@ const tableHeaders = [
 export const ExpensesPage = () => {
   const { collectionId } = useParams();
   const navigate = useNavigate();
-  const editExpenseCollectionModal = useVisibilityState();
+  const editExpenseCollectionModal = useVisibility();
 
-  const addExpenseTransactionModal = useVisibilityState();
-  const editExpenseTransactionModal = useVisibilityState();
-  const deleteExpenseCollectionWarningModal = useVisibilityState();
-  const deleteExpenseTransactionWarningModal = useVisibilityState();
+  const addExpenseTransactionModal = useVisibility();
+  const editExpenseTransactionModal = useVisibility();
+  const deleteExpenseCollectionWarningModal = useVisibility();
+  const deleteExpenseTransactionWarningModal = useVisibility();
   const [selectedExpenseTransaction, setSelectedExpenseTransaction] =
     useState<null | ExpenseTransaction>();
 

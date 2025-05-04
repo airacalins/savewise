@@ -11,7 +11,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { useVisibilityState } from "../../hooks/useVisibilityState";
+import { useVisibility } from "../../hooks/useVisibility";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMemo, useState } from "react";
 import dayjs from "dayjs";
@@ -43,11 +43,11 @@ const tableHeaders = [
 export const FundTransactionsPage = () => {
   const navigate = useNavigate();
   const { collectionId } = useParams();
-  const editFundCollectionModal = useVisibilityState();
-  const deleteFundCollectionWarningModal = useVisibilityState();
-  const addFundTransactionModal = useVisibilityState();
-  const editFundTransactionModal = useVisibilityState();
-  const deleteFundTransactionWarningModal = useVisibilityState();
+  const editFundCollectionModal = useVisibility();
+  const deleteFundCollectionWarningModal = useVisibility();
+  const addFundTransactionModal = useVisibility();
+  const editFundTransactionModal = useVisibility();
+  const deleteFundTransactionWarningModal = useVisibility();
   const [selectedTransaction, setSelectedTransaction] =
     useState<null | FundTransaction>();
 

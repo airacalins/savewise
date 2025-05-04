@@ -20,6 +20,7 @@ export const TextInput: React.FC<TextInputProps> = ({
   return (
     <FormControl fullWidth variant="outlined" error={props.error}>
       <InputLabel htmlFor={props.name}>{label}</InputLabel>
+
       <OutlinedInput id={props.name} label={label} {...props} />
       {errorMessage && <FormHelperText>{errorMessage}</FormHelperText>}
     </FormControl>

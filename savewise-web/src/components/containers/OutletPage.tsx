@@ -2,13 +2,13 @@ import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import { colors } from "../../theme/colors";
 import { SidebarDrawer } from "../drawers/SidebarDrawer";
-import { useVisibilityState } from "../../hooks/useVisibilityState";
+import { useVisibility } from "../../hooks/useVisibility";
 import { Outlet } from "react-router-dom";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 export const OutletPage = () => {
-  const sidebarDrawer = useVisibilityState();
+  const sidebarDrawer = useVisibility();
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

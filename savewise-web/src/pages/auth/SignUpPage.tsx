@@ -2,13 +2,14 @@ import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { TextInput } from "../../components/inputs/TextInput";
 import { Text } from "../../components/texts/Text";
 import { Box, Button, InputAdornment, Link, Stack } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRegisterUser } from "../../api/auth/hooks";
 import { IRegisterUserSchema, registerUserSchema } from "../../api/auth/schema";
 import { showErrorToast, showSuccessToast } from "../../utils/toast";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
+import { useBoolean } from "../../hooks/useBoolean";
 
 const DEFAULT_VALUES = {
   email: "",
@@ -18,8 +19,8 @@ const DEFAULT_VALUES = {
 
 export const SignUpPage = () => {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const showPassword = useBoolean();
+  const showConfirmPassword = useBoolean();
 
   // API
   const registerUser = useRegisterUser();
@@ -41,16 +42,8 @@ export const SignUpPage = () => {
   }, [reset]);
 
   //   Functions
-  const handleClickShowPassword = () => {
-    setShowPassword((prev) => !prev);
-  };
-
-  const handleClickShowConfirmPassword = () => {
-    setShowConfirmPassword((prev) => !prev);
-  };
-
-  const handleCreateAccount = async (formData: IRegisterUserSchema) => {
-    const { email, password } = formData;
+  const handleCreateAccount = async (formValues: IRegisterUserSchema) => {
+    const { email, password } = formValues;
 
     try {
       await registerUser.mutateAsync({
@@ -99,12 +92,13 @@ export const SignUpPage = () => {
                 error={!!errors.password}
                 errorMessage={errors.password?.message}
                 defaultValue={DEFAULT_VALUES.password}
+                type={showPassword.value ? "text" : "password"}
                 endAdornment={
                   <InputAdornment position="end">
-                    {showPassword ? (
-                      <VisibilityOff onClick={handleClickShowPassword} />
+                    {showPassword.value ? (
+                      <VisibilityOff onClick={showPassword.toggle} />
                     ) : (
-                      <Visibility onClick={handleClickShowPassword} />
+                      <Visibility onClick={showPassword.toggle} />
                     )}
                   </InputAdornment>
                 }
@@ -122,12 +116,13 @@ export const SignUpPage = () => {
                 error={!!errors.confirmPassword}
                 errorMessage={errors.confirmPassword?.message}
                 defaultValue={DEFAULT_VALUES.confirmPassword}
+                type={showConfirmPassword ? "text" : "password"}
                 endAdornment={
                   <InputAdornment position="end">
-                    {showConfirmPassword ? (
-                      <VisibilityOff onClick={handleClickShowConfirmPassword} />
+                    {showConfirmPassword.value ? (
+                      <VisibilityOff onClick={showConfirmPassword.toggle} />
                     ) : (
-                      <Visibility onClick={handleClickShowConfirmPassword} />
+                      <Visibility onClick={showConfirmPassword.toggle} />
                     )}
                   </InputAdornment>
                 }

@@ -1,6 +1,6 @@
 import { Tabs, Tab } from "@mui/material";
 import { PageContainer } from "../../components/containers/PageContainer";
-import { useVisibilityState } from "../../hooks/useVisibilityState";
+import { useVisibility } from "../../hooks/useVisibility";
 import { AddExpenseCollectionModal } from "./components/AddExpenseCollectionModal";
 import {
   useCreateCollection,
@@ -26,7 +26,7 @@ const tabs = [
 ];
 
 export const ExpensesCollectionPage = () => {
-  const addExpenseCollectionModal = useVisibilityState();
+  const addExpenseCollectionModal = useVisibility();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
   // API

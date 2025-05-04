@@ -1,13 +1,14 @@
 import { useState } from "react";
 
-interface BooleanState {
+// TODO: Removed and replaced with useBoolean
+interface Visibility {
   isVisible: boolean;
   show: () => void;
   hide: () => void;
   toggle: () => void;
 }
 
-export const useVisibilityState = (): BooleanState => {
+export const useVisibility = (): Visibility => {
   const [isShown, setIsShown] = useState(false);
 
   return {
