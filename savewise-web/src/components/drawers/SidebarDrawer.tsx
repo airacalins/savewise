@@ -12,7 +12,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Home, MoneyOff, Savings } from "@mui/icons-material";
+import { ExitToApp, Home, MoneyOff, Savings } from "@mui/icons-material";
 
 const drawerWidth = 240;
 
@@ -104,7 +104,7 @@ const bottomNavs = [
     key: "logout",
     name: "Logout",
     link: "/auth/login",
-    icon: <Savings />,
+    icon: <ExitToApp />,
   },
 ];
 
