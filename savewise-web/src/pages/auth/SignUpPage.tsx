@@ -61,7 +61,7 @@ export const SignUpPage = () => {
       showSuccessToast(`Account created.`);
       navigate("/auth/login");
     } catch {
-      showErrorToast("Failed to create expense.");
+      showErrorToast("Something went wrong. Please try again.");
     }
   };
 
