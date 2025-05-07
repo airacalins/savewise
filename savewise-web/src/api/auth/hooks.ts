@@ -1,5 +1,9 @@
 import { usePost } from "../reactQueryUtils";
-import { LoginResponse, LoginUserRequest, RegisterUserRequest } from "./type";
+import {
+  LoginUserResponse,
+  LoginUserRequest,
+  RegisterUserRequest,
+} from "./type";
 
 const QUERY_KEY = "auth";
 
@@ -19,7 +23,7 @@ export const useLoginUser = () => {
   const url = "/login";
   const cacheKey = [QUERY_KEY, "login"];
 
-  return usePost<LoginResponse, LoginUserRequest>({
+  return usePost<LoginUserResponse, LoginUserRequest>({
     url,
     cacheKey,
   });

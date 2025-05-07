@@ -7,39 +7,46 @@ import { FundTransactionsPage } from "../pages/funds/FundTransactionsPage";
 import { LoginPage } from "../pages/auth/LoginPage";
 import { HomePage } from "../pages/home/HomePage";
 import { SignUpPage } from "../pages/auth/SignUpPage";
+import { PrivateRoute } from "./PrivateRoute";
 
 export const router = createBrowserRouter([
+  {
+    path: "/auth/signUp",
+    element: <SignUpPage />,
+  },
+  {
+    path: "/auth/login",
+    element: <LoginPage />,
+  },
   {
     path: "/",
     element: <OutletPage />,
     children: [
+      // Protected Routes
       {
-        path: "/auth/login",
-        element: <LoginPage />,
-      },
-      {
-        path: "/auth/signUp",
-        element: <SignUpPage />,
-      },
-      {
-        path: "/",
-        element: <HomePage />,
-      },
-      {
-        path: "/funds",
-        element: <FundsCollectionPage />,
-      },
-      {
-        path: "/funds/:collectionId/transactions",
-        element: <FundTransactionsPage />,
-      },
-      {
-        path: "/expenses",
-        element: <ExpensesCollectionPage />,
-      },
-      {
-        path: "/expenses/:collectionId/transactions",
-        element: <ExpensesPage />,
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: "/",
+            element: <HomePage />,
+          },
+          {
+            path: "/funds",
+            element: <FundsCollectionPage />,
+          },
+          {
+            path: "/funds/:collectionId/transactions",
+            element: <FundTransactionsPage />,
+          },
+          {
+            path: "/expenses",
+            element: <ExpensesCollectionPage />,
+          },
+          {
+            path: "/expenses/:collectionId/transactions",
+            element: <ExpensesPage />,
+          },
+        ],
       },
     ],
   },

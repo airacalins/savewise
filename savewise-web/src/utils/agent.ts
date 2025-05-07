@@ -7,6 +7,18 @@ const axiosInstance = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
+// Auth token to requests
+axiosInstance.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+
+  if (token && config.headers) {
+    config.headers.Authorization = token;
+  }
+
+  return config;
+});
+
+// Response interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
     return response;

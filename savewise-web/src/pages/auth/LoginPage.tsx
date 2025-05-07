@@ -56,6 +56,8 @@ export const LoginPage = () => {
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("expiresIn", expiresIn.toString());
 
+      console.log(JSON.stringify(response, null, 2));
+
       showSuccessToast(`Welcome back!`);
       navigate("/");
     } catch {
@@ -65,7 +67,13 @@ export const LoginPage = () => {
 
   return (
     <>
-      <Box display="flex" flex={1} alignItems="center" justifyContent="center">
+      <Box
+        alignItems="center"
+        display="flex"
+        flex={1}
+        justifyContent="center"
+        height="100vh"
+      >
         <Stack spacing={5}>
           <Stack spacing={1} alignItems="center">
             <Text variant="h5" fontWeight={500}>

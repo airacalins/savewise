@@ -59,7 +59,13 @@ export const SignUpPage = () => {
   };
 
   return (
-    <Box display="flex" flex={1} alignItems="center" justifyContent="center">
+    <Box
+      alignItems="center"
+      display="flex"
+      flex={1}
+      height="100vh"
+      justifyContent="center"
+    >
       <Stack spacing={5}>
         <Stack spacing={1} alignItems="center">
           <Text variant="h5" fontWeight={500}>
