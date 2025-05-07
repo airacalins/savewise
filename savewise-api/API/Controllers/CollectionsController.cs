@@ -3,10 +3,12 @@ using API.ViewModels;
 using Application.Collections.Dtos;
 using Application.Collections.Interfaces;
 using Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+
     [ApiController]
     [Route("api/[controller]")]
 
@@ -34,7 +36,7 @@ namespace API.Controllers
             _deleteCollectionCommand = deleteCollectionCommand;
         }
 
-
+        [Authorize]
         [HttpGet("funds")]
         public async Task<ActionResult<List<CollectionViewModel>>> GetFundCollections()
         {

@@ -8,7 +8,7 @@ export type LoginUserRequest = {
   password: string;
 };
 
-export type LoginResponse = {
+export type LoginUserResponse = {
   tokenType: string;
   accessToken: string;
   expiresIn: number;

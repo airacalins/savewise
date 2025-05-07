@@ -10,6 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useBoolean } from "../../hooks/useBoolean";
 import { useLoginUser } from "../../api/auth/hooks";
 import { showErrorToast, showSuccessToast } from "../../utils/toast";
+import { LoginUserResponse } from "../../api/auth/type";
 
 const DEFAULT_VALUES = {
   email: "",
@@ -44,10 +45,16 @@ export const LoginPage = () => {
     const { email, password } = formValues;
 
     try {
-      await loginUser.mutateAsync({
+      const response: LoginUserResponse = await loginUser.mutateAsync({
         email,
         password,
       });
+
+      const { tokenType, accessToken, refreshToken, expiresIn } = response;
+
+      localStorage.setItem("token", `${tokenType} ${accessToken}`);
+      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("expiresIn", expiresIn.toString());
 
       showSuccessToast(`Welcome back!`);
       navigate("/");
